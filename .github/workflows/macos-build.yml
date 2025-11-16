@@ -28,6 +28,6 @@ jobs:
         with:
           name: MicroGameEngine-macOS
           path: |
-            build/MicroGameEngine
-            build/MicroGameEngine.app
+            build/bin/MicroGameEngine
+            build/bin/MicroGameEngine.app
           if-no-files-found: ignore
