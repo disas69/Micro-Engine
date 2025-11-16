@@ -2,7 +2,7 @@
 
 int main()
 {
-    MicroGame::Engine engine;
+    Micro::Engine engine;
 
     return 0;
 }

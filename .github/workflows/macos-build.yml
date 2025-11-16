@@ -26,8 +26,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: MicroGameEngine-macOS
+          name: MicroEngine-macOS
           path: |
-            build/bin/MicroGameEngine
-            build/bin/MicroGameEngine.app
+            build/bin/MicroEngine
+            build/bin/MicroEngine.app
           if-no-files-found: ignore

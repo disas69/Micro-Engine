@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-using namespace MicroGame;
+using namespace Micro;
 
 Engine::Engine()
 {

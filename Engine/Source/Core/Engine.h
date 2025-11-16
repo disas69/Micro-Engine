@@ -2,7 +2,7 @@
 
 #include "EngineConfig.h"
 
-namespace MicroGame
+namespace Micro
 {
 class Engine final
 {
