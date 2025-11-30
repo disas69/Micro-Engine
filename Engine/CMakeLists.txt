@@ -10,14 +10,20 @@ set(ENGINE_SOURCES
         Source/pch.h
 )
 
-add_library(MicroEngineLib ${ENGINE_SOURCES})
-target_include_directories(MicroEngineLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source)
+add_library(MicroLib ${ENGINE_SOURCES})
+target_include_directories(MicroLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source)
 
-target_precompile_headers(MicroEngineLib PUBLIC Source/pch.h)
+target_precompile_headers(MicroLib PUBLIC Source/pch.h)
+
+target_link_libraries(MicroLib
+        PUBLIC
+        raylib
+        raylib_cpp
+        # other engine-level deps…
+)
 
 add_executable(MicroEngine Source/main.cpp)
-target_link_libraries(MicroEngine PRIVATE MicroEngineLib)
+target_link_libraries(MicroEngine PRIVATE MicroLib)
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_target_properties(MicroEngine PROPERTIES FOLDER "Engine")
-set_target_properties(MicroEngineLib PROPERTIES FOLDER "Engine")
+set_target_properties(MicroLib PROPERTIES FOLDER "Engine")
