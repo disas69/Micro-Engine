@@ -18,6 +18,14 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ninja-build g++ build-essential
+          sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxi-dev \
+          libxcursor-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev
 
       - name: Configure CMake
         run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
