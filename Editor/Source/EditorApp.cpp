@@ -102,7 +102,7 @@ void EditorApp::DrawMenuBar()
     }
 }
 
-void EditorApp::DrawMainViewport(RenderTexture* renderTexture)
+void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
 {
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->WorkPos);

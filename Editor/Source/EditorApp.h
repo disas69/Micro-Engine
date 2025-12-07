@@ -20,6 +20,6 @@ private:
     bool m_shouldShutdown = false;
 
     void DrawMenuBar();
-    void DrawMainViewport(RenderTexture* renderTexture);
+    void DrawMainViewport(raylib::RenderTexture* renderTexture);
 };
 }  // namespace Micro

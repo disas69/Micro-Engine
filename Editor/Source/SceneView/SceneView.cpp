@@ -2,7 +2,7 @@
 
 using namespace Micro;
 
-SceneView::SceneView(int width, int height) : m_width(width), m_height(height)//, m_renderTexture(width, height)
+SceneView::SceneView(int width, int height) : m_width(width), m_height(height), m_renderTexture()
 {
     m_camera.SetPosition({0.0f, 10.0f, 10.0f});
     m_camera.SetTarget({0.0f, 0.0f, 0.0f});
@@ -15,7 +15,7 @@ void SceneView::Render()
 {
     UpdateCamera(&m_camera, CAMERA_ORBITAL);
 
-    BeginTextureMode(m_renderTexture);
+    m_renderTexture.BeginMode();
     ClearBackground(DARKGRAY);
     BeginMode3D(m_camera);
 
@@ -25,17 +25,16 @@ void SceneView::Render()
     DrawGrid(10, 1.0f);
 
     EndMode3D();
-    EndTextureMode();
+    m_renderTexture.EndMode();
 }
 
 void SceneView::Resize(int width, int height)
 {
     if (width != m_width || height != m_height)
     {
+        m_renderTexture.Unload();
+        m_renderTexture = LoadRenderTexture(width, height);
         m_width = width;
         m_height = height;
-
-        UnloadRenderTexture(m_renderTexture);
-        m_renderTexture = LoadRenderTexture(width, height);
     }
 }

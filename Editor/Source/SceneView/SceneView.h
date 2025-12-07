@@ -14,7 +14,7 @@ public:
     void Render();
     void Resize(int width, int height);
 
-    RenderTexture* GetRenderTexture()
+    raylib::RenderTexture* GetRenderTexture()
     {
         return &m_renderTexture;
     }
@@ -23,7 +23,7 @@ private:
     int m_width;
     int m_height;
 
-    RenderTexture m_renderTexture = {0};
+    raylib::RenderTexture m_renderTexture;
     raylib::Camera m_camera;
 };
 }
