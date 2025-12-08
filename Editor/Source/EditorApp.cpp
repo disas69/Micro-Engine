@@ -109,9 +109,10 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
     ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);
 
-    ImGui::Begin("Scene");
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar);
     {
-        ImVec2 size = ImGui::GetWindowSize();
+        ImVec2 size = ImGui::GetContentRegionAvail();
         bool resized = (size.x != m_lastSceneViewSize.x || size.y != m_lastSceneViewSize.y);
         if (resized)
         {
@@ -122,6 +123,7 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
         rlImGuiImageRenderTextureFit(renderTexture, true);
     }
     ImGui::End();
+    ImGui::PopStyleVar();
 
     ImGui::Begin("Project");
     {
