@@ -2,7 +2,8 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "rlImGui.h"
-#include "Core/Console.h"
+#include "Core/Engine.h"
+#include "Core/Log.h"
 
 using namespace Micro;
 
@@ -11,10 +12,10 @@ using namespace Micro;
 
 EditorApp::EditorApp()
 {
+    Log::Initialize();
+
     int screenWidth = DEFAULT_EDITOR_SCREEN_WIDTH;
     int screenHeight = DEFAULT_EDITOR_SCREEN_HEIGHT;
-
-    Console::Get().Initialize();
 
     raylib::Window::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     raylib::Window::Init(screenWidth, screenHeight, "Micro Engine");
@@ -44,7 +45,7 @@ EditorApp::EditorApp()
 
     m_sceneView = SceneView(screenWidth, screenHeight);
 
-    TraceLog(LOG_INFO, "Editor App Initialized");
+    Log::Info("Editor App Initialized");
 }
 
 int EditorApp::Run()
@@ -142,7 +143,7 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
     {
         ImGui::BeginChild("ConsoleScrollView", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-        for (auto& entry : Console::Get().GetEntries())
+        for (auto& entry : Log::Get().GetEntries())
         {
             ImVec4 color;
             switch (entry.Level)
@@ -159,12 +160,12 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
             ImGui::PopStyleColor();
         }
 
-        if (Console::Get().ShouldScrollToBottom())
+        if (Log::Get().ShouldScrollToBottom())
         {
             ImGui::SetScrollHereY(1.0f);
         }
 
-        Console::Get().ResetAutoScroll();
+        Log::Get().ResetAutoScroll();
 
         ImGui::EndChild();
     }

@@ -1,8 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <string>
-
 namespace Micro
 {
 struct LogEntry
@@ -11,24 +8,29 @@ struct LogEntry
     std::string Text;
 };
 
-class Console
+class Log
 {
 public:
-    static Console& Get()
+    static Log& Get()
     {
-        static Console Instance;
+        static Log Instance;
         return Instance;
     }
 
-    Console(const Console&) = delete;
-    Console(Console&&) = delete;
-    Console& operator=(const Console&) = delete;
-    Console& operator=(Console&&) = delete;
+    Log(const Log&) = delete;
+    Log(Log&&) = delete;
+    Log& operator=(const Log&) = delete;
+    Log& operator=(Log&&) = delete;
 
     std::vector<LogEntry> GetEntries() const { return m_entries; }
     bool ShouldScrollToBottom() const { return m_scrollToBottom; }
 
-    void Initialize();
+    static void Initialize();
+    static void Info(const std::string& message);
+    static void Warning(const std::string& message);
+    static void Error(const std::string& message);
+    static void Fatal(const std::string& message);
+
     void AddLog(int level, const std::string& text);
     void Clear();
     void ResetAutoScroll();
@@ -37,6 +39,6 @@ private:
     std::vector<LogEntry> m_entries = {};
     bool m_scrollToBottom = false;
 
-    Console() = default;
+    Log() = default;
 };
 }  // namespace Micro

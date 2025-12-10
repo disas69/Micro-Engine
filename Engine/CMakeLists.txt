@@ -6,6 +6,8 @@ set(ENGINE_SOURCES
         Source/EngineConfig.h
         Source/Core/Engine.cpp
         Source/Core/Engine.h
+        Source/Core/Log.cpp
+        Source/Core/Log.h
         Source/pch.cpp
         Source/pch.h
 )

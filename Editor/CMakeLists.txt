@@ -4,10 +4,8 @@ set(EDITOR_SOURCES
         Source/main.cpp
         Source/EditorApp.cpp
         Source/EditorApp.h
-        Source/Core/Console.cpp
-        Source/Core/Console.h
-        Source/Core/SceneView/SceneView.cpp
-        Source/Core/SceneView/SceneView.h
+        Source/Core/View/SceneView.cpp
+        Source/Core/View/SceneView.h
         Source/pch.cpp
         Source/pch.h
 )

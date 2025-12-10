@@ -1,11 +1,12 @@
 #include "Engine.h"
+#include "Log.h"
 
 using namespace Micro;
 
 Engine::Engine()
 {
-    std::cout << "Initializing Micro Engine..." << std::endl;
-    std::cout << "Version: " << version() << std::endl;
+    Log::Initialize();
+    Log::Info("Initializing Micro Engine. Version: " + std::string(version()));
 
     int screenWidth = 800;
     int screenHeight = 450;

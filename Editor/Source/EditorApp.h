@@ -2,7 +2,7 @@
 
 #include "raylib-cpp.hpp"
 #include "imgui.h"
-#include "Core/SceneView/SceneView.h"
+#include "Core/View/SceneView.h"
 
 namespace Micro
 {
