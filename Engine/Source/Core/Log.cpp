@@ -41,8 +41,12 @@ void Log::AddLog(int level, const std::string& text)
     auto now = std::chrono::system_clock::now();
     auto t = std::chrono::system_clock::to_time_t(now);
 
-    std::tm buf{};
+    std::tm buf = {};
+#ifdef _WIN32
+    localtime_s(&buf, &t);
+#else
     localtime_r(&t, &buf);
+#endif
 
     char timeStr[16];
     strftime(timeStr, sizeof(timeStr), "[%H:%M:%S]", &buf);
