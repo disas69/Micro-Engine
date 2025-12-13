@@ -14,8 +14,8 @@ int Engine::Run()
     int screenWidth = 800;
     int screenHeight = 450;
 
-    m_window.SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-    m_window.Init(screenWidth, screenHeight, "raylib-cpp - basic window");
+    raylib::Window::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+    raylib::Window::Init(screenWidth, screenHeight, "raylib-cpp - basic window");
     m_window.SetTargetFPS(60);
 
     while (!m_window.ShouldClose())

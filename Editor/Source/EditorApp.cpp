@@ -43,7 +43,7 @@ EditorApp::EditorApp()
 
     m_sceneView = SceneView(screenWidth, screenHeight);
 
-    Log::Warning("Editor App Initialized");
+    Log::Info("Editor App Initialized");
 }
 
 int EditorApp::Run()
@@ -119,7 +119,6 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* sceneViewRT)
     ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);
 
-    // Scene view
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     if (ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar))
     {
@@ -168,7 +167,6 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* sceneViewRT)
     }
     ImGui::End();
 
-    // Console view
     if (ImGui::Begin("Console"))
     {
         m_consoleView.Render();
