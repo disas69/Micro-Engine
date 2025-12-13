@@ -12,8 +12,6 @@ using namespace Micro;
 
 EditorApp::EditorApp()
 {
-    Log::Initialize();
-
     int screenWidth = DEFAULT_EDITOR_SCREEN_WIDTH;
     int screenHeight = DEFAULT_EDITOR_SCREEN_HEIGHT;
 
@@ -52,6 +50,11 @@ int EditorApp::Run()
 {
     while (!raylib::Window::ShouldClose() && !m_shouldShutdown)
     {
+        if (m_focusedView == EditorView::Scene)
+        {
+            m_sceneView.Update();
+        }
+
         m_sceneView.Render();
 
         m_window.BeginDrawing();
@@ -109,14 +112,14 @@ void EditorApp::DrawMenuBar()
     }
 }
 
-void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
+void EditorApp::DrawMainViewport(raylib::RenderTexture* sceneViewRT)
 {
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->WorkPos);
     ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);
 
-    // Scene window
+    // Scene view
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     if (ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar))
     {
@@ -128,17 +131,44 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
             m_lastSceneViewSize = size;
         }
 
-        rlImGuiImageRenderTextureFit(renderTexture, true);
+        rlImGuiImageRenderTextureFit(sceneViewRT, true);
+
+        if (ImGui::IsWindowFocused())
+        {
+            m_focusedView = EditorView::Scene;
+        }
     }
     ImGui::End();
     ImGui::PopStyleVar();
 
-    if (ImGui::Begin("Project"))
+    if (ImGui::Begin("Hierarchy"))
     {
+        if (ImGui::IsWindowFocused())
+        {
+            m_focusedView = EditorView::Hierarchy;
+        }
     }
     ImGui::End();
 
-    // Console window
+    if (ImGui::Begin("Inspector"))
+    {
+        if (ImGui::IsWindowFocused())
+        {
+            m_focusedView = EditorView::Inspector;
+        }
+    }
+    ImGui::End();
+
+    if (ImGui::Begin("Project"))
+    {
+        if (ImGui::IsWindowFocused())
+        {
+            m_focusedView = EditorView::Project;
+        }
+    }
+    ImGui::End();
+
+    // Console view
     if (ImGui::Begin("Console"))
     {
         ImGui::BeginChild("ConsoleScrollView", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -167,17 +197,12 @@ void EditorApp::DrawMainViewport(raylib::RenderTexture* renderTexture)
 
         Log::Get().ResetAutoScroll();
 
+        if (ImGui::IsWindowFocused())
+        {
+            m_focusedView = EditorView::Console;
+        }
+
         ImGui::EndChild();
-    }
-    ImGui::End();
-
-    if (ImGui::Begin("Inspector"))
-    {
-    }
-    ImGui::End();
-
-    if (ImGui::Begin("Hierarchy"))
-    {
     }
     ImGui::End();
 }

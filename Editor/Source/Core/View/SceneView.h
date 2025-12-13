@@ -11,6 +11,7 @@ public:
     SceneView() = default;
     SceneView(int width, int height);
 
+    void Update();
     void Render();
     void Resize(int width, int height);
 

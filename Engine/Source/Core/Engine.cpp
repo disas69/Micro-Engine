@@ -7,17 +7,17 @@ Engine::Engine()
 {
     Log::Initialize();
     Log::Info("Initializing Micro Engine. Version: " + std::string(version()));
+}
 
+int Engine::Run()
+{
     int screenWidth = 800;
     int screenHeight = 450;
 
     m_window.SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     m_window.Init(screenWidth, screenHeight, "raylib-cpp - basic window");
     m_window.SetTargetFPS(60);
-}
 
-int Engine::Run()
-{
     while (!m_window.ShouldClose())
     {
         m_window.BeginDrawing();

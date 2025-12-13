@@ -55,6 +55,8 @@ void Log::AddLog(int level, const std::string& text)
         .Level = level,
         .Text = std::string(timeStr) + " " + text
     });
+
+    m_scrollToBottom = true;
 }
 
 void Log::Clear()

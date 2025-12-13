@@ -11,10 +11,13 @@ SceneView::SceneView(int width, int height) : m_width(width), m_height(height), 
     m_camera.SetProjection(CAMERA_PERSPECTIVE);
 }
 
-void SceneView::Render()
+void SceneView::Update()
 {
     UpdateCamera(&m_camera, CAMERA_ORBITAL);
+}
 
+void SceneView::Render()
+{
     m_renderTexture.BeginMode();
     ClearBackground(DARKGRAY);
     BeginMode3D(m_camera);
