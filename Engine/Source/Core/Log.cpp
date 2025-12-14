@@ -1,6 +1,5 @@
 #include "Log.h"
 #include "raylib.h"
-#include <sys/time.h>
 
 using namespace Micro;
 
