@@ -12,5 +12,4 @@ public:
 private:
     static bool CheckboxLogLevelFlags(const char* label, LogLevelFlags* flags, LogLevelFlags flag);
 };
-}
-
+}  // namespace Micro

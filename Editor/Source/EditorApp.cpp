@@ -41,7 +41,7 @@ EditorApp::EditorApp()
         ImGui::LoadIniSettingsFromDisk(defaultIni.c_str());
     }
 
-    m_sceneView = SceneView(screenWidth, screenHeight);
+    m_sceneView.Init(screenWidth, screenHeight);
 
     Log::Info("Editor App Initialized");
 }

@@ -3,8 +3,16 @@
 
 using namespace Micro;
 
-SceneView::SceneView(int width, int height) : m_width(width), m_height(height), m_renderTexture()
+SceneView::~SceneView()
 {
+    Log::Get().SetLogCallback(nullptr);
+}
+
+void SceneView::Init(int width, int height)
+{
+    m_width = width;
+    m_height = height;
+
     m_camera.SetPosition({0.0f, 10.0f, 10.0f});
     m_camera.SetTarget({0.0f, 0.0f, 0.0f});
     m_camera.SetUp({0.0f, 1.0f, 0.0f});
@@ -16,6 +24,8 @@ SceneView::SceneView(int width, int height) : m_width(width), m_height(height), 
 
     m_yaw = atan2f(forward.x, forward.z);
     m_pitch = asinf(forward.y);
+
+    Log::Get().SetLogCallback([this](const LogEntry& entry) { m_sceneLogView.AddLogEntry(entry); });
 }
 
 void SceneView::Update()
@@ -35,6 +45,10 @@ void SceneView::Render()
     DrawGrid(100, 1.0f);
 
     EndMode3D();
+
+    m_sceneLogView.Update();
+    m_sceneLogView.Render();
+
     m_renderTexture.EndMode();
 }
 

@@ -6,6 +6,8 @@ set(EDITOR_SOURCES
         Source/EditorApp.h
         Source/Core/View/SceneView.cpp
         Source/Core/View/SceneView.h
+        Source/Core/View/SceneLogView.cpp
+        Source/Core/View/SceneLogView.h
         Source/Core/View/ConsoleView.cpp
         Source/Core/View/ConsoleView.h
         Source/pch.cpp

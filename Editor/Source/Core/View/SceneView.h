@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SceneLogView.h"
+
 #include <Camera3D.hpp>
 #include <RenderTexture.hpp>
 
@@ -9,16 +11,17 @@ class SceneView
 {
 public:
     SceneView() = default;
-    SceneView(int width, int height);
+    ~SceneView();
 
+    SceneView(const SceneView&) = delete;
+    SceneView(SceneView&&) = delete;
+
+    void Init(int width, int height);
     void Update();
     void Render();
     void Resize(int width, int height);
 
-    raylib::RenderTexture* GetRenderTexture()
-    {
-        return &m_renderTexture;
-    }
+    raylib::RenderTexture* GetRenderTexture() { return &m_renderTexture; }
 
 private:
     int m_width;
@@ -26,6 +29,7 @@ private:
 
     raylib::RenderTexture m_renderTexture;
     raylib::Camera m_camera;
+    SceneLogView m_sceneLogView;
 
     float m_moveSpeed = 10.0f;
     float m_mouseSensitivity = 0.007f;
@@ -34,5 +38,4 @@ private:
 
     void UpdateCamera();
 };
-}
-
+}  // namespace Micro

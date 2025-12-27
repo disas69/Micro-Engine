@@ -8,6 +8,7 @@ using namespace Micro;
 void ConsoleView::Render()
 {
     LogLevelFlags* flags = Log::Get().LevelFlagsMask();
+    std::vector<LogEntry> entries = Log::Get().GetEntries();
 
     CheckboxLogLevelFlags("Info", flags, LogLevelFlags::Info); ImGui::SameLine();
     CheckboxLogLevelFlags("Warning", flags, LogLevelFlags::Warning); ImGui::SameLine();
@@ -24,7 +25,6 @@ void ConsoleView::Render()
     ImGui::Separator();
     ImGui::BeginChild("ConsoleScrollView", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-    std::vector<LogEntry> entries = Log::Get().GetEntries();
     for (size_t i = 0; i < entries.size(); i++)
     {
         LogEntry& entry = entries[i];

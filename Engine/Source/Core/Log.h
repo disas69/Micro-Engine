@@ -31,6 +31,7 @@ struct LogEntry
 {
     uint32_t Level;
     std::string Text;
+    time_t Timestamp;
 };
 
 class Log
@@ -60,10 +61,12 @@ public:
     void Clear();
     void ResetAutoScroll();
 
+    void SetLogCallback(const std::function<void(const LogEntry&)>& callback) { m_logCallback = callback; }
     LogLevelFlags* LevelFlagsMask() { return &m_levelMask; }
 
 private:
     std::vector<LogEntry> m_entries = {};
+    std::function<void(const LogEntry&)> m_logCallback = nullptr;
     LogLevelFlags m_levelMask = LogLevelFlags::All;
     bool m_scrollToBottom = false;
 
