@@ -9,3 +9,4 @@
 #include <chrono>
 #include <format>
 #include <cstdint>
+#include <functional>
