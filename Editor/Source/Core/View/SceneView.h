@@ -14,7 +14,9 @@ public:
     ~SceneView();
 
     SceneView(const SceneView&) = delete;
+    SceneView& operator=(const SceneView&) = delete;
     SceneView(SceneView&&) = delete;
+    SceneView& operator=(SceneView&&) = delete;
 
     void Init(int width, int height);
     void Update();

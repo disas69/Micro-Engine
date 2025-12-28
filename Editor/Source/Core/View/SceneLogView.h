@@ -8,9 +8,12 @@ class SceneLogView
 {
 public:
     SceneLogView();
+    ~SceneLogView() = default;
 
     SceneLogView(const SceneLogView& other) = delete;
+    SceneLogView& operator=(const SceneLogView& other) = delete;
     SceneLogView(SceneLogView&& other) = delete;
+    SceneLogView& operator=(SceneLogView&& other) = delete;
 
     void AddLogEntry(const LogEntry& entry);
     void Update();

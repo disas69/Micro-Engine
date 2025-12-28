@@ -8,8 +8,12 @@ class ConsoleView
 {
 public:
     ConsoleView() = default;
+    ~ConsoleView() = default;
+
     ConsoleView(const ConsoleView&) = delete;
     ConsoleView& operator=(const ConsoleView&) = delete;
+    ConsoleView(ConsoleView&& other) = delete;
+    ConsoleView& operator=(ConsoleView&& other) = delete;
 
     void Render();
 
