@@ -60,7 +60,7 @@ int EditorApp::Run()
             m_sceneView.Update();
         }
 
-        m_sceneView.Render();
+        m_sceneView.Render(m_lastSceneViewSize);
 
         m_window.BeginDrawing();
         m_window.ClearBackground(DARKGRAY);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneLogView.h"
+#include "imgui.h"
 
 #include <Camera3D.hpp>
 #include <RenderTexture.hpp>
@@ -20,7 +21,7 @@ public:
 
     void Init(int width, int height);
     void Update();
-    void Render();
+    void Render(ImVec2 size);
     void Resize(int width, int height);
 
     raylib::RenderTexture* GetRenderTexture() { return &m_renderTexture; }

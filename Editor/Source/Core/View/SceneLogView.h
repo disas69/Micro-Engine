@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Log.h"
+#include "imgui.h"
 
 namespace Micro
 {
@@ -17,7 +18,7 @@ public:
 
     void AddLogEntry(const LogEntry& entry);
     void Update();
-    void Render();
+    void Render(ImVec2 size);
 
 private:
     std::vector<LogEntry> m_logEntries;

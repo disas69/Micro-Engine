@@ -33,7 +33,7 @@ void SceneView::Update()
     UpdateCamera();
 }
 
-void SceneView::Render()
+void SceneView::Render(ImVec2 size)
 {
     m_renderTexture.BeginMode();
     ClearBackground(DARKGRAY);
@@ -47,7 +47,7 @@ void SceneView::Render()
     EndMode3D();
 
     m_sceneLogView.Update();
-    m_sceneLogView.Render();
+    m_sceneLogView.Render(size);
 
     m_renderTexture.EndMode();
 }

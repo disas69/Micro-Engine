@@ -34,11 +34,17 @@ void SceneLogView::Update()
     }
 }
 
-void SceneLogView::Render()
+void SceneLogView::Render(ImVec2 size)
 {
     LogLevelFlags* flags = Log::Get().LevelFlagsMask();
 
     int yOffset = 10;
+    int fontSize = 10;
+
+    // Scale font size based on window height
+    fontSize = static_cast<int>(fontSize * (size.y / 1080.0f));
+    fontSize = std::max(1, std::min(fontSize, 10));
+
     for (const auto& entry : m_logEntries)
     {
         if (entry.Level == LOG_INFO && static_cast<uint32_t>(*flags & LogLevelFlags::Info) == 0) continue;
@@ -57,7 +63,7 @@ void SceneLogView::Render()
         }
 
         color.a = 200;
-        DrawText(entry.Text.c_str(), 10, yOffset, 10, color);
+        DrawText(entry.Text.c_str(), 10, yOffset, fontSize, color);
         yOffset += 15;
     }
 }
