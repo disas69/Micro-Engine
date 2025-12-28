@@ -9,6 +9,10 @@ set(ENGINE_SOURCES
         Source/Core/Log.cpp
         Source/Core/Log.h
         Source/Memory/ArenaAllocator.h
+        Source/Game/GameBase.cpp
+        Source/Game/GameBase.h
+        Source/Game/DefaultGame.cpp
+        Source/Game/DefaultGame.h
         Source/pch.cpp
         Source/pch.h
 )

@@ -4,7 +4,6 @@
 
 #include <new>
 #include <cstdlib>
-#include <utility>
 #include <raylib.h>
 
 namespace Micro

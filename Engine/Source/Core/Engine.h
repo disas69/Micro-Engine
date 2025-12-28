@@ -5,6 +5,14 @@
 
 namespace Micro
 {
+class ArenaAllocator;
+}
+namespace Micro
+{
+class GameBase;
+}
+namespace Micro
+{
 class Engine final
 {
 public:
@@ -16,7 +24,8 @@ public:
     Engine(Engine&&) = delete;
     Engine& operator=(Engine&&) = delete;
 
-    int Run();
+    int Run(GameBase* game, ArenaAllocator& frameArena);
+    void Render(GameBase* game);
 
     static constexpr std::string_view version()
     {
