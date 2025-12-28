@@ -71,7 +71,7 @@ void SceneView::UpdateCamera()
         m_moveSpeed *= (1.0f + wheel * 0.1f);
         m_moveSpeed = Clamp(m_moveSpeed, 1.0f, 100.0f);
 
-        Log::Info("Camera Move Speed: " + std::to_string(m_moveSpeed));
+        MICRO_LOG_INFO("Camera Move Speed: " + std::to_string(m_moveSpeed));
     }
 
     if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON))

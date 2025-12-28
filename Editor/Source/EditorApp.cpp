@@ -43,7 +43,7 @@ EditorApp::EditorApp()
 
     m_sceneView.Init(screenWidth, screenHeight);
 
-    Log::Info("Editor App Initialized");
+    MICRO_LOG_INFO("Editor App Initialized");
 }
 
 EditorApp::~EditorApp()

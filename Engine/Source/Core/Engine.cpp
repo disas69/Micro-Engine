@@ -6,7 +6,7 @@ using namespace Micro;
 Engine::Engine()
 {
     Log::Initialize();
-    Log::Info("Initializing Micro Engine. Version: " + std::string(version()));
+    MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
 }
 
 Engine::~Engine()

@@ -2,6 +2,22 @@
 
 namespace Micro
 {
+#if defined(_DEBUG) || !defined(NDEBUG)
+
+#define MICRO_LOG_INFO(msg) Micro::Log::Info(msg)
+#define MICRO_LOG_WARNING(msg) Micro::Log::Warning(msg)
+#define MICRO_LOG_ERROR(msg) Micro::Log::Error(msg)
+#define MICRO_LOG_FATAL(msg) Micro::Log::Fatal(msg)
+
+#else
+
+#define MICRO_LOG_INFO(msg) ((void)0)
+#define MICRO_LOG_WARN(msg) ((void)0)
+#define MICRO_LOG_ERROR(msg) ((void)0)
+#define MICRO_LOG_FATAL(msg) ((void)0)
+
+#endif
+
 enum class LogLevelFlags : uint32_t
 {
     None = 0,
