@@ -2,9 +2,6 @@
 
 #include "Component.h"
 
-#include <raylib.h>
-#include <raylib-cpp.hpp>
-
 enum class GraphicComponentType : uint8_t
 {
     GraphicType2D = 0,

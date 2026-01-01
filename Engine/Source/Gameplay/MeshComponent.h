@@ -5,9 +5,6 @@
 #include "TransformComponent.h"
 #include "GameObject.h"
 
-#include <raylib.h>
-#include <raymath.h>
-
 namespace Micro
 {
 class MeshComponent : public GraphicComponent

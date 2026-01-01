@@ -52,7 +52,7 @@ void DefaultGame::Update(ArenaAllocator& frameArena, float deltaTime)
 
     // Update 3D object
     auto transform3d = m_3dGameObject->GetComponent<TransformComponent>();
-    transform3d->Rotation.y = fmodf(transform3d->Rotation.y + 50.0f * deltaTime, 360.0f);  // Rotate around Y-axis
+    transform3d->Rotation.y = fmodf(transform3d->Rotation.y + 50.0f * deltaTime, 360.0f);
 }
 
 void DefaultGame::Render()

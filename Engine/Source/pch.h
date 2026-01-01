@@ -1,5 +1,6 @@
 #pragma once
 
+// std
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,3 +11,8 @@
 #include <format>
 #include <cstdint>
 #include <functional>
+
+// raylib
+#include <raylib.h>
+#include <raylib-cpp.hpp>
+#include <raymath.h>

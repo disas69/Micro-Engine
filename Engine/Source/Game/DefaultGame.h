@@ -2,8 +2,6 @@
 
 #include "GameBase.h"
 
-#include <raylib-cpp.hpp>
-
 namespace Micro
 {
 class DefaultGame : public GameBase

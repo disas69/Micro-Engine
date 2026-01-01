@@ -2,8 +2,6 @@
 
 #include "Component.h"
 
-#include <raylib-cpp.hpp>
-
 namespace Micro
 {
 class Transform2DComponent : public Component

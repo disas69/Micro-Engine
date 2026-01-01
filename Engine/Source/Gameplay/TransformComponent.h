@@ -2,9 +2,6 @@
 
 #include "Component.h"
 
-#include <raylib-cpp.hpp>
-#include <raymath.h>
-
 namespace Micro
 {
 class TransformComponent : public Component
