@@ -27,7 +27,8 @@ public:
     virtual void Render() = 0;
 
     void UpdateGameObjects(float deltaTime);
-    void RenderGameObjects();
+    void Render3DGameObjects();
+    void Render2DGameObjects();
 
     template <typename T, typename... Args>
     T* CreateGameObject(Args&&... args)

@@ -23,10 +23,18 @@ void GameBase::UpdateGameObjects(float deltaTime)
     }
 }
 
-void GameBase::RenderGameObjects()
+void GameBase::Render3DGameObjects()
 {
     for (auto* gameObject : m_gameObjects)
     {
-        gameObject->OnRender();
+        gameObject->OnRender3D();
+    }
+}
+
+void GameBase::Render2DGameObjects()
+{
+    for (auto* gameObject : m_gameObjects)
+    {
+        gameObject->OnRender2D();
     }
 }

@@ -9,6 +9,8 @@ namespace Micro
 class SpriteComponent : public GraphicComponent
 {
 public:
+    SpriteComponent() : GraphicComponent(GraphicComponentType::GraphicType2D) {}
+
     raylib::Texture2D SpriteTexture = {};
     raylib::Rectangle SourceRect = raylib::Rectangle{0, 0, 0, 0};
 

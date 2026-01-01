@@ -17,9 +17,10 @@ set(ENGINE_SOURCES
         Source/Gameplay/GameObject.cpp
         Source/Gameplay/GameObjectsPool.h
         Source/Gameplay/Transform2DComponent.h
+        Source/Gameplay/TransformComponent.h
         Source/Gameplay/GraphicComponent.h
         Source/Gameplay/SpriteComponent.h
-        Source/Gameplay/StaticMeshComponent.h
+        Source/Gameplay/MeshComponent.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
         Source/pch.cpp

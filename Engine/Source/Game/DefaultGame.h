@@ -2,6 +2,8 @@
 
 #include "GameBase.h"
 
+#include <raylib-cpp.hpp>
+
 namespace Micro
 {
 class DefaultGame : public GameBase
@@ -14,6 +16,9 @@ public:
     void Render() override;
 
 private:
-    GameObject* m_testGameObject = nullptr;
+    raylib::Camera m_camera = {};
+
+    GameObject* m_2dGameObject = nullptr;
+    GameObject* m_3dGameObject = nullptr;
 };
 }  // namespace Micro

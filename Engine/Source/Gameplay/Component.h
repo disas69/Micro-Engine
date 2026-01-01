@@ -12,7 +12,6 @@ public:
 
     virtual void OnInit() {}
     virtual void OnUpdate(float deltaTime) {}
-    virtual void OnRender() {}
     virtual void OnDestroy() {}
     virtual void OnEnable() {}
     virtual void OnDisable() {}

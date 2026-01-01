@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "GraphicComponent.h"
 
 namespace Micro
 {
@@ -30,7 +31,7 @@ void GameObject::OnUpdate(float deltaTime)
     }
 }
 
-void GameObject::OnRender()
+void GameObject::OnRender3D()
 {
     if (!m_isActive)
     {
@@ -41,7 +42,31 @@ void GameObject::OnRender()
     {
         if (component->IsActive())
         {
-            component->OnRender();
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicType3D)
+            {
+                graphicComponent->OnRender();
+            }
+        }
+    }
+}
+
+void GameObject::OnRender2D()
+{
+    if (!m_isActive)
+    {
+        return;
+    }
+
+    for (auto* component : m_components)
+    {
+        if (component->IsActive())
+        {
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicType2D)
+            {
+                graphicComponent->OnRender();
+            }
         }
     }
 }

@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "Memory/ArenaAllocator.h"
 
-#include <vector>
-
 namespace Micro
 {
 template <typename T>

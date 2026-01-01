@@ -1,15 +1,30 @@
 #pragma once
 
 #include "Component.h"
+
 #include <raylib.h>
+#include <raylib-cpp.hpp>
+
+enum class GraphicComponentType : uint8_t
+{
+    GraphicType2D = 0,
+    GraphicType3D = 1,
+    GraphicTypeUI = 2
+};
 
 namespace Micro
 {
 class GraphicComponent : public Component
 {
 public:
+    explicit GraphicComponent(const GraphicComponentType type) : m_graphicType(type) {}
+
+    GraphicComponentType GetGraphicType() const { return m_graphicType; }
+    virtual void OnRender() = 0;
+
     raylib::Color Tint = WHITE;
 
-    virtual void OnRender() override = 0;
+private:
+    GraphicComponentType m_graphicType;
 };
 }  // namespace Micro
