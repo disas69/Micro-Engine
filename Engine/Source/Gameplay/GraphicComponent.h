@@ -8,7 +8,7 @@ namespace Micro
 class GraphicComponent : public Component
 {
 public:
-    Color Tint = WHITE;
+    raylib::Color Tint = WHITE;
 
     virtual void OnRender() override = 0;
 };

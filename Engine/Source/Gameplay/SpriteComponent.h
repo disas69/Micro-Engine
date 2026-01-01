@@ -9,8 +9,8 @@ namespace Micro
 class SpriteComponent : public GraphicComponent
 {
 public:
-    Texture2D SpriteTexture = {0};
-    Rectangle SourceRect = {0, 0, 0, 0};
+    raylib::Texture2D SpriteTexture = {};
+    raylib::Rectangle SourceRect = raylib::Rectangle{0, 0, 0, 0};
 
     void OnRender() override
     {

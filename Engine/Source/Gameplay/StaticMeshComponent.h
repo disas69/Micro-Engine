@@ -11,8 +11,8 @@ namespace Micro
 class StaticMeshComponent : public GraphicComponent
 {
 public:
-    Mesh ObjectMesh = {0};
-    Material ObjectMaterial = {0};
+    raylib::Mesh ObjectMesh = {};
+    raylib::Material ObjectMaterial = {};
 
     StaticMeshComponent() { ObjectMaterial = LoadMaterialDefault(); }
 

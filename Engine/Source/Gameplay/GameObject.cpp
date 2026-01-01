@@ -22,7 +22,10 @@ void GameObject::OnInit()
 
 void GameObject::OnUpdate(float deltaTime)
 {
-    if (!m_isActive) return;
+    if (!m_isActive)
+    {
+        return;
+    }
 
     for (auto* component : m_components)
     {
@@ -32,7 +35,10 @@ void GameObject::OnUpdate(float deltaTime)
 
 void GameObject::OnRender()
 {
-    if (!m_isActive) return;
+    if (!m_isActive)
+    {
+        return;
+    }
 
     for (auto* component : m_components)
     {

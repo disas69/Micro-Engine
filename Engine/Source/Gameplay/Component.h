@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Memory/ArenaAllocator.h"
-
 namespace Micro
 {
 class GameObject;

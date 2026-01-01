@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include "Memory/ArenaAllocator.h"
+
 #include <vector>
 #include <string>
 
