@@ -38,3 +38,11 @@ void GameBase::Render2DGameObjects()
         gameObject->OnRender2D();
     }
 }
+
+void GameBase::RenderUIGameObjects()
+{
+    for (auto* gameObject : m_gameObjects)
+    {
+        gameObject->OnRenderUI();
+    }
+}

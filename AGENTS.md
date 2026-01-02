@@ -26,6 +26,27 @@ This document provides instructions and guidelines for AI agents working on the 
     - **Local Variables**: `camelCase` (e.g., `screenWidth`).
     - **Constants/Macros**: `UPPER_SNAKE_CASE` (e.g., `DEFAULT_EDITOR_SCREEN_WIDTH`).
 - **Files**: Use `.h` for headers and `.cpp` for implementations. Use `#pragma once` in headers.
+- **Formatting**: Use .clang-format with the following rules.
+    - Language: Cpp
+    - BasedOnStyle: Microsoft
+    - IndentWidth: '4'
+    - UseTab: Never
+    - TabWidth: '4'
+    - BreakBeforeBraces: Allman
+    - ColumnLimit: '165'
+    - AccessModifierOffset: '-4'
+    - SortIncludes: false
+    - AllowShortBlocksOnASingleLine: false
+    - AlignAfterOpenBracket: DontAlign
+    - AllowShortFunctionsOnASingleLine: Inline
+    - PointerAlignment: Left
+    - AllowShortIfStatementsOnASingleLine: true
+    - SpacesBeforeTrailingComments: 2
+    - AllowShortCaseLabelsOnASingleLine: true
+    - IndentCaseLabels: true
+    - AlwaysBreakTemplateDeclarations: Yes
+- **Style**: Follow existing code style exactly when adding new code to a file.
+    - Prefer explicit nullptr checks over implicit (ptr == null instead of !ptr).
 - **Includes**:
     - Prefer `#include "Path/To/Header.h"` for internal engine files.
     - Use `<system_header>` or library headers (e.g., `<raylib.h>`) appropriately.

@@ -16,6 +16,7 @@ public:
     virtual void OnUpdate(float deltaTime);
     virtual void OnRender3D();
     virtual void OnRender2D();
+    virtual void OnRenderUI();
     virtual void OnDestroy();
 
     template <typename T, typename... Args>

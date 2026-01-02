@@ -27,6 +27,7 @@ public:
     void UpdateGameObjects(float deltaTime);
     void Render3DGameObjects();
     void Render2DGameObjects();
+    void RenderUIGameObjects();
 
     template <typename T, typename... Args>
     T* CreateGameObject(Args&&... args)

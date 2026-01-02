@@ -21,6 +21,8 @@ set(ENGINE_SOURCES
         Source/Gameplay/GraphicComponent.h
         Source/Gameplay/SpriteComponent.h
         Source/Gameplay/MeshComponent.h
+        Source/Gameplay/TextComponent.cpp
+        Source/Gameplay/TextComponent.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
         Source/pch.cpp

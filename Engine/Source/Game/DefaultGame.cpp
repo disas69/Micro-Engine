@@ -4,6 +4,7 @@
 #include "Gameplay/SpriteComponent.h"
 #include "Gameplay/TransformComponent.h"
 #include "Gameplay/MeshComponent.h"
+#include "Gameplay/TextComponent.h"
 
 using namespace Micro;
 
@@ -34,10 +35,18 @@ void DefaultGame::OnInit()
     auto transform3d = m_3dGameObject->AddComponent<TransformComponent>();
     transform3d->Position = raylib::Vector3{0.0f, 1.0f, 0.0f};
     transform3d->Scale = raylib::Vector3{1.0f, 1.0f, 1.0f};
+    auto mesh = m_3dGameObject->AddComponent<MeshComponent>();
+    mesh->ObjectMesh = GenMeshCube(1.0f, 1.0f, 1.0f);
+    mesh->ObjectMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;
 
-    auto staticMesh = m_3dGameObject->AddComponent<MeshComponent>();
-    staticMesh->ObjectMesh = GenMeshCube(1.0f, 1.0f, 1.0f);
-    staticMesh->ObjectMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;
+    // Text GameObject example
+    m_textGameObject = CreateGameObject<GameObject>(std::string("TextGameObject"));
+    auto textTransform = m_textGameObject->AddComponent<Transform2DComponent>();
+    textTransform->Position = raylib::Vector2{m_screenWidth / 2.0f - 100.0f, m_screenHeight / 2.0f - 10};
+    auto text = m_textGameObject->AddComponent<TextComponent>();
+    text->Text = "Default game is running!";
+    text->FontSize = 20;
+    text->Color = LIGHTGRAY;
 }
 
 void DefaultGame::OnUpdate(ArenaAllocator& frameArena, float deltaTime)
@@ -53,6 +62,10 @@ void DefaultGame::OnUpdate(ArenaAllocator& frameArena, float deltaTime)
     // Update 3D object
     auto transform3d = m_3dGameObject->GetComponent<TransformComponent>();
     transform3d->Rotation.y = fmodf(transform3d->Rotation.y + 50.0f * deltaTime, 360.0f);
+
+    // Update text object
+    auto textTransform = m_textGameObject->GetComponent<Transform2DComponent>();
+    textTransform->Position.x = m_screenWidth / 2.0f - 100.0f + 20.0f * sinf(GetTime() * 2.0f);
 }
 
 void DefaultGame::OnRender()
@@ -62,8 +75,5 @@ void DefaultGame::OnRender()
     EndMode3D();
 
     Render2DGameObjects();
-
-    // Draw 2D text
-    int textWidth = MeasureText("Default game is running!", 20);
-    DrawText("Default game is running!", m_screenWidth / 2.0f - textWidth / 2.0f, m_screenHeight / 2.0f - 10, 20, LIGHTGRAY);
+    RenderUIGameObjects();
 }

@@ -71,6 +71,26 @@ void GameObject::OnRender2D()
     }
 }
 
+void GameObject::OnRenderUI()
+{
+    if (!m_isActive)
+    {
+        return;
+    }
+
+    for (auto* component : m_components)
+    {
+        if (component->IsActive())
+        {
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicTypeUI)
+            {
+                graphicComponent->OnRender();
+            }
+        }
+    }
+}
+
 void GameObject::OnDestroy()
 {
     for (auto* component : m_components)
