@@ -7,6 +7,7 @@
 #include "Gameplay/TextComponent.h"
 #include "Gameplay/ImageComponent.h"
 #include "Gameplay/Transform2dComponent.h"
+#include "Gameplay/ButtonComponent.h"
 
 namespace Micro
 {
@@ -69,6 +70,20 @@ void DefaultGame::OnInit()
     image->SourceRect = raylib::Rectangle{0, 0, 128, 128};
 
     UnloadImage(uiImg);
+
+    // Button GameObject example
+    m_buttonGameObject = CreateGameObject<GameObject>(std::string("ButtonGameObject"));
+    auto buttonTransform = m_buttonGameObject->AddComponent<Transform2dComponent>();
+    buttonTransform->Position = raylib::Vector2{m_screenWidth / 2.0f - 50.0f, m_screenHeight - 50.0f};
+    auto button = m_buttonGameObject->AddComponent<ButtonComponent>();
+    button->Size = raylib::Vector2{150.0f, 50.0f};
+    button->SetText("Change Cube Color");
+    button->SetOnClick(
+        [this]()
+        {
+            auto mesh = m_3dGameObject->GetComponent<MeshComponent>();
+            mesh->ObjectMaterial.maps[MATERIAL_MAP_DIFFUSE].color = raylib::Color::FromHSV(static_cast<float>(GetRandomValue(0, 360)), 0.75f, 0.9f);
+        });
 }
 
 void DefaultGame::OnUpdate(ArenaAllocator& frameArena, float deltaTime)

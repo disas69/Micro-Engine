@@ -18,8 +18,9 @@ public:
 
     raylib::Color Tint = WHITE;
 
-    GraphicComponentType GetGraphicType() const { return m_graphicType; }
     virtual void OnRender() = 0;
+
+    GraphicComponentType GetGraphicType() const { return m_graphicType; }
 
 private:
     GraphicComponentType m_graphicType;

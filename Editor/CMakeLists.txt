@@ -24,6 +24,7 @@ target_link_libraries(MicroEditor
         MicroLib
         imgui
         rlImGui
+        raygui
         tinyfd
 )
 

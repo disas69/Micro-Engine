@@ -31,8 +31,11 @@ set(ENGINE_SOURCES
         Source/Gameplay/TextComponent.h
         Source/Gameplay/ImageComponent.cpp
         Source/Gameplay/ImageComponent.h
+        Source/Gameplay/ButtonComponent.cpp
+        Source/Gameplay/ButtonComponent.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
+        Source/External/raygui_impl.cpp
         Source/pch.cpp
         Source/pch.h
 )
@@ -46,6 +49,7 @@ target_link_libraries(MicroLib
         PUBLIC
         raylib
         raylib_cpp
+        raygui
         # other engine-level deps…
 )
 

@@ -52,6 +52,26 @@ target_link_libraries(rlImGui
         imgui
 )
 
+# raygui (for in-game UI)
+FetchContent_Declare(
+        raygui
+        GIT_REPOSITORY https://github.com/raysan5/raygui.git
+        GIT_TAG        master
+)
+FetchContent_MakeAvailable(raygui)
+add_library(raygui STATIC
+        ${raygui_SOURCE_DIR}/src/raygui.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Source/External/raygui_impl.cpp
+)
+target_include_directories(raygui
+        PUBLIC
+        ${raygui_SOURCE_DIR}/src
+)
+target_link_libraries(raygui
+        PUBLIC
+        raylib
+)
+
 # raylib-cpp (C++ wrapper for raylib)
 FetchContent_Declare(
         raylib_cpp
