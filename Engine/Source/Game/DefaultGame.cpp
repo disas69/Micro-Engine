@@ -11,7 +11,7 @@
 
 namespace Micro
 {
-DefaultGame::DefaultGame(ArenaAllocator& persistentArena) : GameBase(persistentArena)
+DefaultGame::DefaultGame()
 {
     m_windowTitle = "Default Game";
 }
@@ -30,11 +30,11 @@ void DefaultGame::OnInit()
     // Sprite GameObject example
     Image spriteImg = GenImageChecked(256, 256, 32, 32, RED, GOLD);
 
-    m_2dGameObject = CreateGameObject<GameObject>(std::string("SpriteGameObject"));
-    auto transform3d_sprite = m_2dGameObject->AddComponent<TransformComponent>();
-    transform3d_sprite->Position = MVector3{-2.0f, 1.0f, -1.0f};
-    transform3d_sprite->Scale = MVector3{1.0f, 2.0f, 1.0f};
-    auto sprite = m_2dGameObject->AddComponent<SpriteComponent>();
+    m_spriteGameObject = CreateGameObject<GameObject>(std::string("SpriteGameObject"));
+    auto transformSprite = m_spriteGameObject->AddComponent<TransformComponent>();
+    transformSprite->Position = MVector3{-2.0f, 1.0f, -1.0f};
+    transformSprite->Scale = MVector3{1.0f, 2.0f, 1.0f};
+    auto sprite = m_spriteGameObject->AddComponent<SpriteComponent>();
     sprite->SpriteTexture = LoadTextureFromImage(spriteImg);
     sprite->SourceRect = MRectangle{0, 0, 1, 1};
     sprite->Tint = BLUE;
@@ -86,13 +86,13 @@ void DefaultGame::OnInit()
         });
 }
 
-void DefaultGame::OnUpdate(ArenaAllocator& frameArena, float deltaTime)
+void DefaultGame::OnUpdate(float deltaTime)
 {
     UpdateGameObjects(deltaTime);
 
     // Update sprite object
-    auto transform3d_sprite = m_2dGameObject->GetComponent<TransformComponent>();
-    transform3d_sprite->Rotation.y = fmodf(transform3d_sprite->Rotation.y + 10.0f * deltaTime, 360.0f);
+    auto transformSprite = m_spriteGameObject->GetComponent<TransformComponent>();
+    transformSprite->Rotation.y = fmodf(transformSprite->Rotation.y + 10.0f * deltaTime, 360.0f);
 
     // Update 3D object
     auto transform3d = m_3dGameObject->GetComponent<TransformComponent>();

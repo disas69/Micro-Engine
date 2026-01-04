@@ -7,16 +7,16 @@ namespace Micro
 class DefaultGame : public GameBase
 {
 public:
-    explicit DefaultGame(ArenaAllocator& persistentArena);
+    explicit DefaultGame();
 
     void OnInit() override;
-    void OnUpdate(ArenaAllocator& frameArena, float deltaTime) override;
+    void OnUpdate(float deltaTime) override;
     void OnRender() override;
 
 private:
     MCamera3D m_camera;
 
-    GameObject* m_2dGameObject = nullptr;
+    GameObject* m_spriteGameObject = nullptr;
     GameObject* m_3dGameObject = nullptr;
     GameObject* m_textGameObject = nullptr;
     GameObject* m_imageGameObject = nullptr;

@@ -19,6 +19,7 @@ This document provides instructions and guidelines for AI agents working on the 
 ## Code Style & Conventions
 
 - **Namespace**: All engine code should reside within the `Micro` namespace.
+- **Types**: The engine uses custom typedefs for most types, located in `Engine/Source/Core/Types.h`.
 - **Naming Conventions**:
     - **Classes/Structs**: `PascalCase` (e.g., `ArenaAllocator`).
     - **Methods/Functions**: `PascalCase` (e.g., `OnInit`, `OnUpdate`).
@@ -55,12 +56,11 @@ This document provides instructions and guidelines for AI agents working on the 
 ## Architectural Patterns
 
 ### 1. Memory Management
-MicroEngine emphasizes the use of `ArenaAllocator` for memory management to minimize fragmentation and improve performance.
-- **Persistent Arena**: For data that lives as long as the game/engine.
-- **Frame Arena**: For temporary data that is reset every frame.
-- **Avoid**: Raw `new` and `delete` where possible. Use `arena.Allocate<T>(args...)` instead.
-- **Allocation**: Use `ArenaAllocator` for all dynamic memory needs. Custom arenas per system are possible (example `SceneManager` can have a custom arena per each scene).
-- **Deallocation**: Use `arena.Reset()` to free all allocations in an arena at once.
+MicroEngine uses smart pointers for dynamic memory management. For special cases and when optimization is needed, ArenaAllocator can be used. For all other cases use stack memory if possible.
+Here's the preferred order of memory allocation:
+- Stack memory (pass by value or reference)
+- Smart pointers (most of the time `std::unique_ptr`, rarely `std::shared_ptr`) with access via raw pointers
+- ArenaAllocator for mass allocations with similar lifetimes
 
 ### 2. Engine Loop & Game Base
 Games should inherit from `Micro::GameBase` and implement:

@@ -18,7 +18,6 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/Component.cpp
         Source/Gameplay/GameObject.h
         Source/Gameplay/GameObject.cpp
-        Source/Gameplay/GameObjectPool.h
         Source/Gameplay/Components/Transform2dComponent.cpp
         Source/Gameplay/Components/Transform2dComponent.h
         Source/Gameplay/Components/TransformComponent.cpp

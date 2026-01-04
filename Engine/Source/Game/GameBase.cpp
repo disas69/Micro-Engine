@@ -17,7 +17,7 @@ void GameBase::Resize(int screenWidth, int screenHeight)
 
 void GameBase::UpdateGameObjects(float deltaTime)
 {
-    for (auto* gameObject : m_gameObjects)
+    for (const auto& gameObject : m_gameObjects)
     {
         gameObject->OnUpdate(deltaTime);
     }
@@ -25,7 +25,7 @@ void GameBase::UpdateGameObjects(float deltaTime)
 
 void GameBase::Render3DGameObjects()
 {
-    for (auto* gameObject : m_gameObjects)
+    for (const auto& gameObject : m_gameObjects)
     {
         gameObject->OnRender3D();
     }
@@ -33,7 +33,7 @@ void GameBase::Render3DGameObjects()
 
 void GameBase::Render2DGameObjects()
 {
-    for (auto* gameObject : m_gameObjects)
+    for (const auto& gameObject : m_gameObjects)
     {
         gameObject->OnRender2D();
     }
@@ -41,7 +41,7 @@ void GameBase::Render2DGameObjects()
 
 void GameBase::RenderUIGameObjects()
 {
-    for (auto* gameObject : m_gameObjects)
+    for (const auto& gameObject : m_gameObjects)
     {
         gameObject->OnRenderUI();
     }

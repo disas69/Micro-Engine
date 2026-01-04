@@ -3,13 +3,13 @@
 
 namespace Micro
 {
-GameObject::GameObject(ArenaAllocator& arena, std::string name) : m_arena(arena), m_name(std::move(name)) {}
+GameObject::GameObject(std::string name) : m_name(std::move(name)) {}
 
-GameObject::GameObject(ArenaAllocator& arena) : m_arena(arena), m_name("GameObject") {}
+GameObject::GameObject() : m_name("GameObject") {}
 
 void GameObject::OnInit()
 {
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         component->OnInit();
     }
@@ -22,7 +22,7 @@ void GameObject::OnUpdate(float deltaTime)
         return;
     }
 
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         if (component->IsActive())
         {
@@ -38,11 +38,11 @@ void GameObject::OnRender3D()
         return;
     }
 
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         if (component->IsActive())
         {
-            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component.get());
             if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicType3D)
             {
                 graphicComponent->OnRender();
@@ -58,11 +58,11 @@ void GameObject::OnRender2D()
         return;
     }
 
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         if (component->IsActive())
         {
-            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component.get());
             if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicType2D)
             {
                 graphicComponent->OnRender();
@@ -78,11 +78,11 @@ void GameObject::OnRenderUI()
         return;
     }
 
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         if (component->IsActive())
         {
-            auto graphicComponent = dynamic_cast<GraphicComponent*>(component);
+            auto graphicComponent = dynamic_cast<GraphicComponent*>(component.get());
             if (graphicComponent != nullptr && graphicComponent->GetGraphicType() == GraphicComponentType::GraphicTypeUI)
             {
                 graphicComponent->OnRender();
@@ -93,7 +93,7 @@ void GameObject::OnRenderUI()
 
 void GameObject::OnDestroy()
 {
-    for (auto* component : m_components)
+    for (auto& component : m_components)
     {
         component->OnDestroy();
     }

@@ -25,4 +25,4 @@ typedef raylib::Material MMaterial;
 typedef raylib::Mesh MMesh;
 typedef raylib::Model MModel;
 typedef raylib::Shader MShader;
-}
+}  // namespace Micro

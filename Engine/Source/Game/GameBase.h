@@ -1,15 +1,13 @@
 #pragma once
 
-#include "Memory/ArenaAllocator.h"
+#include "Gameplay/GameObject.h"
 
 namespace Micro
 {
-class GameObject;
-
 class GameBase
 {
 public:
-    explicit GameBase(ArenaAllocator& persistentArena) : m_persistentArena(persistentArena) {}
+    explicit GameBase() = default;
     virtual ~GameBase() = default;
 
     GameBase(const GameBase&) = delete;
@@ -21,7 +19,7 @@ public:
     void Resize(int screenWidth, int screenHeight);
 
     virtual void OnInit() = 0;
-    virtual void OnUpdate(ArenaAllocator& frameArena, float deltaTime) = 0;
+    virtual void OnUpdate(float deltaTime) = 0;
     virtual void OnRender() = 0;
 
     void UpdateGameObjects(float deltaTime);
@@ -32,19 +30,21 @@ public:
     template <typename T, typename... Args>
     T* CreateGameObject(Args&&... args)
     {
-        T* gameObject = m_persistentArena.Allocate<T>(m_persistentArena, std::forward<Args>(args)...);
-        if (gameObject != nullptr)
-        {
-            m_gameObjects.push_back(gameObject);
-        }
-        return gameObject;
+        static_assert(std::is_base_of_v<GameObject, T>, "T must derive from GameObject");
+
+        auto gameObject = std::make_unique<T>(std::forward<Args>(args)...);
+        T* rawPtr = gameObject.get();
+
+        m_gameObjects.push_back(std::move(gameObject));
+        rawPtr->OnInit();
+
+        return rawPtr;
     }
 
     std::string GetWindowTitle() const { return m_windowTitle; }
     bool ShouldClose() const { return m_shouldClose; }
 
 protected:
-    ArenaAllocator& m_persistentArena;
     std::string m_windowTitle;
 
     float m_screenWidth = 0;
@@ -52,6 +52,6 @@ protected:
 
     bool m_shouldClose = false;
 
-    std::vector<GameObject*> m_gameObjects;
+    std::vector<std::unique_ptr<GameObject>> m_gameObjects;
 };
 }  // namespace Micro

@@ -5,17 +5,17 @@
 
 namespace Micro
 {
-    class ImageComponent : public GraphicComponent
-    {
-    public:
-        ImageComponent();
+class ImageComponent : public GraphicComponent
+{
+public:
+    ImageComponent();
 
-        void OnRender() override;
+    void OnRender() override;
 
-        MTexture2D Texture;
-        MRectangle SourceRect = {0, 0, 100, 100};
+    MTexture2D Texture;
+    MRectangle SourceRect = {0, 0, 100, 100};
 
-    private:
-        Transform2dComponent* m_transform = nullptr;
-    };
-}
+private:
+    Transform2dComponent* m_transform = nullptr;
+};
+}  // namespace Micro

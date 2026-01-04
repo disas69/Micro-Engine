@@ -16,7 +16,7 @@ Engine::~Engine()
     MICRO_LOG_INFO("Shutting down Micro Engine.");
 }
 
-int Engine::Run(GameBase* game, ArenaAllocator& frameArena)
+int Engine::Run(GameBase* game)
 {
     int screenWidth = 800;
     int screenHeight = 450;
@@ -29,9 +29,7 @@ int Engine::Run(GameBase* game, ArenaAllocator& frameArena)
 
     while (!MWindow::ShouldClose() && !game->ShouldClose())
     {
-        frameArena.Reset();
-
-        game->OnUpdate(frameArena, GetFrameTime());
+        game->OnUpdate(GetFrameTime());
 
         Render(game);
 
@@ -41,7 +39,6 @@ int Engine::Run(GameBase* game, ArenaAllocator& frameArena)
         }
     }
 
-    frameArena.Reset();
     return 0;
 }
 

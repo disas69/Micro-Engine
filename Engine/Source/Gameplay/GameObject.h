@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Components/Component.h"
-#include "Memory/ArenaAllocator.h"
 
 namespace Micro
 {
 class GameObject
 {
 public:
-    GameObject(ArenaAllocator& arena, std::string name);
-    GameObject(ArenaAllocator& arena);
+    explicit GameObject(std::string name);
+    GameObject();
     virtual ~GameObject() = default;
 
     virtual void OnInit();
@@ -22,23 +21,26 @@ public:
     template <typename T, typename... Args>
     T* AddComponent(Args&&... args)
     {
-        T* component = m_arena.Allocate<T>(std::forward<Args>(args)...);
-        if (component != nullptr)
-        {
-            Component* baseComp = static_cast<Component*>(component);
-            baseComp->m_owner = this;
-            m_components.push_back(baseComp);
-            baseComp->OnInit();
-        }
-        return component;
+        static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
+        auto component = std::make_unique<T>(std::forward<Args>(args)...);
+        T* rawPtr = component.get();
+
+        Component* baseComp = static_cast<Component*>(rawPtr);
+        baseComp->m_owner = this;
+
+        m_components.push_back(std::move(component));
+        baseComp->OnInit();
+
+        return rawPtr;
     }
 
     template <typename T>
     T* GetComponent() const
     {
-        for (auto* component : m_components)
+        for (const auto& component : m_components)
         {
-            T* derived = dynamic_cast<T*>(component);
+            T* derived = dynamic_cast<T*>(component.get());
             if (derived != nullptr)
             {
                 return derived;
@@ -60,9 +62,8 @@ public:
     virtual void OnDisable() {}
 
 protected:
-    ArenaAllocator& m_arena;
     std::string m_name;
-    std::vector<Component*> m_components;
+    std::vector<std::unique_ptr<Component>> m_components;
     bool m_isActive = true;
 };
 }  // namespace Micro
