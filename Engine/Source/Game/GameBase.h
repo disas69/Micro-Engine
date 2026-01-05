@@ -18,6 +18,7 @@ namespace Micro
 
         void Init(MVector2 screenSize);
         void Update(float deltaTime);
+        void Shutdown();
 
         void SetScreenSize(MVector2 screenSize) { m_screenSize = screenSize; }
         MVector2 GetScreenSize() { return m_screenSize; }
@@ -38,6 +39,7 @@ namespace Micro
 
         virtual void OnInit() = 0;
         virtual void OnUpdate(float deltaTime) = 0;
+        virtual void OnShutdown() = 0;
 
     private:
         Scene* m_scene = nullptr;

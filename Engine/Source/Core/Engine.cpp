@@ -45,6 +45,8 @@ namespace Micro
             }
         }
 
+        game->Shutdown();
+
         return 0;
     }
 

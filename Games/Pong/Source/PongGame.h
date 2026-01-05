@@ -11,6 +11,6 @@ namespace Pong
 
         void OnInit() override;
         void OnUpdate(float deltaTime) override;
-        void OnRender() override;
+        void OnShutdown() override;
     };
 }  // namespace Pong

@@ -17,4 +17,9 @@ namespace Micro
 
         OnUpdate(deltaTime);
     }
+
+    void GameBase::Shutdown()
+    {
+        OnShutdown();
+    }
 }  // namespace Micro

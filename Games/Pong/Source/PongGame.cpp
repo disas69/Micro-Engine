@@ -17,8 +17,8 @@ namespace Pong
         // TODO: Implement Pong game update logic
     }
 
-    void PongGame::OnRender()
+    void PongGame::OnShutdown()
     {
-        // RenderSystem will handle rendering
+        // TODO: Implement Pong game shutdown logic
     }
 }  // namespace Pong

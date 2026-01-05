@@ -11,6 +11,7 @@ namespace Micro
 
         void OnInit() override;
         void OnUpdate(float deltaTime) override;
+        void OnShutdown() override;
 
     private:
         GameObject* m_cubeObject = nullptr;

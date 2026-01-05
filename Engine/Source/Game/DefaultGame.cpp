@@ -42,7 +42,7 @@ namespace Micro
 
         GameObject* textObject = GetScene()->CreateGameObject("Text");
         auto transformText = textObject->AddComponent<TransformComponent>();
-        transformText->SetLocalPosition(MVector3{60.0f, 60.0f, 0.0f});
+        transformText->SetLocalPosition(MVector3{55.0f, 55.0f, 0.0f});
         auto text = textObject->AddComponent<TextComponent>();
         text->SetText("Hello World");
     }
@@ -58,4 +58,6 @@ namespace Micro
             transform->SetLocalRotation(newRotation);
         }
     }
+
+    void DefaultGame::OnShutdown() {}
 }  // namespace Micro
