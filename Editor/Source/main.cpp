@@ -1,7 +1,8 @@
-#include "EditorApp.h"
+#include "Editor.h"
 
 int main()
 {
-    Micro::EditorApp editor;
-    return editor.Run();
+    Micro::Engine engine;
+    Micro::Editor editor;
+    return editor.Run(&engine);
 }

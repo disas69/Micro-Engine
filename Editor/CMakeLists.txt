@@ -2,8 +2,8 @@ project(MicroEngineEditor LANGUAGES CXX)
 
 set(EDITOR_SOURCES
         Source/main.cpp
-        Source/EditorApp.cpp
-        Source/EditorApp.h
+        Source/Editor.cpp
+        Source/Editor.h
         Source/Core/View/SceneView.cpp
         Source/Core/View/SceneView.h
         Source/Core/View/SceneLogView.cpp

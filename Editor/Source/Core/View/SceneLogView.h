@@ -5,24 +5,24 @@
 
 namespace Micro
 {
-class SceneLogView
-{
-public:
-    SceneLogView();
-    ~SceneLogView() = default;
+    class SceneLogView
+    {
+    public:
+        SceneLogView();
+        ~SceneLogView() = default;
 
-    SceneLogView(const SceneLogView& other) = delete;
-    SceneLogView& operator=(const SceneLogView& other) = delete;
-    SceneLogView(SceneLogView&& other) = delete;
-    SceneLogView& operator=(SceneLogView&& other) = delete;
+        SceneLogView(const SceneLogView& other) = delete;
+        SceneLogView& operator=(const SceneLogView& other) = delete;
+        SceneLogView(SceneLogView&& other) = delete;
+        SceneLogView& operator=(SceneLogView&& other) = delete;
 
-    void AddLogEntry(const LogEntry& entry);
-    void Update();
-    void Render(ImVec2 size);
+        void AddLogEntry(const LogEntry& entry);
+        void Update();
+        void Render(ImVec2 size);
 
-private:
-    std::vector<LogEntry> m_logEntries;
-    float m_showDuration = 3.0f;
-    size_t m_maxVisibleSize = 100;
-};
+    private:
+        std::vector<LogEntry> m_logEntries;
+        float m_showDuration = 3.0f;
+        size_t m_maxVisibleSize = 100;
+    };
 }  // namespace Micro
