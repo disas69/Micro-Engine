@@ -1,17 +1,25 @@
 #pragma once
 
-#include "GraphicComponent.h"
+#include "Component.h"
 
 namespace Micro
 {
-class MeshComponent : public GraphicComponent
-{
-public:
-    MMesh ObjectMesh;
-    MMaterial ObjectMaterial;
+    class MeshComponent : public Component
+    {
+    public:
+        MeshComponent()
+        {
+            m_material = LoadMaterialDefault();
+        }
 
-    MeshComponent();
+        MMesh* GetMesh() { return &m_mesh; }
+        void SetMesh(const Mesh& mesh) { m_mesh = mesh; }
 
-    void OnRender() override;
-};
+        MMaterial* GetMaterial() { return &m_material; }
+        void SetMaterial(const Material& material) { m_material = material; }
+
+    private:
+        MMesh m_mesh;
+        MMaterial m_material;
+    };
 }  // namespace Micro

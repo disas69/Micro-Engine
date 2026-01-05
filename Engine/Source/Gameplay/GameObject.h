@@ -1,69 +1,59 @@
 #pragma once
 
 #include "Components/Component.h"
+#include "Core/GUID.h"
 
 namespace Micro
 {
-class GameObject
-{
-public:
-    explicit GameObject(std::string name);
-    GameObject();
-    virtual ~GameObject() = default;
-
-    virtual void OnInit();
-    virtual void OnUpdate(float deltaTime);
-    virtual void OnRender3D();
-    virtual void OnRender2D();
-    virtual void OnRenderUI();
-    virtual void OnDestroy();
-
-    template <typename T, typename... Args>
-    T* AddComponent(Args&&... args)
+    class GameObject
     {
-        static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+    public:
+        GameObject(std::string name, GUID guid);
+        ~GameObject() = default;
 
-        auto component = std::make_unique<T>(std::forward<Args>(args)...);
-        T* rawPtr = component.get();
-
-        Component* baseComp = static_cast<Component*>(rawPtr);
-        baseComp->m_owner = this;
-
-        m_components.push_back(std::move(component));
-        baseComp->OnInit();
-
-        return rawPtr;
-    }
-
-    template <typename T>
-    T* GetComponent() const
-    {
-        for (const auto& component : m_components)
+        template <typename T, typename... Args>
+        T* AddComponent(Args&&... args)
         {
-            T* derived = dynamic_cast<T*>(component.get());
-            if (derived != nullptr)
-            {
-                return derived;
-            }
+            static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
+            auto newComponent = std::make_unique<T>(std::forward<Args>(args)...);
+            T* rawPtr = newComponent.get();
+            m_components.push_back(std::move(newComponent));
+
+            auto component = static_cast<Component*>(rawPtr);
+            component->SetOwner(this);
+            component->OnCreate();
+
+            return rawPtr;
         }
-        return nullptr;
-    }
 
-    const std::string& GetName() const { return m_name; }
-    void SetName(const std::string& name) { m_name = name; }
+        template <typename T>
+        T* GetComponent() const
+        {
+            for (const auto& component : m_components)
+            {
+                if (T* castedComponent = dynamic_cast<T*>(component.get()))
+                {
+                    return castedComponent;
+                }
+            }
+            return nullptr;
+        }
 
-    void Enable() { SetActive(true); }
-    void Disable() { SetActive(false); }
+        template <typename T>
+        bool HasComponent() const
+        {
+            return GetComponent<T>() != nullptr;
+        }
 
-    bool IsActive() const { return m_isActive; }
-    void SetActive(bool active);
+        const std::string& GetName() const { return m_name; }
+        GUID GetGUID() const { return m_guid; }
 
-    virtual void OnEnable() {}
-    virtual void OnDisable() {}
+        const std::vector<std::unique_ptr<Component>>& GetComponents() const { return m_components; }
 
-protected:
-    std::string m_name;
-    std::vector<std::unique_ptr<Component>> m_components;
-    bool m_isActive = true;
-};
+    private:
+        std::string m_name;
+        GUID m_guid;
+        std::vector<std::unique_ptr<Component>> m_components;
+    };
 }  // namespace Micro

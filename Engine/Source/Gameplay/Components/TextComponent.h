@@ -1,23 +1,27 @@
 #pragma once
 
-#include "GraphicComponent.h"
+#include "Component.h"
+#include "Core/Types.h"
 
 namespace Micro
 {
-class Transform2dComponent;
+    class TextComponent : public Component
+    {
+    public:
+        TextComponent() = default;
 
-class TextComponent : public GraphicComponent
-{
-public:
-    TextComponent();
+        std::string& GetText() { return m_text; }
+        void SetText(const std::string& text) { m_text = text; }
 
-    void OnRender() override;
+        float GetFontSize() const { return m_fontSize; }
+        void SetFontSize(float fontSize) { m_fontSize = fontSize; }
 
-    std::string Text;
-    float FontSize = 20.0f;
-    MColor Color;
+        MColor& GetColor() { return m_color; }
+        void SetColor(const MColor& color) { m_color = color; }
 
-private:
-    Transform2dComponent* m_transform = nullptr;
-};
+    private:
+        std::string m_text;
+        float m_fontSize = 20.0f;
+        MColor m_color = MColor::White();
+    };
 }  // namespace Micro

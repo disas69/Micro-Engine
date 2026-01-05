@@ -1,16 +1,77 @@
 #include "TransformComponent.h"
+#include <algorithm>
 
 namespace Micro
 {
-MMatrix TransformComponent::GetTransformMatrix() const
-{
-    MMatrix matScale = MatrixScale(Scale.x, Scale.y, Scale.z);
-    MMatrix matRotationX = MatrixRotateX(Rotation.x * DEG2RAD);
-    MMatrix matRotationY = MatrixRotateY(Rotation.y * DEG2RAD);
-    MMatrix matRotationZ = MatrixRotateZ(Rotation.z * DEG2RAD);
-    MMatrix matRotation = MatrixMultiply(MatrixMultiply(matRotationX, matRotationY), matRotationZ);
-    MMatrix matTranslation = MatrixTranslate(Position.x, Position.y, Position.z);
+    TransformComponent::TransformComponent()
+        : m_localPosition(0.0f, 0.0f, 0.0f), m_localRotation(QuaternionIdentity()), m_localScale(1.0f, 1.0f, 1.0f), m_worldMatrix(MatrixIdentity()), m_isDirty(true),
+          m_parent(nullptr)
+    {
+    }
 
-    return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
-}
+    void TransformComponent::SetParent(TransformComponent* parent)
+    {
+        if (m_parent)
+        {
+            m_parent->RemoveChild(this);
+        }
+
+        m_parent = parent;
+
+        if (m_parent)
+        {
+            m_parent->AddChild(this);
+        }
+
+        MarkDirty();
+    }
+
+    MMatrix TransformComponent::GetLocalMatrix() const
+    {
+        MMatrix matScale = MatrixScale(m_localScale.x, m_localScale.y, m_localScale.z);
+        MMatrix matRotation = QuaternionToMatrix(m_localRotation);
+        MMatrix matTranslation = MatrixTranslate(m_localPosition.x, m_localPosition.y, m_localPosition.z);
+
+        return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+    }
+
+    void TransformComponent::SetLocalPosition(const MVector3& position)
+    {
+        m_localPosition = position;
+        MarkDirty();
+    }
+
+    void TransformComponent::SetLocalRotation(const MQuaternion& rotation)
+    {
+        m_localRotation = rotation;
+        MarkDirty();
+    }
+
+    void TransformComponent::SetLocalScale(const MVector3& scale)
+    {
+        m_localScale = scale;
+        MarkDirty();
+    }
+
+    void TransformComponent::MarkDirty()
+    {
+        if (!m_isDirty)
+        {
+            m_isDirty = true;
+            for (auto& child : m_children)
+            {
+                child->MarkDirty();
+            }
+        }
+    }
+
+    void TransformComponent::AddChild(TransformComponent* child)
+    {
+        m_children.push_back(child);
+    }
+
+    void TransformComponent::RemoveChild(TransformComponent* child)
+    {
+        m_children.erase(std::remove(m_children.begin(), m_children.end(), child), m_children.end());
+    }
 }  // namespace Micro

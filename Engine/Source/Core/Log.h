@@ -2,90 +2,90 @@
 
 namespace Micro
 {
-#if defined(_DEBUG) || !defined(NDEBUG)
+    #if defined(_DEBUG) || !defined(NDEBUG)
 
-#define MICRO_LOG_INFO(msg) Micro::Log::Info(msg)
-#define MICRO_LOG_WARNING(msg) Micro::Log::Warning(msg)
-#define MICRO_LOG_ERROR(msg) Micro::Log::Error(msg)
-#define MICRO_LOG_FATAL(msg) Micro::Log::Fatal(msg)
+    #define MICRO_LOG_INFO(msg) Micro::Log::Info(msg)
+    #define MICRO_LOG_WARNING(msg) Micro::Log::Warning(msg)
+    #define MICRO_LOG_ERROR(msg) Micro::Log::Error(msg)
+    #define MICRO_LOG_FATAL(msg) Micro::Log::Fatal(msg)
 
-#else
+    #else
 
-#define MICRO_LOG_INFO(msg) ((void)0)
-#define MICRO_LOG_WARN(msg) ((void)0)
-#define MICRO_LOG_ERROR(msg) ((void)0)
-#define MICRO_LOG_FATAL(msg) ((void)0)
+    #define MICRO_LOG_INFO(msg) ((void)0)
+    #define MICRO_LOG_WARN(msg) ((void)0)
+    #define MICRO_LOG_ERROR(msg) ((void)0)
+    #define MICRO_LOG_FATAL(msg) ((void)0)
 
-#endif
+    #endif
 
-enum class LogLevelFlags : uint32_t
-{
-    None = 0,
-    Info = 1 << 0,
-    Warning = 1 << 1,
-    Error = 1 << 2,
-    Fatal = 1 << 3,
-    All = Info | Warning | Error | Fatal
-};
-
-inline LogLevelFlags operator|(LogLevelFlags a, LogLevelFlags b)
-{
-    return static_cast<LogLevelFlags>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
-}
-
-inline LogLevelFlags operator&(LogLevelFlags a, LogLevelFlags b)
-{
-    return static_cast<LogLevelFlags>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
-}
-
-inline LogLevelFlags operator~(LogLevelFlags a)
-{
-    return static_cast<LogLevelFlags>(~static_cast<uint32_t>(a));
-}
-
-struct LogEntry
-{
-    uint32_t Level;
-    std::string Text;
-    time_t Timestamp;
-};
-
-class Log
-{
-public:
-    static Log& Get()
+    enum class LogLevelFlags : uint32_t
     {
-        static Log Instance;
-        return Instance;
+        None = 0,
+        Info = 1 << 0,
+        Warning = 1 << 1,
+        Error = 1 << 2,
+        Fatal = 1 << 3,
+        All = Info | Warning | Error | Fatal
+    };
+
+    inline LogLevelFlags operator|(LogLevelFlags a, LogLevelFlags b)
+    {
+        return static_cast<LogLevelFlags>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
     }
 
-    Log(const Log&) = delete;
-    Log(Log&&) = delete;
-    Log& operator=(const Log&) = delete;
-    Log& operator=(Log&&) = delete;
+    inline LogLevelFlags operator&(LogLevelFlags a, LogLevelFlags b)
+    {
+        return static_cast<LogLevelFlags>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+    }
 
-    std::vector<LogEntry> GetEntries() const { return m_entries; }
-    bool ShouldScrollToBottom() const { return m_scrollToBottom; }
+    inline LogLevelFlags operator~(LogLevelFlags a)
+    {
+        return static_cast<LogLevelFlags>(~static_cast<uint32_t>(a));
+    }
 
-    static void Initialize();
-    static void Info(const std::string& message);
-    static void Warning(const std::string& message);
-    static void Error(const std::string& message);
-    static void Fatal(const std::string& message);
+    struct LogEntry
+    {
+        uint32_t Level;
+        std::string Text;
+        time_t Timestamp;
+    };
 
-    void AddLog(int level, const std::string& text);
-    void Clear();
-    void ResetAutoScroll();
+    class Log
+    {
+    public:
+        static Log& Get()
+        {
+            static Log Instance;
+            return Instance;
+        }
 
-    void SetLogCallback(const std::function<void(const LogEntry&)>& callback) { m_logCallback = callback; }
-    LogLevelFlags* LevelFlagsMask() { return &m_levelMask; }
+        Log(const Log&) = delete;
+        Log(Log&&) = delete;
+        Log& operator=(const Log&) = delete;
+        Log& operator=(Log&&) = delete;
 
-private:
-    std::vector<LogEntry> m_entries = {};
-    std::function<void(const LogEntry&)> m_logCallback = nullptr;
-    LogLevelFlags m_levelMask = LogLevelFlags::All;
-    bool m_scrollToBottom = false;
+        std::vector<LogEntry> GetEntries() const { return m_entries; }
+        bool ShouldScrollToBottom() const { return m_scrollToBottom; }
 
-    Log() = default;
-};
+        static void Initialize();
+        static void Info(const std::string& message);
+        static void Warning(const std::string& message);
+        static void Error(const std::string& message);
+        static void Fatal(const std::string& message);
+
+        void AddLog(int level, const std::string& text);
+        void Clear();
+        void ResetAutoScroll();
+
+        void SetLogCallback(const std::function<void(const LogEntry&)>& callback) { m_logCallback = callback; }
+        LogLevelFlags* LevelFlagsMask() { return &m_levelMask; }
+
+    private:
+        std::vector<LogEntry> m_entries = {};
+        std::function<void(const LogEntry&)> m_logCallback = nullptr;
+        LogLevelFlags m_levelMask = LogLevelFlags::All;
+        bool m_scrollToBottom = false;
+
+        Log() = default;
+    };
 }  // namespace Micro

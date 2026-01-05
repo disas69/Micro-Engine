@@ -1,49 +1,20 @@
 #include "GameBase.h"
-#include "Gameplay/GameObject.h"
 
 namespace Micro
 {
-void GameBase::Init()
-{
-    Resize(GetScreenWidth(), GetScreenHeight());
-    OnInit();
-}
-
-void GameBase::Resize(int screenWidth, int screenHeight)
-{
-    m_screenWidth = screenWidth;
-    m_screenHeight = screenHeight;
-}
-
-void GameBase::UpdateGameObjects(float deltaTime)
-{
-    for (const auto& gameObject : m_gameObjects)
+    void GameBase::Init(MVector2 screenSize)
     {
-        gameObject->OnUpdate(deltaTime);
+        SetScreenSize(screenSize);
+        OnInit();
     }
-}
 
-void GameBase::Render3DGameObjects()
-{
-    for (const auto& gameObject : m_gameObjects)
+    void GameBase::Update(float deltaTime)
     {
-        gameObject->OnRender3D();
-    }
-}
+        if (m_scene != nullptr)
+        {
+            m_scene->Update(deltaTime);
+        }
 
-void GameBase::Render2DGameObjects()
-{
-    for (const auto& gameObject : m_gameObjects)
-    {
-        gameObject->OnRender2D();
+        OnUpdate(deltaTime);
     }
-}
-
-void GameBase::RenderUIGameObjects()
-{
-    for (const auto& gameObject : m_gameObjects)
-    {
-        gameObject->OnRenderUI();
-    }
-}
 }  // namespace Micro

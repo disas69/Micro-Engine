@@ -1,4 +1,9 @@
+#include "Core/Engine.h"
+#include "PongGame.h"
+
 int main()
 {
-    return 0;
+    Micro::Engine engine;
+    Pong::PongGame game;
+    return engine.Run(&game);
 }

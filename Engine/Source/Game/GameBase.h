@@ -1,57 +1,46 @@
 #pragma once
 
 #include "Gameplay/GameObject.h"
+#include "Gameplay/Scene.h"
 
 namespace Micro
 {
-class GameBase
-{
-public:
-    explicit GameBase() = default;
-    virtual ~GameBase() = default;
-
-    GameBase(const GameBase&) = delete;
-    GameBase& operator=(const GameBase&) = delete;
-    GameBase(GameBase&&) = delete;
-    GameBase& operator=(GameBase&&) = delete;
-
-    void Init();
-    void Resize(int screenWidth, int screenHeight);
-
-    virtual void OnInit() = 0;
-    virtual void OnUpdate(float deltaTime) = 0;
-    virtual void OnRender() = 0;
-
-    void UpdateGameObjects(float deltaTime);
-    void Render3DGameObjects();
-    void Render2DGameObjects();
-    void RenderUIGameObjects();
-
-    template <typename T, typename... Args>
-    T* CreateGameObject(Args&&... args)
+    class GameBase
     {
-        static_assert(std::is_base_of_v<GameObject, T>, "T must derive from GameObject");
+    public:
+        explicit GameBase() = default;
+        virtual ~GameBase() = default;
 
-        auto gameObject = std::make_unique<T>(std::forward<Args>(args)...);
-        T* rawPtr = gameObject.get();
+        GameBase(const GameBase&) = delete;
+        GameBase& operator=(const GameBase&) = delete;
+        GameBase(GameBase&&) = delete;
+        GameBase& operator=(GameBase&&) = delete;
 
-        m_gameObjects.push_back(std::move(gameObject));
-        rawPtr->OnInit();
+        void Init(MVector2 screenSize);
+        void Update(float deltaTime);
 
-        return rawPtr;
-    }
+        void SetScreenSize(MVector2 screenSize) { m_screenSize = screenSize; }
+        MVector2 GetScreenSize() { return m_screenSize; }
 
-    std::string GetWindowTitle() const { return m_windowTitle; }
-    bool ShouldClose() const { return m_shouldClose; }
+        void SetScene(Scene* scene) { m_scene = scene; }
+        Scene* GetScene() const { return m_scene; }
 
-protected:
-    std::string m_windowTitle;
+        std::string GetWindowTitle() const { return m_windowTitle; }
+        bool ShouldClose() const { return m_shouldClose; }
 
-    float m_screenWidth = 0;
-    float m_screenHeight = 0;
+        MCamera3D* GetMainCamera() const { return m_mainCamera; }
+        void SetMainCamera(MCamera3D* camera) { m_mainCamera = camera; }
 
-    bool m_shouldClose = false;
+    protected:
+        std::string m_windowTitle;
+        MVector2 m_screenSize;
+        bool m_shouldClose = false;
 
-    std::vector<std::unique_ptr<GameObject>> m_gameObjects;
-};
+        virtual void OnInit() = 0;
+        virtual void OnUpdate(float deltaTime) = 0;
+
+    private:
+        Scene* m_scene = nullptr;
+        MCamera3D* m_mainCamera = nullptr;
+    };
 }  // namespace Micro

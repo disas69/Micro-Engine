@@ -5,36 +5,32 @@ configure_file(EngineConfig.h.template ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine
 set(ENGINE_SOURCES
         Source/EngineConfig.h
         Source/Core/Types.h
+        Source/Core/GUID.cpp
+        Source/Core/GUID.h
         Source/Core/Engine.cpp
         Source/Core/Engine.h
         Source/Core/Log.cpp
         Source/Core/Log.h
-        Source/Core/RenderContext.cpp
-        Source/Core/RenderContext.h
         Source/Memory/ArenaAllocator.h
         Source/Game/GameBase.cpp
         Source/Game/GameBase.h
         Source/Gameplay/Components/Component.h
-        Source/Gameplay/Components/Component.cpp
         Source/Gameplay/GameObject.h
         Source/Gameplay/GameObject.cpp
-        Source/Gameplay/Components/Transform2dComponent.cpp
-        Source/Gameplay/Components/Transform2dComponent.h
+        Source/Gameplay/Components/CameraComponent.h
         Source/Gameplay/Components/TransformComponent.cpp
         Source/Gameplay/Components/TransformComponent.h
-        Source/Gameplay/Components/GraphicComponent.h
-        Source/Gameplay/Components/SpriteComponent.cpp
-        Source/Gameplay/Components/SpriteComponent.h
-        Source/Gameplay/Components/MeshComponent.cpp
         Source/Gameplay/Components/MeshComponent.h
-        Source/Gameplay/Components/TextComponent.cpp
+        Source/Gameplay/Components/SpriteComponent.h
+        Source/Gameplay/Components/ImageComponent.h
         Source/Gameplay/Components/TextComponent.h
-        Source/UI/Components/ImageComponent.cpp
-        Source/UI/Components/ImageComponent.h
-        Source/UI/Components/ButtonComponent.cpp
-        Source/UI/Components/ButtonComponent.h
-        Source/UI/Components/LabelComponent.cpp
-        Source/UI/Components/LabelComponent.h
+        Source/Gameplay/Scene.cpp
+        Source/Gameplay/Scene.h
+        Source/Gameplay/Systems/RenderSystem.cpp
+        Source/Gameplay/Systems/RenderSystem.h
+        Source/Gameplay/Systems/TransformSystem.cpp
+        Source/Gameplay/Systems/TransformSystem.h
+        Source/Gameplay/Systems/TransformUtils.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
         Source/External/raygui_impl.cpp

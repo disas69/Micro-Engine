@@ -1,0 +1,28 @@
+#pragma once
+
+#include <cstdint>
+
+namespace Micro
+{
+    class GUID
+    {
+    public:
+        GUID();
+        GUID(uint64_t guid);
+        GUID(const GUID&) = default;
+
+        operator uint64_t() const { return m_guid; }
+
+    private:
+        uint64_t m_guid;
+    };
+}  // namespace Micro
+
+namespace std
+{
+    template <>
+    struct hash<Micro::GUID>
+    {
+        std::size_t operator()(const Micro::GUID& guid) const { return hash<uint64_t>()((uint64_t)guid); }
+    };
+}  // namespace std
