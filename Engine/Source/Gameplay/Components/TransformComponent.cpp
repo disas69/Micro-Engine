@@ -1,5 +1,6 @@
 #include "TransformComponent.h"
 #include <algorithm>
+#include "raymath.h"
 
 namespace Micro
 {
@@ -33,6 +34,30 @@ namespace Micro
         MMatrix matTranslation = MatrixTranslate(m_localPosition.x, m_localPosition.y, m_localPosition.z);
 
         return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+    }
+    
+    MVector3 TransformComponent::GetWorldPosition() const
+    {
+        MVector3 position, scale;
+        MQuaternion rotation;
+        MatrixDecompose(m_worldMatrix, &position, &rotation, &scale);
+        return position;
+    }
+
+    MQuaternion TransformComponent::GetWorldRotation() const
+    {
+        MVector3 position, scale;
+        MQuaternion rotation;
+        MatrixDecompose(m_worldMatrix, &position, &rotation, &scale);
+        return rotation;
+    }
+
+    MVector3 TransformComponent::GetWorldScale() const
+    {
+        MVector3 position, scale;
+        MQuaternion rotation;
+        MatrixDecompose(m_worldMatrix, &position, &rotation, &scale);
+        return scale;
     }
 
     void TransformComponent::SetLocalPosition(const MVector3& position)

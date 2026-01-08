@@ -5,6 +5,7 @@
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
 #include "Gameplay/Components/ImageComponent.h"
+#include "raymath.h"
 
 namespace Micro
 {
@@ -27,13 +28,16 @@ namespace Micro
 
             if (auto* sprite = go->GetComponent<SpriteComponent>())
             {
+                MVector3 position, scale;
+                MQuaternion rotation;
+                MatrixDecompose(transform->GetWorldMatrix(), &position, &rotation, &scale);
+
                 const MVector3 up = {0.0f, 1.0f, 0.0f};
-                const MVector3 scale = transform->GetLocalScale();
                 const MVector2 size = {sprite->GetSourceRect().width * scale.x, sprite->GetSourceRect().height * scale.y};
                 const MVector2 origin = size.Scale(0.5f);
 
-                DrawBillboardPro(*camera, sprite->GetSpriteTexture(), sprite->GetSourceRect(), transform->GetLocalPosition(), up, size, origin,
-                    transform->GetLocalRotation().y, sprite->GetColor());
+                MVector3 euler_angles = QuaternionToEuler(rotation);
+                DrawBillboardPro(*camera, sprite->GetSpriteTexture(), sprite->GetSourceRect(), position, up, size, origin, euler_angles.z, sprite->GetColor());
             }
         }
 
@@ -49,15 +53,21 @@ namespace Micro
 
             if (auto* image = go->GetComponent<ImageComponent>())
             {
-                MRectangle destRect = {transform->GetLocalPosition().x, transform->GetLocalPosition().y, image->GetSourceRect().width * transform->GetLocalScale().x,
-                    image->GetSourceRect().height * transform->GetLocalScale().y};
+                MVector3 position, scale;
+                MQuaternion rotation;
+                MatrixDecompose(transform->GetWorldMatrix(), &position, &rotation, &scale);
+
                 MVector2 origin = {0, 0};
-                DrawTexturePro(image->GetTexture(), image->GetSourceRect(), destRect, origin, transform->GetLocalRotation().y, image->GetColor());
+                MVector3 euler_angles = QuaternionToEuler(rotation);
+                MRectangle destRect = {position.x, position.y, image->GetSourceRect().width * scale.x,image->GetSourceRect().height * scale.y};
+
+                DrawTexturePro(image->GetTexture(), image->GetSourceRect(), destRect, origin, euler_angles.z * RAD2DEG, image->GetColor());
             }
 
             if (auto* text = go->GetComponent<TextComponent>())
             {
-                DrawText(text->GetText(), transform->GetLocalPosition().x, transform->GetLocalPosition().y, text->GetFontSize(), text->GetColor());
+                MVector3 text_position = transform->GetWorldPosition();
+                DrawText(text->GetText(), text_position.x, text_position.y, text->GetFontSize(), text->GetColor());
             }
         }
     }

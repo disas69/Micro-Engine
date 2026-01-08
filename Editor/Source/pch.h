@@ -11,6 +11,7 @@
 #include <format>
 #include <cstdint>
 #include <functional>
+#include <cmath>
 
 // raylib
 #include <raylib.h>

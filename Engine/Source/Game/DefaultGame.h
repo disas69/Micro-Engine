@@ -15,5 +15,8 @@ namespace Micro
 
     private:
         GameObject* m_cubeObject = nullptr;
+        GameObject* m_imageObject = nullptr;
+        GameObject* m_textObject = nullptr;
+        float m_time = 0.0f;
     };
 }  // namespace Micro
