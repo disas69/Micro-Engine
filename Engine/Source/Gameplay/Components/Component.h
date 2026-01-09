@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Serialization/Reflection/TypeDescriptor.h"
+
 namespace Micro
 {
     class GameObject;
@@ -13,6 +15,8 @@ namespace Micro
         virtual void OnCreate() {}
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnDestroy() {}
+
+        virtual TypeDescriptor& GetTypeDescriptor() const = 0;
 
         GameObject* GetOwner() const { return m_owner; }
         void SetOwner(GameObject* owner) { m_owner = owner; }

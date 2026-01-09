@@ -46,6 +46,9 @@ namespace Micro
             return GetComponent<T>() != nullptr;
         }
 
+        Component* GetComponent(const std::string& name) const;
+        std::vector<Component*> GetAllComponents() const;
+
         const std::string& GetName() const { return m_name; }
         GUID GetGUID() const { return m_guid; }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
@@ -8,7 +9,8 @@ namespace Micro
 
     class SpriteComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(SpriteComponent)
+
         SpriteComponent() = default;
 
         MTexture2D& GetSpriteTexture() { return m_spriteTexture; }

@@ -1,12 +1,19 @@
 #pragma once
 
 #include "Component.h"
+#include "Serialization/Reflection/Macros.h"
+#include "Core/Types.h"
 
 namespace Micro
 {
     class TransformComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(TransformComponent)
+
+        MVector3 m_localPosition;
+        MQuaternion m_localRotation;
+        MVector3 m_localScale;
+
         TransformComponent();
 
         void SetParent(TransformComponent* parent);
@@ -37,10 +44,6 @@ namespace Micro
         }
 
     private:
-        MVector3 m_localPosition;
-        MQuaternion m_localRotation;
-        MVector3 m_localScale;
-
         MMatrix m_worldMatrix;
         bool m_isDirty;
 

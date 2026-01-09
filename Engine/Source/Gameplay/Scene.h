@@ -16,6 +16,7 @@ namespace Micro
         Scene& operator=(Scene&&) = delete;
 
         GameObject* CreateGameObject(const std::string& name);
+        GameObject* CreateGameObject(const std::string& name, GUID guid);
         void DestroyGameObject(GUID guid);
 
         void Update(float deltaTime);

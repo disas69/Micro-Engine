@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Gameplay/Components/Component.h"
+#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
     class ImageComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(ImageComponent)
+
         ImageComponent() = default;
 
         MTexture2D& GetTexture() { return m_texture; }

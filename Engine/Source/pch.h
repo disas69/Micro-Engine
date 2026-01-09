@@ -3,6 +3,7 @@
 // std
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include <string>
 #include <string_view>
 #include <memory>
@@ -12,6 +13,7 @@
 #include <cstdint>
 #include <functional>
 #include <cmath>
+#include <utility>
 
 // raylib
 #include <raylib.h>
@@ -21,3 +23,4 @@
 
 // custom
 #include "Core/Types.h"
+#include "Core/Log.h"

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Component.h"
+#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
     class CameraComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(CameraComponent)
+
         CameraComponent()
         {
             m_camera.position = MVector3{0.0f, 0.0f, 0.0f};

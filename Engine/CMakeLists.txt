@@ -17,12 +17,17 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/Component.h
         Source/Gameplay/GameObject.h
         Source/Gameplay/GameObject.cpp
+        Source/Gameplay/Components/CameraComponent.cpp
         Source/Gameplay/Components/CameraComponent.h
         Source/Gameplay/Components/TransformComponent.cpp
         Source/Gameplay/Components/TransformComponent.h
+        Source/Gameplay/Components/MeshComponent.cpp
         Source/Gameplay/Components/MeshComponent.h
+        Source/Gameplay/Components/SpriteComponent.cpp
         Source/Gameplay/Components/SpriteComponent.h
+        Source/Gameplay/Components/ImageComponent.cpp
         Source/Gameplay/Components/ImageComponent.h
+        Source/Gameplay/Components/TextComponent.cpp
         Source/Gameplay/Components/TextComponent.h
         Source/Gameplay/Scene.cpp
         Source/Gameplay/Scene.h
@@ -34,6 +39,16 @@ set(ENGINE_SOURCES
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
         Source/External/raygui_impl.cpp
+        Source/Serialization/Reflection/TypeDescriptor.h
+        Source/Serialization/Reflection/Macros.h
+        Source/Serialization/Reflection/TypeRegistry.cpp
+        Source/Serialization/Reflection/TypeRegistry.h
+        Source/Serialization/YAML/YamlComponentSerializer.cpp
+        Source/Serialization/YAML/YamlComponentSerializer.h
+        Source/Serialization/Scene/SceneSaver.cpp
+        Source/Serialization/Scene/SceneSaver.h
+        Source/Serialization/Scene/SceneLoader.cpp
+        Source/Serialization/Scene/SceneLoader.h
         Source/pch.cpp
         Source/pch.h
 )
@@ -48,6 +63,7 @@ target_link_libraries(MicroLib
         raylib
         raylib_cpp
         raygui
+        yaml-cpp
         # other engine-level deps…
 )
 

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Component.h"
+#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
     class MeshComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(MeshComponent)
+
         MeshComponent()
         {
             m_material = LoadMaterialDefault();

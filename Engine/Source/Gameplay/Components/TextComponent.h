@@ -2,12 +2,14 @@
 
 #include "Component.h"
 #include "Core/Types.h"
+#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
     class TextComponent : public Component
     {
-    public:
+        MICRO_COMPONENT(TextComponent)
+
         TextComponent() = default;
 
         std::string& GetText() { return m_text; }

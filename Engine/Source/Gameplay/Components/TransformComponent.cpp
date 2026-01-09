@@ -1,9 +1,18 @@
 #include "TransformComponent.h"
 #include <algorithm>
 #include "raymath.h"
+#include "Serialization/Reflection/Macros.h"
+#include "Serialization/Reflection/TypeDescriptor.h"
 
 namespace Micro
 {
+    MICRO_COMPONENT_IMPL(
+        TransformComponent,
+        MICRO_FIELD(TransformComponent, m_localPosition, FieldType::Vector3),
+        MICRO_FIELD(TransformComponent, m_localRotation, FieldType::Vector4),
+        MICRO_FIELD(TransformComponent, m_localScale, FieldType::Vector3)
+    )
+
     TransformComponent::TransformComponent()
         : m_localPosition(0.0f, 0.0f, 0.0f), m_localRotation(QuaternionIdentity()), m_localScale(1.0f, 1.0f, 1.0f), m_worldMatrix(MatrixIdentity()), m_isDirty(true),
           m_parent(nullptr)
@@ -35,7 +44,7 @@ namespace Micro
 
         return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
     }
-    
+
     MVector3 TransformComponent::GetWorldPosition() const
     {
         MVector3 position, scale;

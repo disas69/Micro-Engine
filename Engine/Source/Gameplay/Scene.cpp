@@ -5,9 +5,16 @@ namespace Micro
 {
     GameObject* Scene::CreateGameObject(const std::string& name)
     {
-        auto newGameObject = std::make_unique<GameObject>(name, GUID());
+        // ReSharper disable once CppDFALocalValueEscapesFunction
+        return CreateGameObject(name, GUID());
+    }
+
+    GameObject* Scene::CreateGameObject(const std::string& name, GUID guid)
+    {
+        auto newGameObject = std::make_unique<GameObject>(name, guid);
         GameObject* rawPtr = newGameObject.get();
         m_gameObjects.push_back(std::move(newGameObject));
+        // ReSharper disable once CppDFALocalValueEscapesFunction
         return rawPtr;
     }
 

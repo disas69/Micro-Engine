@@ -2,6 +2,8 @@
 #include "Log.h"
 #include "Game/GameBase.h"
 #include "Gameplay/Systems/RenderSystem.h"
+#include "Serialization/Reflection/TypeRegistry.h"
+#include "Gameplay/Components/TransformComponent.h"
 
 namespace Micro
 {
@@ -10,6 +12,8 @@ namespace Micro
         Log::Initialize();
 
         MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
+
+        TypeRegistry::Register(&TransformComponent::GetType());
     }
 
     Engine::~Engine()
