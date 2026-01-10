@@ -11,10 +11,10 @@ namespace Micro
         GUID(uint64_t guid);
         GUID(const GUID&) = default;
 
-        operator uint64_t() const { return m_guid; }
+        operator uint64_t() const { return m_Guid; }
 
     private:
-        uint64_t m_guid;
+        uint64_t m_Guid;
     };
 }  // namespace Micro
 

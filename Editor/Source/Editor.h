@@ -33,16 +33,16 @@ namespace Micro
         int Run(Engine* engine);
 
     private:
-        Engine* m_engine = nullptr;
+        Engine* m_Engine = nullptr;
 
-        MWindow m_window;
-        SceneView m_sceneView;
-        ConsoleView m_consoleView;
+        MWindow m_Window;
+        SceneView m_SceneView;
+        ConsoleView m_ConsoleView;
 
-        EditorView m_focusedView = EditorView::None;
+        EditorView m_FocusedView = EditorView::None;
 
-        ImVec2 m_lastSceneViewSize;
-        bool m_shouldShutdown = false;
+        ImVec2 m_LastSceneViewSize;
+        bool m_ShouldShutdown = false;
 
         void DrawMenuBar();
         void DrawMainViewport(MRenderTexture* sceneViewRT);

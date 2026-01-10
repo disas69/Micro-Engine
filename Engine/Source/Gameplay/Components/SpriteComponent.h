@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
@@ -13,18 +12,18 @@ namespace Micro
 
         SpriteComponent() = default;
 
-        MTexture2D& GetSpriteTexture() { return m_spriteTexture; }
-        void SetSpriteTexture(const Texture2D& texture) { m_spriteTexture = texture; }
+        MTexture2D& GetSpriteTexture() { return m_SpriteTexture; }
+        void SetSpriteTexture(const Texture2D& texture) { m_SpriteTexture = texture; }
 
-        MRectangle& GetSourceRect() { return m_sourceRect; }
-        void SetSourceRect(const MRectangle& rect) { m_sourceRect = rect; }
+        MRectangle& GetSourceRect() { return m_SourceRect; }
+        void SetSourceRect(const MRectangle& rect) { m_SourceRect = rect; }
 
-        MColor& GetColor() { return m_color; }
-        void SetColor(const MColor& color) { m_color = color; }
+        MColor& GetColor() { return m_Color; }
+        void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        MTexture2D m_spriteTexture;
-        MRectangle m_sourceRect = {0, 0, 100, 100};
-        MColor m_color = MColor::White();
+        MTexture2D m_SpriteTexture;
+        MRectangle m_SourceRect = {0, 0, 100, 100};
+        MColor m_Color = MColor::White();
     };
 }  // namespace Micro

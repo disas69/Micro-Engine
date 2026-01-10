@@ -91,6 +91,57 @@ namespace YAML
             return true;
         }
     };
+
+    template <>
+    struct convert<Micro::MColor>
+    {
+        static Node encode(const Micro::MColor& rhs)
+        {
+            Node node;
+            node.push_back(rhs.r);
+            node.push_back(rhs.g);
+            node.push_back(rhs.b);
+            node.push_back(rhs.a);
+            return node;
+        }
+
+        static bool decode(const Node& node, Micro::MColor& rhs)
+        {
+            if (!node.IsSequence() || node.size() != 4) return false;
+
+            rhs.r = node[0].as<float>();
+            rhs.g = node[1].as<float>();
+            rhs.b = node[2].as<float>();
+            rhs.a = node[3].as<float>();
+            return true;
+        }
+    };
+
+    template <>
+    struct convert<Micro::MRectangle>
+    {
+        static Node encode(const Micro::MRectangle& rhs)
+        {
+            Node node;
+            node.push_back(rhs.x);
+            node.push_back(rhs.y);
+            node.push_back(rhs.width);
+            node.push_back(rhs.height);
+            return node;
+        }
+
+        static bool decode(const Node& node, Micro::MRectangle& rhs)
+        {
+            if (!node.IsSequence() || node.size() != 4) return false;
+
+            rhs.x = node[0].as<float>();
+            rhs.y = node[1].as<float>();
+            rhs.width = node[2].as<float>();
+            rhs.height = node[3].as<float>();
+            return true;
+        }
+    };
+
 }  // namespace YAML
 
 namespace Micro
@@ -115,6 +166,8 @@ namespace Micro
                 case FieldType::Vector2: out[field.Name] = *static_cast<const MVector2*>(fieldPtr); break;
                 case FieldType::Vector3: out[field.Name] = *static_cast<const MVector3*>(fieldPtr); break;
                 case FieldType::Vector4: out[field.Name] = *static_cast<const MQuaternion*>(fieldPtr); break;
+                case FieldType::Color: out[field.Name] = *static_cast<const MColor*>(fieldPtr); break;
+                case FieldType::Rect: out[field.Name] = *static_cast<const MRectangle*>(fieldPtr); break;
             }
         }
     }
@@ -153,6 +206,8 @@ namespace Micro
                     case FieldType::Vector2: *static_cast<MVector2*>(fieldPtr) = componentData[field.Name].as<MVector2>(); break;
                     case FieldType::Vector3: *static_cast<MVector3*>(fieldPtr) = componentData[field.Name].as<MVector3>(); break;
                     case FieldType::Vector4: *static_cast<MQuaternion*>(fieldPtr) = componentData[field.Name].as<MQuaternion>(); break;
+                    case FieldType::Color: *static_cast<MColor*>(fieldPtr) = componentData[field.Name].as<MColor>(); break;
+                    case FieldType::Rect: *static_cast<MRectangle*>(fieldPtr) = componentData[field.Name].as<MRectangle>(); break;
                 }
             }
         }

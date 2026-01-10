@@ -18,7 +18,7 @@ namespace Micro
 
             auto newComponent = std::make_unique<T>(std::forward<Args>(args)...);
             T* rawPtr = newComponent.get();
-            m_components.push_back(std::move(newComponent));
+            m_Components.push_back(std::move(newComponent));
 
             auto component = static_cast<Component*>(rawPtr);
             component->SetOwner(this);
@@ -30,7 +30,7 @@ namespace Micro
         template <typename T>
         T* GetComponent() const
         {
-            for (const auto& component : m_components)
+            for (const auto& component : m_Components)
             {
                 if (T* castedComponent = dynamic_cast<T*>(component.get()))
                 {
@@ -49,14 +49,14 @@ namespace Micro
         Component* GetComponent(const std::string& name) const;
         std::vector<Component*> GetAllComponents() const;
 
-        const std::string& GetName() const { return m_name; }
-        GUID GetGUID() const { return m_guid; }
+        const std::string& GetName() const { return m_Name; }
+        GUID GetGUID() const { return m_Guid; }
 
-        const std::vector<std::unique_ptr<Component>>& GetComponents() const { return m_components; }
+        const std::vector<std::unique_ptr<Component>>& GetComponents() const { return m_Components; }
 
     private:
-        std::string m_name;
-        GUID m_guid;
-        std::vector<std::unique_ptr<Component>> m_components;
+        std::vector<std::unique_ptr<Component>> m_Components;
+        std::string m_Name;
+        GUID m_Guid;
     };
 }  // namespace Micro

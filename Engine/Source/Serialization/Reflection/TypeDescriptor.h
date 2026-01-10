@@ -14,6 +14,8 @@ namespace Micro
         Vector2 = 4,
         Vector3 = 5,
         Vector4 = 6,
+        Color = 7,
+        Rect = 8,
     };
 
     struct FieldDescriptor

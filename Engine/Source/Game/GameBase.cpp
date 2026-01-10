@@ -10,9 +10,9 @@ namespace Micro
 
     void GameBase::Update(float deltaTime)
     {
-        if (m_scene != nullptr)
+        if (m_Scene != nullptr)
         {
-            m_scene->Update(deltaTime);
+            m_Scene->Update(deltaTime);
         }
 
         OnUpdate(deltaTime);

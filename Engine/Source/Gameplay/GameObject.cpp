@@ -3,11 +3,11 @@
 
 namespace Micro
 {
-    GameObject::GameObject(std::string name, GUID guid) : m_name(std::move(name)), m_guid(guid) {}
+    GameObject::GameObject(std::string name, GUID guid) : m_Name(std::move(name)), m_Guid(guid) {}
 
     Component* GameObject::GetComponent(const std::string& name) const
     {
-        for (const auto& component : m_components)
+        for (const auto& component : m_Components)
         {
             if (component->GetTypeDescriptor().Name == name)
             {
@@ -20,7 +20,7 @@ namespace Micro
     std::vector<Component*> GameObject::GetAllComponents() const
     {
         std::vector<Component*> components;
-        for (const auto& component : m_components)
+        for (const auto& component : m_Components)
         {
             components.push_back(component.get());
         }

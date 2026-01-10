@@ -1,5 +1,4 @@
 #include "MeshComponent.h"
-#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {

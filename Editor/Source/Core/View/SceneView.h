@@ -24,20 +24,20 @@ namespace Micro
         void Render(ImVec2 size);
         void Resize(int width, int height);
 
-        MRenderTexture* GetRenderTexture() { return &m_renderTexture; }
+        MRenderTexture* GetRenderTexture() { return &m_RenderTexture; }
 
     private:
-        int m_width;
-        int m_height;
+        int m_Width;
+        int m_Height;
 
-        MRenderTexture m_renderTexture;
-        MCamera3D m_camera;
-        SceneLogView m_sceneLogView;
+        MRenderTexture m_RenderTexture;
+        MCamera3D m_Camera;
+        SceneLogView m_SceneLogView;
 
-        float m_moveSpeed = 10.0f;
-        float m_mouseSensitivity = 0.007f;
-        float m_yaw = 0.0f;
-        float m_pitch = 0.0f;
+        float m_MoveSpeed = 10.0f;
+        float m_MouseSensitivity = 0.007f;
+        float m_Yaw = 0.0f;
+        float m_Pitch = 0.0f;
 
         void UpdateCamera();
     };

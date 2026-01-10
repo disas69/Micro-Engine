@@ -52,23 +52,23 @@ namespace Micro
 
         LogEntry entry = LogEntry{.Level = static_cast<uint32_t>(level), .Text = std::string(timeStr) + " " + text, .Timestamp = timestamp};
 
-        if (m_logCallback != nullptr)
+        if (m_LogCallback != nullptr)
         {
-            m_logCallback(entry);
+            m_LogCallback(entry);
         }
 
-        m_entries.emplace_back(std::move(entry));
+        m_Entries.emplace_back(std::move(entry));
 
-        m_scrollToBottom = true;
+        m_ScrollToBottom = true;
     }
 
     void Log::Clear()
     {
-        m_entries.clear();
+        m_Entries.clear();
     }
 
     void Log::ResetAutoScroll()
     {
-        m_scrollToBottom = false;
+        m_ScrollToBottom = false;
     }
 }  // namespace Micro

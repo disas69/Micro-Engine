@@ -10,30 +10,30 @@ namespace Micro
     class ArenaAllocator
     {
     public:
-        explicit ArenaAllocator(size_t size) : m_size(size), m_offset(0)
+        explicit ArenaAllocator(size_t size) : m_Size(size), m_Offset(0)
         {
-            m_buffer = static_cast<char*>(std::malloc(size));
+            m_Buffer = static_cast<char*>(std::malloc(size));
             MICRO_LOG_INFO(TextFormat("ArenaAllocator: allocated buffer of %d", size));
         }
 
         ~ArenaAllocator()
         {
-            std::free(m_buffer);
-            MICRO_LOG_INFO(TextFormat("ArenaAllocator: released buffer of %d", m_size));
+            std::free(m_Buffer);
+            MICRO_LOG_INFO(TextFormat("ArenaAllocator: released buffer of %d", m_Size));
         }
 
         void* Allocate(size_t size)
         {
-            if (m_offset + size > m_size)
+            if (m_Offset + size > m_Size)
             {
                 MICRO_LOG_ERROR(TextFormat("ArenaAllocator: allocation out of bounds"));
                 return nullptr;
             }
 
-            void* ptr = m_buffer + m_offset;
-            m_offset += size;
+            void* ptr = m_Buffer + m_Offset;
+            m_Offset += size;
 
-            MICRO_LOG_INFO(TextFormat("ArenaAllocator: allocated size of %d, total allocation is %d", size, m_offset));
+            MICRO_LOG_INFO(TextFormat("ArenaAllocator: allocated size of %d, total allocation is %d", size, m_Offset));
 
             return ptr;
         }
@@ -70,13 +70,13 @@ namespace Micro
 
         void Reset()
         {
-            m_offset = 0;
+            m_Offset = 0;
             MICRO_LOG_INFO("ArenaAllocator: reset buffer");
         }
 
     private:
-        size_t m_size;
-        size_t m_offset;
-        char* m_buffer;
+        size_t m_Size;
+        size_t m_Offset;
+        char* m_Buffer;
     };
 }  // namespace Micro

@@ -17,7 +17,7 @@ namespace Micro
 
         MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
         MWindow::Init(screenWidth, screenHeight, "Micro Engine");
-        m_window.SetTargetFPS(60);
+        m_Window.SetTargetFPS(60);
 
         std::string exeDir = GetApplicationDirectory();
         std::string imguiIni = exeDir + "imgui.ini";
@@ -40,7 +40,7 @@ namespace Micro
             ImGui::LoadIniSettingsFromDisk(defaultIni.c_str());
         }
 
-        m_sceneView.Init(screenWidth, screenHeight);
+        m_SceneView.Init(screenWidth, screenHeight);
 
         MICRO_LOG_INFO("Editor App Initialized");
     }
@@ -49,26 +49,26 @@ namespace Micro
 
     int Editor::Run(Engine* engine)
     {
-        m_engine = engine;
+        m_Engine = engine;
 
-        while (!MWindow::ShouldClose() && !m_shouldShutdown)
+        while (!MWindow::ShouldClose() && !m_ShouldShutdown)
         {
-            if (m_focusedView == EditorView::Scene)
+            if (m_FocusedView == EditorView::Scene)
             {
-                m_sceneView.Update();
+                m_SceneView.Update();
             }
 
-            m_sceneView.Render(m_lastSceneViewSize);
+            m_SceneView.Render(m_LastSceneViewSize);
 
-            m_window.BeginDrawing();
-            m_window.ClearBackground(DARKGRAY);
+            m_Window.BeginDrawing();
+            m_Window.ClearBackground(DARKGRAY);
             rlImGuiBegin();
 
             DrawMenuBar();
-            DrawMainViewport(m_sceneView.GetRenderTexture());
+            DrawMainViewport(m_SceneView.GetRenderTexture());
 
             rlImGuiEnd();
-            m_window.EndDrawing();
+            m_Window.EndDrawing();
         }
 
         rlImGuiShutdown();
@@ -88,7 +88,7 @@ namespace Micro
 
                 if (ImGui::MenuItem("Quit"))
                 {
-                    m_shouldShutdown = true;
+                    m_ShouldShutdown = true;
                 }
                 ImGui::EndMenu();
             }
@@ -126,18 +126,18 @@ namespace Micro
         if (ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar))
         {
             ImVec2 size = ImGui::GetContentRegionAvail();
-            bool resized = (size.x != m_lastSceneViewSize.x || size.y != m_lastSceneViewSize.y);
+            bool resized = (size.x != m_LastSceneViewSize.x || size.y != m_LastSceneViewSize.y);
             if (resized)
             {
-                m_sceneView.Resize(size.x, size.y);
-                m_lastSceneViewSize = size;
+                m_SceneView.Resize(size.x, size.y);
+                m_LastSceneViewSize = size;
             }
 
             rlImGuiImageRenderTextureFit(sceneViewRT, true);
 
             if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
-                m_focusedView = EditorView::Scene;
+                m_FocusedView = EditorView::Scene;
             }
         }
         ImGui::End();
@@ -147,7 +147,7 @@ namespace Micro
         {
             if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
-                m_focusedView = EditorView::Hierarchy;
+                m_FocusedView = EditorView::Hierarchy;
             }
         }
         ImGui::End();
@@ -156,7 +156,7 @@ namespace Micro
         {
             if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
-                m_focusedView = EditorView::Inspector;
+                m_FocusedView = EditorView::Inspector;
             }
         }
         ImGui::End();
@@ -165,18 +165,18 @@ namespace Micro
         {
             if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
-                m_focusedView = EditorView::Project;
+                m_FocusedView = EditorView::Project;
             }
         }
         ImGui::End();
 
         if (ImGui::Begin("Console"))
         {
-            m_consoleView.Render();
+            m_ConsoleView.Render();
 
             if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
-                m_focusedView = EditorView::Console;
+                m_FocusedView = EditorView::Console;
             }
         }
         ImGui::End();

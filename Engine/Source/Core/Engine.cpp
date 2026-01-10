@@ -1,9 +1,13 @@
 #include "Engine.h"
 #include "Log.h"
 #include "Game/GameBase.h"
-#include "Gameplay/Systems/RenderSystem.h"
-#include "Serialization/Reflection/TypeRegistry.h"
+#include "Gameplay/Components/CameraComponent.h"
+#include "Gameplay/Components/ImageComponent.h"
+#include "Gameplay/Components/MeshComponent.h"
+#include "Gameplay/Components/SpriteComponent.h"
+#include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
+#include "Gameplay/Systems/RenderSystem.h"
 
 namespace Micro
 {
@@ -13,7 +17,7 @@ namespace Micro
 
         MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
 
-        TypeRegistry::Register(&TransformComponent::GetType());
+        RegisterStandardComponents();
     }
 
     Engine::~Engine()
@@ -28,11 +32,11 @@ namespace Micro
 
         MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
         MWindow::Init(screenWidth, screenHeight, game->GetWindowTitle());
-        m_window.SetTargetFPS(60);
+        m_Window.SetTargetFPS(60);
 
         // Temp
-        m_activeScene = std::make_unique<Scene>();
-        game->SetScene(m_activeScene.get());
+        m_ActiveScene = std::make_unique<Scene>();
+        game->SetScene(m_ActiveScene.get());
 
         game->Init(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
 
@@ -54,13 +58,23 @@ namespace Micro
         return 0;
     }
 
+    void Engine::RegisterStandardComponents()
+    {
+        TypeRegistry::Register(&TransformComponent::GetType());
+        TypeRegistry::Register(&CameraComponent::GetType());
+        TypeRegistry::Register(&MeshComponent::GetType());
+        TypeRegistry::Register(&SpriteComponent::GetType());
+        TypeRegistry::Register(&ImageComponent::GetType());
+        TypeRegistry::Register(&TextComponent::GetType());
+    }
+
     void Engine::Render(GameBase* game)
     {
-        m_window.BeginDrawing();
-        m_window.ClearBackground(RAYWHITE);
+        m_Window.BeginDrawing();
+        m_Window.ClearBackground(RAYWHITE);
 
-        RenderSystem::Render(game->GetMainCamera(), m_activeScene.get());
+        RenderSystem::Render(game->GetMainCamera(), m_ActiveScene.get());
 
-        m_window.EndDrawing();
+        m_Window.EndDrawing();
     }
 }  // namespace Micro

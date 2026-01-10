@@ -4,7 +4,7 @@ namespace Pong
 {
     PongGame::PongGame()
     {
-        m_windowTitle = "Pong Game";
+        m_WindowTitle = "Pong Game";
     }
 
     void PongGame::OnInit()

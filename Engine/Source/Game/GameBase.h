@@ -20,29 +20,29 @@ namespace Micro
         void Update(float deltaTime);
         void Shutdown();
 
-        void SetScreenSize(MVector2 screenSize) { m_screenSize = screenSize; }
-        MVector2 GetScreenSize() { return m_screenSize; }
+        void SetScreenSize(MVector2 screenSize) { m_ScreenSize = screenSize; }
+        MVector2 GetScreenSize() { return m_ScreenSize; }
 
-        void SetScene(Scene* scene) { m_scene = scene; }
-        Scene* GetScene() const { return m_scene; }
+        void SetScene(Scene* scene) { m_Scene = scene; }
+        Scene* GetScene() const { return m_Scene; }
 
-        std::string GetWindowTitle() const { return m_windowTitle; }
-        bool ShouldClose() const { return m_shouldClose; }
+        std::string GetWindowTitle() const { return m_WindowTitle; }
+        bool ShouldClose() const { return m_ShouldClose; }
 
-        MCamera3D* GetMainCamera() const { return m_mainCamera; }
-        void SetMainCamera(MCamera3D* camera) { m_mainCamera = camera; }
+        MCamera3D* GetMainCamera() const { return m_MainCamera; }
+        void SetMainCamera(MCamera3D* camera) { m_MainCamera = camera; }
 
     protected:
-        std::string m_windowTitle;
-        MVector2 m_screenSize;
-        bool m_shouldClose = false;
+        std::string m_WindowTitle;
+        MVector2 m_ScreenSize;
+        bool m_ShouldClose = false;
 
         virtual void OnInit() = 0;
         virtual void OnUpdate(float deltaTime) = 0;
         virtual void OnShutdown() = 0;
 
     private:
-        Scene* m_scene = nullptr;
-        MCamera3D* m_mainCamera = nullptr;
+        Scene* m_Scene = nullptr;
+        MCamera3D* m_MainCamera = nullptr;
     };
 }  // namespace Micro

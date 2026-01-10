@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Gameplay/Components/Component.h"
-#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
@@ -11,18 +10,18 @@ namespace Micro
 
         ImageComponent() = default;
 
-        MTexture2D& GetTexture() { return m_texture; }
-        void SetTexture(const Texture2D& texture) { m_texture = texture; }
+        MTexture2D& GetTexture() { return m_Texture; }
+        void SetTexture(const Texture2D& texture) { m_Texture = texture; }
 
-        MRectangle& GetSourceRect() { return m_sourceRect; }
-        void SetSourceRect(const MRectangle& sourceRect) { m_sourceRect = sourceRect; }
+        MRectangle& GetSourceRect() { return m_SourceRect; }
+        void SetSourceRect(const MRectangle& sourceRect) { m_SourceRect = sourceRect; }
 
-        MColor& GetColor() { return m_color; }
-        void SetColor(const MColor& color) { m_color = color; }
+        MColor& GetColor() { return m_Color; }
+        void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        MTexture2D m_texture;
-        MRectangle m_sourceRect = {0, 0, 100, 100};
-        MColor m_color = MColor::White();
+        MTexture2D m_Texture;
+        MRectangle m_SourceRect = {0, 0, 100, 100};
+        MColor m_Color = MColor::White();
     };
 }  // namespace Micro

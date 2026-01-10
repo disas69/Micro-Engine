@@ -24,3 +24,6 @@
 // custom
 #include "Core/Types.h"
 #include "Core/Log.h"
+#include "Serialization/Reflection/Macros.h"
+#include "Serialization/Reflection/TypeDescriptor.h"
+#include "Serialization/Reflection/TypeRegistry.h"

@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Serialization/Reflection/TypeDescriptor.h"
+#include "Gameplay/GameObject.h"
 
 namespace Micro
 {
-    class GameObject;
-
     class Component
     {
     public:

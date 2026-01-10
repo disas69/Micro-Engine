@@ -13,23 +13,23 @@ namespace Micro
     {
         auto newGameObject = std::make_unique<GameObject>(name, guid);
         GameObject* rawPtr = newGameObject.get();
-        m_gameObjects.push_back(std::move(newGameObject));
+        m_GameObjects.push_back(std::move(newGameObject));
         // ReSharper disable once CppDFALocalValueEscapesFunction
         return rawPtr;
     }
 
     void Scene::DestroyGameObject(GUID guid)
     {
-        m_gameObjects.erase(
-            std::remove_if(m_gameObjects.begin(), m_gameObjects.end(), [guid](const std::unique_ptr<GameObject>& obj) { return obj->GetGUID() == guid; }),
-            m_gameObjects.end());
+        m_GameObjects.erase(
+            std::remove_if(m_GameObjects.begin(), m_GameObjects.end(), [guid](const std::unique_ptr<GameObject>& obj) { return obj->GetGUID() == guid; }),
+            m_GameObjects.end());
     }
 
     void Scene::Update(float deltaTime)
     {
         TransformSystem::Update(this);
 
-        for (auto& gameObject : m_gameObjects)
+        for (auto& gameObject : m_GameObjects)
         {
             for (const auto& component : gameObject->GetComponents())
             {

@@ -10,22 +10,22 @@ namespace Micro
 
     void SceneView::Init(int width, int height)
     {
-        m_width = width;
-        m_height = height;
+        m_Width = width;
+        m_Height = height;
 
-        m_camera.SetPosition({0.0f, 10.0f, 10.0f});
-        m_camera.SetTarget({0.0f, 0.0f, 0.0f});
-        m_camera.SetUp({0.0f, 1.0f, 0.0f});
-        m_camera.SetFovy(60.0f);
-        m_camera.SetProjection(CAMERA_PERSPECTIVE);
+        m_Camera.SetPosition({0.0f, 10.0f, 10.0f});
+        m_Camera.SetTarget({0.0f, 0.0f, 0.0f});
+        m_Camera.SetUp({0.0f, 1.0f, 0.0f});
+        m_Camera.SetFovy(60.0f);
+        m_Camera.SetProjection(CAMERA_PERSPECTIVE);
 
-        MVector3 forward = Vector3Subtract(m_camera.target, m_camera.position);
+        MVector3 forward = Vector3Subtract(m_Camera.target, m_Camera.position);
         forward = forward.Normalize();
 
-        m_yaw = atan2f(forward.x, forward.z);
-        m_pitch = asinf(forward.y);
+        m_Yaw = atan2f(forward.x, forward.z);
+        m_Pitch = asinf(forward.y);
 
-        Log::Get().SetLogCallback([this](const LogEntry& entry) { m_sceneLogView.AddLogEntry(entry); });
+        Log::Get().SetLogCallback([this](const LogEntry& entry) { m_SceneLogView.AddLogEntry(entry); });
     }
 
     void SceneView::Update()
@@ -35,9 +35,9 @@ namespace Micro
 
     void SceneView::Render(ImVec2 size)
     {
-        m_renderTexture.BeginMode();
+        m_RenderTexture.BeginMode();
         ClearBackground(DARKGRAY);
-        BeginMode3D(m_camera);
+        BeginMode3D(m_Camera);
 
         Vector3 cubePosition = {0.0f, 0.0f, 0.0f};
         DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
@@ -46,20 +46,20 @@ namespace Micro
 
         EndMode3D();
 
-        m_sceneLogView.Update();
-        m_sceneLogView.Render(size);
+        m_SceneLogView.Update();
+        m_SceneLogView.Render(size);
 
-        m_renderTexture.EndMode();
+        m_RenderTexture.EndMode();
     }
 
     void SceneView::Resize(int width, int height)
     {
-        if (width != m_width || height != m_height)
+        if (width != m_Width || height != m_Height)
         {
-            m_renderTexture.Unload();
-            m_renderTexture = LoadRenderTexture(width, height);
-            m_width = width;
-            m_height = height;
+            m_RenderTexture.Unload();
+            m_RenderTexture = LoadRenderTexture(width, height);
+            m_Width = width;
+            m_Height = height;
         }
     }
 
@@ -68,36 +68,36 @@ namespace Micro
         float wheel = GetMouseWheelMove();
         if (wheel != 0.0f)
         {
-            m_moveSpeed *= (1.0f + wheel * 0.1f);
-            m_moveSpeed = Clamp(m_moveSpeed, 1.0f, 100.0f);
+            m_MoveSpeed *= (1.0f + wheel * 0.1f);
+            m_MoveSpeed = Clamp(m_MoveSpeed, 1.0f, 100.0f);
 
-            MICRO_LOG_INFO("Camera Move Speed: " + std::to_string(m_moveSpeed));
+            MICRO_LOG_INFO("Camera Move Speed: " + std::to_string(m_MoveSpeed));
         }
 
         if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON))
         {
             Vector2 delta = GetMouseDelta();
-            m_yaw -= delta.x * m_mouseSensitivity;
-            m_pitch -= delta.y * m_mouseSensitivity;
-            m_pitch = Clamp(m_pitch, -1.55f, 1.55f);  // avoid gimbal flip
+            m_Yaw -= delta.x * m_MouseSensitivity;
+            m_Pitch -= delta.y * m_MouseSensitivity;
+            m_Pitch = Clamp(m_Pitch, -1.55f, 1.55f);  // avoid gimbal flip
         }
 
-        Vector3 forward = {cosf(m_pitch) * sinf(m_yaw), sinf(m_pitch), cosf(m_pitch) * cosf(m_yaw)};
+        Vector3 forward = {cosf(m_Pitch) * sinf(m_Yaw), sinf(m_Pitch), cosf(m_Pitch) * cosf(m_Yaw)};
         forward = Vector3Normalize(forward);
         Vector3 right = Vector3Normalize(Vector3CrossProduct(forward, {0, 1, 0}));
         Vector3 up = Vector3CrossProduct(right, forward);
 
-        float speed = m_moveSpeed * GetFrameTime();
+        float speed = m_MoveSpeed * GetFrameTime();
 
-        if (IsKeyDown(KEY_W)) m_camera.position = Vector3Add(m_camera.position, Vector3Scale(forward, speed));
-        if (IsKeyDown(KEY_S)) m_camera.position = Vector3Subtract(m_camera.position, Vector3Scale(forward, speed));
-        if (IsKeyDown(KEY_A)) m_camera.position = Vector3Subtract(m_camera.position, Vector3Scale(right, speed));
-        if (IsKeyDown(KEY_D)) m_camera.position = Vector3Add(m_camera.position, Vector3Scale(right, speed));
-        if (IsKeyDown(KEY_E)) m_camera.position.y += speed;
-        if (IsKeyDown(KEY_Q)) m_camera.position.y -= speed;
+        if (IsKeyDown(KEY_W)) m_Camera.position = Vector3Add(m_Camera.position, Vector3Scale(forward, speed));
+        if (IsKeyDown(KEY_S)) m_Camera.position = Vector3Subtract(m_Camera.position, Vector3Scale(forward, speed));
+        if (IsKeyDown(KEY_A)) m_Camera.position = Vector3Subtract(m_Camera.position, Vector3Scale(right, speed));
+        if (IsKeyDown(KEY_D)) m_Camera.position = Vector3Add(m_Camera.position, Vector3Scale(right, speed));
+        if (IsKeyDown(KEY_E)) m_Camera.position.y += speed;
+        if (IsKeyDown(KEY_Q)) m_Camera.position.y -= speed;
 
-        m_camera.target = Vector3Add(m_camera.position, forward);
-        m_camera.up = up;
+        m_Camera.target = Vector3Add(m_Camera.position, forward);
+        m_Camera.up = up;
     }
 
 }  // namespace Micro

@@ -23,9 +23,10 @@ namespace Micro
         static constexpr std::string_view version() { return ENGINE_VERSION_STRING; }
 
     private:
-        void Render(GameBase* game);
+        MWindow m_Window;
+        std::unique_ptr<Scene> m_ActiveScene;
 
-        MWindow m_window;
-        std::unique_ptr<Scene> m_activeScene;
+        void RegisterStandardComponents();
+        void Render(GameBase* game);
     };
 }  // namespace Micro

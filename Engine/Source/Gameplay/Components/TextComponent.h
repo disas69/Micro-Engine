@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "Core/Types.h"
-#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
@@ -10,20 +8,18 @@ namespace Micro
     {
         MICRO_COMPONENT(TextComponent)
 
-        TextComponent() = default;
+        std::string& GetText() { return m_Text; }
+        void SetText(const std::string& text) { m_Text = text; }
 
-        std::string& GetText() { return m_text; }
-        void SetText(const std::string& text) { m_text = text; }
+        float GetFontSize() const { return m_FontSize; }
+        void SetFontSize(float fontSize) { m_FontSize = fontSize; }
 
-        float GetFontSize() const { return m_fontSize; }
-        void SetFontSize(float fontSize) { m_fontSize = fontSize; }
-
-        MColor& GetColor() { return m_color; }
-        void SetColor(const MColor& color) { m_color = color; }
+        MColor& GetColor() { return m_Color; }
+        void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        std::string m_text;
-        float m_fontSize = 20.0f;
-        MColor m_color = MColor::White();
+        std::string m_Text;
+        float m_FontSize = 20.0f;
+        MColor m_Color = MColor::White();
     };
 }  // namespace Micro

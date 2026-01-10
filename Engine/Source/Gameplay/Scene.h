@@ -21,9 +21,9 @@ namespace Micro
 
         void Update(float deltaTime);
 
-        const std::vector<std::unique_ptr<GameObject>>& GetGameObjects() const { return m_gameObjects; }
+        const std::vector<std::unique_ptr<GameObject>>& GetGameObjects() const { return m_GameObjects; }
 
     private:
-        std::vector<std::unique_ptr<GameObject>> m_gameObjects;
+        std::vector<std::unique_ptr<GameObject>> m_GameObjects;
     };
 }  // namespace Micro

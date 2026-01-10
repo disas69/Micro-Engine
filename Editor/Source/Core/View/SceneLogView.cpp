@@ -5,17 +5,17 @@ namespace Micro
 {
     SceneLogView::SceneLogView()
     {
-        m_logEntries.reserve(m_maxVisibleSize);
+        m_LogEntries.reserve(m_MaxVisibleSize);
     }
 
     void SceneLogView::AddLogEntry(const LogEntry& entry)
     {
-        if (m_logEntries.size() >= m_maxVisibleSize)
+        if (m_LogEntries.size() >= m_MaxVisibleSize)
         {
-            m_logEntries.erase(m_logEntries.begin());
+            m_LogEntries.erase(m_LogEntries.begin());
         }
 
-        m_logEntries.push_back(entry);
+        m_LogEntries.push_back(entry);
     }
 
     void SceneLogView::Update()
@@ -23,13 +23,13 @@ namespace Micro
         auto now = std::chrono::system_clock::now();
         auto nowTimeT = std::chrono::system_clock::to_time_t(now);
 
-        for (int i = m_logEntries.size() - 1; i >= 0; --i)
+        for (int i = m_LogEntries.size() - 1; i >= 0; --i)
         {
-            const LogEntry& entry = m_logEntries[i];
+            const LogEntry& entry = m_LogEntries[i];
             double age = difftime(nowTimeT, entry.Timestamp);
-            if (age > m_showDuration)
+            if (age > m_ShowDuration)
             {
-                m_logEntries.erase(m_logEntries.begin() + i);
+                m_LogEntries.erase(m_LogEntries.begin() + i);
             }
         }
     }
@@ -45,7 +45,7 @@ namespace Micro
         fontSize = static_cast<int>(fontSize * (size.y / 1080.0f));
         fontSize = std::max(1, std::min(fontSize, 10));
 
-        for (const auto& entry : m_logEntries)
+        for (const auto& entry : m_LogEntries)
         {
             if (entry.Level == LOG_INFO && static_cast<uint32_t>(*flags & LogLevelFlags::Info) == 0) continue;
             if (entry.Level == LOG_WARNING && static_cast<uint32_t>(*flags & LogLevelFlags::Warning) == 0) continue;

@@ -64,8 +64,8 @@ namespace Micro
         Log& operator=(const Log&) = delete;
         Log& operator=(Log&&) = delete;
 
-        std::vector<LogEntry> GetEntries() const { return m_entries; }
-        bool ShouldScrollToBottom() const { return m_scrollToBottom; }
+        std::vector<LogEntry> GetEntries() const { return m_Entries; }
+        bool ShouldScrollToBottom() const { return m_ScrollToBottom; }
 
         static void Initialize();
         static void Info(const std::string& message);
@@ -77,14 +77,14 @@ namespace Micro
         void Clear();
         void ResetAutoScroll();
 
-        void SetLogCallback(const std::function<void(const LogEntry&)>& callback) { m_logCallback = callback; }
-        LogLevelFlags* LevelFlagsMask() { return &m_levelMask; }
+        void SetLogCallback(const std::function<void(const LogEntry&)>& callback) { m_LogCallback = callback; }
+        LogLevelFlags* LevelFlagsMask() { return &m_LevelMask; }
 
     private:
-        std::vector<LogEntry> m_entries = {};
-        std::function<void(const LogEntry&)> m_logCallback = nullptr;
-        LogLevelFlags m_levelMask = LogLevelFlags::All;
-        bool m_scrollToBottom = false;
+        std::vector<LogEntry> m_Entries = {};
+        std::function<void(const LogEntry&)> m_LogCallback = nullptr;
+        LogLevelFlags m_LevelMask = LogLevelFlags::All;
+        bool m_ScrollToBottom = false;
 
         Log() = default;
     };

@@ -21,8 +21,8 @@ namespace Micro
         void Render(ImVec2 size);
 
     private:
-        std::vector<LogEntry> m_logEntries;
-        float m_showDuration = 3.0f;
-        size_t m_maxVisibleSize = 100;
+        std::vector<LogEntry> m_LogEntries;
+        float m_ShowDuration = 3.0f;
+        size_t m_MaxVisibleSize = 100;
     };
 }  // namespace Micro

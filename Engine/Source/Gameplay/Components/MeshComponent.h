@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "Serialization/Reflection/Macros.h"
 
 namespace Micro
 {
@@ -11,17 +10,17 @@ namespace Micro
 
         MeshComponent()
         {
-            m_material = LoadMaterialDefault();
+            m_Material = LoadMaterialDefault();
         }
 
-        MMesh* GetMesh() { return &m_mesh; }
-        void SetMesh(const Mesh& mesh) { m_mesh = mesh; }
+        MMesh* GetMesh() { return &m_Mesh; }
+        void SetMesh(const Mesh& mesh) { m_Mesh = mesh; }
 
-        MMaterial* GetMaterial() { return &m_material; }
-        void SetMaterial(const Material& material) { m_material = material; }
+        MMaterial* GetMaterial() { return &m_Material; }
+        void SetMaterial(const Material& material) { m_Material = material; }
 
     private:
-        MMesh m_mesh;
-        MMaterial m_material;
+        MMesh m_Mesh;
+        MMaterial m_Material;
     };
 }  // namespace Micro

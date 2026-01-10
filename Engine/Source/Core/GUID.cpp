@@ -7,7 +7,7 @@ namespace Micro
     static std::mt19937_64 s_engine(s_randomDevice());
     static std::uniform_int_distribution<uint64_t> s_uniformDistribution;
 
-    GUID::GUID() : m_guid(s_uniformDistribution(s_engine)) {}
+    GUID::GUID() : m_Guid(s_uniformDistribution(s_engine)) {}
 
-    GUID::GUID(uint64_t guid) : m_guid(guid) {}
+    GUID::GUID(uint64_t guid) : m_Guid(guid) {}
 }  // namespace Micro
