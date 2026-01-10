@@ -95,23 +95,26 @@ namespace YAML
 
 namespace Micro
 {
+    using MemberAccessor = void* (*)(void*);
+
     void YamlComponentSerializer::Serialize(const Component& component, YAML::Node& out)
     {
         const auto& typeDesc = component.GetTypeDescriptor();
 
         for (const auto& field : typeDesc.Fields)
         {
-            const char* fieldPtr = reinterpret_cast<const char*>(&component) + field.Offset;
+            auto accessor = reinterpret_cast<MemberAccessor>(field.MemberPtr);
+            const void* fieldPtr = accessor((void*)&component);
 
             switch (field.Type)
             {
-                case FieldType::Int: out[field.Name] = *reinterpret_cast<const int*>(fieldPtr); break;
-                case FieldType::Float: out[field.Name] = *reinterpret_cast<const float*>(fieldPtr); break;
-                case FieldType::Bool: out[field.Name] = *reinterpret_cast<const bool*>(fieldPtr); break;
-                case FieldType::String: out[field.Name] = *reinterpret_cast<const std::string*>(fieldPtr); break;
-                case FieldType::Vector2: out[field.Name] = *reinterpret_cast<const MVector2*>(fieldPtr); break;
-                case FieldType::Vector3: out[field.Name] = *reinterpret_cast<const MVector3*>(fieldPtr); break;
-                case FieldType::Vector4: out[field.Name] = *reinterpret_cast<const MQuaternion*>(fieldPtr); break;
+                case FieldType::Int: out[field.Name] = *static_cast<const int*>(fieldPtr); break;
+                case FieldType::Float: out[field.Name] = *static_cast<const float*>(fieldPtr); break;
+                case FieldType::Bool: out[field.Name] = *static_cast<const bool*>(fieldPtr); break;
+                case FieldType::String: out[field.Name] = *static_cast<const std::string*>(fieldPtr); break;
+                case FieldType::Vector2: out[field.Name] = *static_cast<const MVector2*>(fieldPtr); break;
+                case FieldType::Vector3: out[field.Name] = *static_cast<const MVector3*>(fieldPtr); break;
+                case FieldType::Vector4: out[field.Name] = *static_cast<const MQuaternion*>(fieldPtr); break;
             }
         }
     }
@@ -138,17 +141,18 @@ namespace Micro
         {
             if (componentData[field.Name])
             {
-                char* fieldPtr = reinterpret_cast<char*>(component) + field.Offset;
+                auto accessor = reinterpret_cast<MemberAccessor>(field.MemberPtr);
+                void* fieldPtr = accessor(component);
 
                 switch (field.Type)
                 {
-                    case FieldType::Int: *reinterpret_cast<int*>(fieldPtr) = componentData[field.Name].as<int>(); break;
-                    case FieldType::Float: *reinterpret_cast<float*>(fieldPtr) = componentData[field.Name].as<float>(); break;
-                    case FieldType::Bool: *reinterpret_cast<bool*>(fieldPtr) = componentData[field.Name].as<bool>(); break;
-                    case FieldType::String: *reinterpret_cast<std::string*>(fieldPtr) = componentData[field.Name].as<std::string>(); break;
-                    case FieldType::Vector2: *reinterpret_cast<MVector2*>(fieldPtr) = componentData[field.Name].as<MVector2>(); break;
-                    case FieldType::Vector3: *reinterpret_cast<MVector3*>(fieldPtr) = componentData[field.Name].as<MVector3>(); break;
-                    case FieldType::Vector4: *reinterpret_cast<MQuaternion*>(fieldPtr) = componentData[field.Name].as<MQuaternion>(); break;
+                    case FieldType::Int: *static_cast<int*>(fieldPtr) = componentData[field.Name].as<int>(); break;
+                    case FieldType::Float: *static_cast<float*>(fieldPtr) = componentData[field.Name].as<float>(); break;
+                    case FieldType::Bool: *static_cast<bool*>(fieldPtr) = componentData[field.Name].as<bool>(); break;
+                    case FieldType::String: *static_cast<std::string*>(fieldPtr) = componentData[field.Name].as<std::string>(); break;
+                    case FieldType::Vector2: *static_cast<MVector2*>(fieldPtr) = componentData[field.Name].as<MVector2>(); break;
+                    case FieldType::Vector3: *static_cast<MVector3*>(fieldPtr) = componentData[field.Name].as<MVector3>(); break;
+                    case FieldType::Vector4: *static_cast<MQuaternion*>(fieldPtr) = componentData[field.Name].as<MQuaternion>(); break;
                 }
             }
         }

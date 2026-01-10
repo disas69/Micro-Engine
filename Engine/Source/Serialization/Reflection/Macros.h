@@ -3,7 +3,8 @@
 #include "TypeDescriptor.h"
 #include "Gameplay/GameObject.h"
 
-#define MICRO_FIELD(type, name, fieldType) {#name, offsetof(type, name), fieldType}
+#define MICRO_FIELD(type, name, fieldType)                                                                                                                          \
+    {#name, (void*)+[](void* obj) -> void* { return &static_cast<type*>(obj)->name; }, fieldType}
 
 #define MICRO_COMPONENT(type)                                                                                                                                       \
 public:                                                                                                                                                             \

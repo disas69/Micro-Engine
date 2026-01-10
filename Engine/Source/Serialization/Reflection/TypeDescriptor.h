@@ -19,7 +19,7 @@ namespace Micro
     struct FieldDescriptor
     {
         const char* Name;
-        size_t Offset;
+        void* MemberPtr;
         FieldType Type;
     };
 
