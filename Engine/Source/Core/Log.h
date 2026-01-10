@@ -12,7 +12,7 @@ namespace Micro
     #else
 
     #define MICRO_LOG_INFO(msg) ((void)0)
-    #define MICRO_LOG_WARN(msg) ((void)0)
+    #define MICRO_LOG_WARNING(msg) ((void)0)
     #define MICRO_LOG_ERROR(msg) ((void)0)
     #define MICRO_LOG_FATAL(msg) ((void)0)
 
