@@ -7,7 +7,7 @@ namespace Micro
     class SceneSaver
     {
     public:
-        static void Save(const Scene& scene, const std::string& path);
+        static void Save(const Scene* scene, const std::string& path);
     };
 
 }  // namespace Micro

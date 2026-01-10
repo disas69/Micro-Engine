@@ -98,10 +98,10 @@ namespace YAML
         static Node encode(const Micro::MColor& rhs)
         {
             Node node;
-            node.push_back(rhs.r);
-            node.push_back(rhs.g);
-            node.push_back(rhs.b);
-            node.push_back(rhs.a);
+            node.push_back((uint8_t)rhs.r);
+            node.push_back((uint8_t)rhs.g);
+            node.push_back((uint8_t)rhs.b);
+            node.push_back((uint8_t)rhs.a);
             return node;
         }
 
@@ -109,10 +109,10 @@ namespace YAML
         {
             if (!node.IsSequence() || node.size() != 4) return false;
 
-            rhs.r = node[0].as<float>();
-            rhs.g = node[1].as<float>();
-            rhs.b = node[2].as<float>();
-            rhs.a = node[3].as<float>();
+            rhs.r = node[0].as<uint8_t>();
+            rhs.g = node[1].as<uint8_t>();
+            rhs.b = node[2].as<uint8_t>();
+            rhs.a = node[3].as<uint8_t>();
             return true;
         }
     };

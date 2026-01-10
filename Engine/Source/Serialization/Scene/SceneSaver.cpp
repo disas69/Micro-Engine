@@ -3,11 +3,10 @@
 #include "Gameplay/GameObject.h"
 #include "Serialization/YAML/YamlComponentSerializer.h"
 #include "yaml-cpp/yaml.h"
-#include <fstream>
 
 namespace Micro
 {
-    void SceneSaver::Save(const Scene& scene, const std::string& path)
+    void SceneSaver::Save(const Scene* scene, const std::string& path)
     {
         YAML::Emitter out;
         out << YAML::BeginMap;
@@ -16,7 +15,7 @@ namespace Micro
         out << YAML::Key << "Version" << YAML::Value << 1;
         out << YAML::Key << "GameObjects" << YAML::Value << YAML::BeginSeq;
 
-        for (const auto& go : scene.GetGameObjects())
+        for (const auto& go : scene->GetGameObjects())
         {
             out << YAML::BeginMap;
             out << YAML::Key << "ID" << YAML::Value << go->GetGUID();
@@ -44,7 +43,6 @@ namespace Micro
         out << YAML::EndMap;
         out << YAML::EndMap;
 
-        std::ofstream fout(path);
-        fout << out.c_str();
+        SaveFileData(path.c_str(), (void*)out.c_str(), out.size());
     }
 }  // namespace Micro
