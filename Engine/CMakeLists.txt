@@ -31,6 +31,8 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/TextComponent.h
         Source/Gameplay/Scene.cpp
         Source/Gameplay/Scene.h
+        Source/Gameplay/Managers/SceneManager.cpp
+        Source/Gameplay/Managers/SceneManager.h
         Source/Gameplay/Systems/RenderSystem.cpp
         Source/Gameplay/Systems/RenderSystem.h
         Source/Gameplay/Systems/TransformSystem.cpp

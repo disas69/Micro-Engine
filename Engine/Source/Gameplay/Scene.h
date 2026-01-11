@@ -17,13 +17,15 @@ namespace Micro
 
         GameObject* CreateGameObject(const std::string& name);
         GameObject* CreateGameObject(const std::string& name, GUID guid);
-        void DestroyGameObject(GUID guid);
 
         void Update(float deltaTime);
+        void Clear();
 
         const std::vector<std::unique_ptr<GameObject>>& GetGameObjects() const { return m_GameObjects; }
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_GameObjects;
+
+        void DestroyGameObject(GUID guid);
     };
 }  // namespace Micro

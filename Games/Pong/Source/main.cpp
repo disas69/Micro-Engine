@@ -4,6 +4,6 @@
 int main()
 {
     Micro::Engine engine;
-    Pong::PongGame game;
-    return engine.Run(&game);
+    engine.Load<Pong::PongGame>();
+    return engine.Run();
 }

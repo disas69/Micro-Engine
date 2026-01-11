@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineConfig.h"
+#include "Game/GameBase.h"
 #include "Gameplay/Scene.h"
 
 namespace Micro
@@ -18,15 +19,24 @@ namespace Micro
         Engine(Engine&&) = delete;
         Engine& operator=(Engine&&) = delete;
 
-        int Run(GameBase* game);
+        template <typename T>
+        void Load()
+        {
+            static_assert(std::is_base_of<GameBase, T>::value, "T must be derived from GameBase");
+
+            m_Game = std::make_unique<T>();
+            m_Game->RegisterCustomComponents();
+        }
+
+        int Run();
 
         static constexpr std::string_view version() { return ENGINE_VERSION_STRING; }
 
     private:
         MWindow m_Window;
-        std::unique_ptr<Scene> m_ActiveScene;
+        std::unique_ptr<GameBase> m_Game = nullptr;
 
         void RegisterStandardComponents();
-        void Render(GameBase* game);
+        void Render();
     };
 }  // namespace Micro

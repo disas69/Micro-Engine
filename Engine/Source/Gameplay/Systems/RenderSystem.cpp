@@ -11,6 +11,12 @@ namespace Micro
 {
     void RenderSystem::Render(MCamera3D* camera, Scene* scene)
     {
+        if (camera == nullptr || scene == nullptr)
+        {
+            MICRO_LOG_ERROR("RenderSystem::Render - Invalid camera or scene");
+            return;
+        }
+
         BeginMode3D(*camera);
 
         for (const auto& go : scene->GetGameObjects())

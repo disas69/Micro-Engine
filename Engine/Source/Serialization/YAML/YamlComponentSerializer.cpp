@@ -2,148 +2,6 @@
 #include "Serialization/Reflection/TypeRegistry.h"
 #include "Core/GUID.h"
 
-namespace YAML
-{
-    template <>
-    struct convert<Micro::GUID>
-    {
-        static Node encode(const Micro::GUID& guid)
-        {
-            Node node;
-            node.push_back((uint64_t)guid);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::GUID& guid)
-        {
-            if (!node.IsScalar()) return false;
-
-            guid = Micro::GUID(node.as<uint64_t>());
-            return true;
-        }
-    };
-
-    template <>
-    struct convert<Micro::MVector2>
-    {
-        static Node encode(const Micro::MVector2& rhs)
-        {
-            Node node;
-            node.push_back(rhs.x);
-            node.push_back(rhs.y);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::MVector2& rhs)
-        {
-            if (!node.IsSequence() || node.size() != 2) return false;
-
-            rhs.x = node[0].as<float>();
-            rhs.y = node[1].as<float>();
-            return true;
-        }
-    };
-
-    template <>
-    struct convert<Micro::MVector3>
-    {
-        static Node encode(const Micro::MVector3& rhs)
-        {
-            Node node;
-            node.push_back(rhs.x);
-            node.push_back(rhs.y);
-            node.push_back(rhs.z);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::MVector3& rhs)
-        {
-            if (!node.IsSequence() || node.size() != 3) return false;
-
-            rhs.x = node[0].as<float>();
-            rhs.y = node[1].as<float>();
-            rhs.z = node[2].as<float>();
-            return true;
-        }
-    };
-
-    template <>
-    struct convert<Micro::MQuaternion>
-    {
-        static Node encode(const Micro::MQuaternion& rhs)
-        {
-            Node node;
-            node.push_back(rhs.x);
-            node.push_back(rhs.y);
-            node.push_back(rhs.z);
-            node.push_back(rhs.w);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::MQuaternion& rhs)
-        {
-            if (!node.IsSequence() || node.size() != 4) return false;
-
-            rhs.x = node[0].as<float>();
-            rhs.y = node[1].as<float>();
-            rhs.z = node[2].as<float>();
-            rhs.w = node[3].as<float>();
-            return true;
-        }
-    };
-
-    template <>
-    struct convert<Micro::MColor>
-    {
-        static Node encode(const Micro::MColor& rhs)
-        {
-            Node node;
-            node.push_back((uint8_t)rhs.r);
-            node.push_back((uint8_t)rhs.g);
-            node.push_back((uint8_t)rhs.b);
-            node.push_back((uint8_t)rhs.a);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::MColor& rhs)
-        {
-            if (!node.IsSequence() || node.size() != 4) return false;
-
-            rhs.r = node[0].as<uint8_t>();
-            rhs.g = node[1].as<uint8_t>();
-            rhs.b = node[2].as<uint8_t>();
-            rhs.a = node[3].as<uint8_t>();
-            return true;
-        }
-    };
-
-    template <>
-    struct convert<Micro::MRectangle>
-    {
-        static Node encode(const Micro::MRectangle& rhs)
-        {
-            Node node;
-            node.push_back(rhs.x);
-            node.push_back(rhs.y);
-            node.push_back(rhs.width);
-            node.push_back(rhs.height);
-            return node;
-        }
-
-        static bool decode(const Node& node, Micro::MRectangle& rhs)
-        {
-            if (!node.IsSequence() || node.size() != 4) return false;
-
-            rhs.x = node[0].as<float>();
-            rhs.y = node[1].as<float>();
-            rhs.width = node[2].as<float>();
-            rhs.height = node[3].as<float>();
-            return true;
-        }
-    };
-
-}  // namespace YAML
-
 namespace Micro
 {
     using MemberAccessor = void* (*)(void*);
@@ -174,8 +32,9 @@ namespace Micro
 
     void YamlComponentSerializer::Deserialize(GameObject& owner, const YAML::Node& in)
     {
-        const std::string componentName = in.begin()->first.as<std::string>();
-        const YAML::Node& componentData = in.begin()->second;
+        const auto it = in.begin();
+        const std::string componentName = it->first.as<std::string>();
+        const YAML::Node& componentData = it->second;
 
         TypeDescriptor* typeDesc = TypeRegistry::Find(componentName);
         if (typeDesc == nullptr)
@@ -185,30 +44,27 @@ namespace Micro
         }
 
         Component* component = owner.GetComponent(typeDesc->Name);
-        if (component == nullptr)
-        {
-            component = typeDesc->Create(owner);
-        }
+        if (component == nullptr) component = typeDesc->Create(owner);
 
         for (const auto& field : typeDesc->Fields)
         {
-            if (componentData[field.Name])
-            {
-                auto accessor = reinterpret_cast<MemberAccessor>(field.MemberPtr);
-                void* fieldPtr = accessor(component);
+            const YAML::Node fieldNode = componentData[field.Name];
+            if (!fieldNode) continue;
 
-                switch (field.Type)
-                {
-                    case FieldType::Int: *static_cast<int*>(fieldPtr) = componentData[field.Name].as<int>(); break;
-                    case FieldType::Float: *static_cast<float*>(fieldPtr) = componentData[field.Name].as<float>(); break;
-                    case FieldType::Bool: *static_cast<bool*>(fieldPtr) = componentData[field.Name].as<bool>(); break;
-                    case FieldType::String: *static_cast<std::string*>(fieldPtr) = componentData[field.Name].as<std::string>(); break;
-                    case FieldType::Vector2: *static_cast<MVector2*>(fieldPtr) = componentData[field.Name].as<MVector2>(); break;
-                    case FieldType::Vector3: *static_cast<MVector3*>(fieldPtr) = componentData[field.Name].as<MVector3>(); break;
-                    case FieldType::Vector4: *static_cast<MQuaternion*>(fieldPtr) = componentData[field.Name].as<MQuaternion>(); break;
-                    case FieldType::Color: *static_cast<MColor*>(fieldPtr) = componentData[field.Name].as<MColor>(); break;
-                    case FieldType::Rect: *static_cast<MRectangle*>(fieldPtr) = componentData[field.Name].as<MRectangle>(); break;
-                }
+            auto accessor = reinterpret_cast<MemberAccessor>(field.MemberPtr);
+            void* fieldPtr = accessor(component);
+
+            switch (field.Type)
+            {
+                case FieldType::Int: *static_cast<int*>(fieldPtr) = fieldNode.as<int>(); break;
+                case FieldType::Float: *static_cast<float*>(fieldPtr) = fieldNode.as<float>(); break;
+                case FieldType::Bool: *static_cast<bool*>(fieldPtr) = fieldNode.as<bool>(); break;
+                case FieldType::String: *static_cast<std::string*>(fieldPtr) = fieldNode.as<std::string>(); break;
+                case FieldType::Vector2: *static_cast<MVector2*>(fieldPtr) = fieldNode.as<MVector2>(); break;
+                case FieldType::Vector3: *static_cast<MVector3*>(fieldPtr) = fieldNode.as<MVector3>(); break;
+                case FieldType::Vector4: *static_cast<MQuaternion*>(fieldPtr) = fieldNode.as<MQuaternion>(); break;
+                case FieldType::Color: *static_cast<MColor*>(fieldPtr) = fieldNode.as<MColor>(); break;
+                case FieldType::Rect: *static_cast<MRectangle*>(fieldPtr) = fieldNode.as<MRectangle>(); break;
             }
         }
     }

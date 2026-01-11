@@ -16,15 +16,16 @@ namespace Micro
         GameBase(GameBase&&) = delete;
         GameBase& operator=(GameBase&&) = delete;
 
+        virtual void RegisterCustomComponents();
+
         void Init(MVector2 screenSize);
         void Update(float deltaTime);
         void Shutdown();
 
+        Scene* GetScene();
+
         void SetScreenSize(MVector2 screenSize) { m_ScreenSize = screenSize; }
         MVector2 GetScreenSize() { return m_ScreenSize; }
-
-        void SetScene(Scene* scene) { m_Scene = scene; }
-        Scene* GetScene() const { return m_Scene; }
 
         std::string GetWindowTitle() const { return m_WindowTitle; }
         bool ShouldClose() const { return m_ShouldClose; }
@@ -42,7 +43,8 @@ namespace Micro
         virtual void OnShutdown() = 0;
 
     private:
-        Scene* m_Scene = nullptr;
         MCamera3D* m_MainCamera = nullptr;
+
+        void LoadStartupScene();
     };
 }  // namespace Micro

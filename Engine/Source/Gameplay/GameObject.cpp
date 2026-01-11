@@ -26,4 +26,19 @@ namespace Micro
         }
         return components;
     }
+
+    void GameObject::Destroy(bool notify)
+    {
+        if (notify && OnDestroy != nullptr)
+        {
+            OnDestroy();
+        }
+
+        for (const auto& component : m_Components)
+        {
+            component->OnDestroy();
+        }
+
+        m_Components.clear();
+    }
 }  // namespace Micro

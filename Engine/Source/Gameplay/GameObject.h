@@ -5,11 +5,16 @@
 
 namespace Micro
 {
+    // TODO: Replace with Events System
+    using OnDestroyDelegate = std::function<void()>;
+
     class GameObject
     {
     public:
         GameObject(std::string name, GUID guid);
         ~GameObject() = default;
+
+        OnDestroyDelegate OnDestroy;
 
         template <typename T, typename... Args>
         T* AddComponent(Args&&... args)
@@ -52,7 +57,7 @@ namespace Micro
         const std::string& GetName() const { return m_Name; }
         GUID GetGUID() const { return m_Guid; }
 
-        const std::vector<std::unique_ptr<Component>>& GetComponents() const { return m_Components; }
+        void Destroy(bool notify = true);
 
     private:
         std::vector<std::unique_ptr<Component>> m_Components;

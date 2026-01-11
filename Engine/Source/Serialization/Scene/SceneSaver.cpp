@@ -8,41 +8,42 @@ namespace Micro
 {
     void SceneSaver::Save(const Scene* scene, const std::string& path)
     {
-        YAML::Emitter out;
-        out << YAML::BeginMap;
-        out << YAML::Key << "Scene" << YAML::Value;
-        out << YAML::BeginMap;
-        out << YAML::Key << "Version" << YAML::Value << 1;
-        out << YAML::Key << "GameObjects" << YAML::Value << YAML::BeginSeq;
+        YAML::Node root;
+        YAML::Node sceneNode;
+        YAML::Node objectsNode(YAML::NodeType::Sequence);
+
+        sceneNode["Version"] = 1;
 
         for (const auto& go : scene->GetGameObjects())
         {
-            out << YAML::BeginMap;
-            out << YAML::Key << "ID" << YAML::Value << go->GetGUID();
-            out << YAML::Key << "Name" << YAML::Value << go->GetName();
-            out << YAML::Key << "Components" << YAML::Value << YAML::BeginSeq;
+            YAML::Node goNode;
+            goNode["ID"] = go->GetGUID();
+            goNode["Name"] = go->GetName();
+
+            YAML::Node componentsNode(YAML::NodeType::Sequence);
 
             for (const auto& component : go->GetAllComponents())
             {
-                out << YAML::BeginMap;
-                out << YAML::Key << component->GetTypeDescriptor().Name;
-                out << YAML::Value;
-                out << YAML::BeginMap;
-                YAML::Node compNode;
-                YamlComponentSerializer::Serialize(*component, compNode);
-                out << compNode;
-                out << YAML::EndMap;
-                out << YAML::EndMap;
+                YAML::Node componentNode;
+                YAML::Node componentData;
+
+                YamlComponentSerializer::Serialize(*component, componentData);
+
+                componentNode[component->GetTypeDescriptor().Name] = componentData;
+                componentsNode.push_back(componentNode);
             }
 
-            out << YAML::EndSeq;
-            out << YAML::EndMap;
+            goNode["Components"] = componentsNode;
+            objectsNode.push_back(goNode);
         }
 
-        out << YAML::EndSeq;
-        out << YAML::EndMap;
-        out << YAML::EndMap;
+        sceneNode["GameObjects"] = objectsNode;
+        root["Scene"] = sceneNode;
+
+        YAML::Emitter out;
+        out << root;
 
         SaveFileData(path.c_str(), (void*)out.c_str(), out.size());
     }
+
 }  // namespace Micro

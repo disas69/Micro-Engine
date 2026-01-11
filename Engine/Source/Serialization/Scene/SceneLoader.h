@@ -7,7 +7,7 @@ namespace Micro
     class SceneLoader
     {
     public:
-        static std::unique_ptr<Scene> Load(const std::string& path);
+        static void Load(const std::string& path, Scene* scene);
     };
 
 }  // namespace Micro

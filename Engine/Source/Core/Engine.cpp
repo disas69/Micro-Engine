@@ -25,39 +25,6 @@ namespace Micro
         MICRO_LOG_INFO("Shutting down Micro Engine.");
     }
 
-    int Engine::Run(GameBase* game)
-    {
-        int screenWidth = 800;
-        int screenHeight = 450;
-
-        MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-        MWindow::Init(screenWidth, screenHeight, game->GetWindowTitle());
-        m_Window.SetTargetFPS(60);
-
-        // Temp
-        m_ActiveScene = std::make_unique<Scene>();
-        game->SetScene(m_ActiveScene.get());
-
-        game->Init(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
-
-        while (!MWindow::ShouldClose() && !game->ShouldClose())
-        {
-            float deltaTime = GetFrameTime();
-            game->Update(deltaTime);
-
-            Render(game);
-
-            if (MWindow::IsResized())
-            {
-                game->SetScreenSize(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
-            }
-        }
-
-        game->Shutdown();
-
-        return 0;
-    }
-
     void Engine::RegisterStandardComponents()
     {
         TypeRegistry::Register(&TransformComponent::GetType());
@@ -68,12 +35,54 @@ namespace Micro
         TypeRegistry::Register(&TextComponent::GetType());
     }
 
-    void Engine::Render(GameBase* game)
+    int Engine::Run()
     {
+        if (m_Game == nullptr)
+        {
+            MICRO_LOG_ERROR("Game is not loaded");
+            return 1;
+        }
+
+        int screenWidth = 800;
+        int screenHeight = 450;
+
+        MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+        MWindow::Init(screenWidth, screenHeight, m_Game->GetWindowTitle());
+        m_Window.SetTargetFPS(60);
+
+        m_Game->Init(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
+
+        while (!MWindow::ShouldClose() && !m_Game->ShouldClose())
+        {
+            float deltaTime = GetFrameTime();
+
+            m_Game->Update(deltaTime);
+
+            Render();
+
+            if (MWindow::IsResized())
+            {
+                m_Game->SetScreenSize(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
+            }
+        }
+
+        m_Game->Shutdown();
+
+        return 0;
+    }
+
+    void Engine::Render()
+    {
+        if (m_Game == nullptr)
+        {
+            MICRO_LOG_ERROR("Game is not loaded");
+            return;
+        }
+
         m_Window.BeginDrawing();
         m_Window.ClearBackground(RAYWHITE);
 
-        RenderSystem::Render(game->GetMainCamera(), m_ActiveScene.get());
+        RenderSystem::Render(m_Game->GetMainCamera(), m_Game->GetScene());
 
         m_Window.EndDrawing();
     }

@@ -12,7 +12,10 @@ namespace Micro
     GameObject* Scene::CreateGameObject(const std::string& name, GUID guid)
     {
         auto newGameObject = std::make_unique<GameObject>(name, guid);
+
         GameObject* rawPtr = newGameObject.get();
+        rawPtr->OnDestroy = [this, guid]() { DestroyGameObject(guid); };
+
         m_GameObjects.push_back(std::move(newGameObject));
         // ReSharper disable once CppDFALocalValueEscapesFunction
         return rawPtr;
@@ -31,10 +34,20 @@ namespace Micro
 
         for (auto& gameObject : m_GameObjects)
         {
-            for (const auto& component : gameObject->GetComponents())
+            for (const auto component : gameObject->GetAllComponents())
             {
                 component->OnUpdate(deltaTime);
             }
         }
+    }
+
+    void Scene::Clear()
+    {
+        for (auto& gameObject : m_GameObjects)
+        {
+            gameObject->Destroy(false);
+        }
+
+        m_GameObjects.clear();
     }
 }  // namespace Micro

@@ -7,14 +7,12 @@
 
 namespace Micro
 {
-    std::unique_ptr<Scene> SceneLoader::Load(const std::string& path)
+    void SceneLoader::Load(const std::string& path, Scene* scene)
     {
-        auto scene = std::make_unique<Scene>();
-
         YAML::Node data = YAML::LoadFile(path);
         if (!data["Scene"])
         {
-            return nullptr;
+            return;
         }
 
         YAML::Node sceneNode = data["Scene"];
@@ -39,7 +37,5 @@ namespace Micro
                 }
             }
         }
-
-        return scene;
     }
 }  // namespace Micro
