@@ -8,6 +8,8 @@ namespace Micro
     {
         MICRO_COMPONENT(TextComponent)
 
+        TextComponent();
+
         std::string& GetText() { return m_Text; }
         void SetText(const std::string& text) { m_Text = text; }
 

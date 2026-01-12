@@ -8,7 +8,7 @@ namespace Micro
     {
         MICRO_COMPONENT(ImageComponent)
 
-        ImageComponent() = default;
+        ImageComponent();
 
         MTexture2D& GetTexture() { return m_Texture; }
         void SetTexture(const Texture2D& texture) { m_Texture = texture; }

@@ -11,11 +11,11 @@ namespace Micro
 
         try
         {
-            SceneLoader::Load("StartupScene.yaml", m_ActiveScene.get());
+            SceneLoader::Load("Startup.scene", m_ActiveScene.get());
         }
         catch (const std::exception& e)
         {
-            MICRO_LOG_WARNING("Failed to load startup scene: " + std::string(e.what()) + ". Loading empty scene instead.");
+            MICRO_LOG_WARNING("Failed to load startup scene: " + std::string(e.what()) + ". The startup scene will be empty by default.");
         }
     }
 
@@ -51,7 +51,7 @@ namespace Micro
 
     void SceneManager::SaveScene()
     {
-        SceneSaver::Save(m_ActiveScene.get(), "StartupScene.yaml");
+        SceneSaver::Save(m_ActiveScene.get(), "Startup.scene");
     }
 
     Scene* SceneManager::GetActiveScene() const

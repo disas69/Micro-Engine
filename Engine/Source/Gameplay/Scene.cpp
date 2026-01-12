@@ -21,6 +21,19 @@ namespace Micro
         return rawPtr;
     }
 
+    GameObject* Scene::FindGameObjectByName(const std::string& name) const
+    {
+        for (auto& gameObject : m_GameObjects)
+        {
+            if (gameObject->GetName() == name)
+            {
+                return gameObject.get();
+            }
+        }
+
+        return nullptr;
+    }
+
     void Scene::DestroyGameObject(GUID guid)
     {
         m_GameObjects.erase(

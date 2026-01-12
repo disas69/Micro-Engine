@@ -1,0 +1,36 @@
+Scene:
+  Version: 1
+  GameObjects:
+    - ID: 13447851946891262109
+      Name: Camera
+      Components:
+        - CameraComponent: ~
+    - ID: 2804414595141122574
+      Name: Cube
+      Components:
+        - TransformComponent:
+            m_LocalPosition: [0, 0.5, 0]
+            m_LocalRotation: [0, 0, 0, 1]
+            m_LocalScale: [3, 3, 3]
+        - MeshComponent: ~
+    - ID: 7280427647445530937
+      Name: Image
+      Components:
+        - TransformComponent:
+            m_LocalPosition: [50, 50, 0]
+            m_LocalRotation: [0, 0, 0, 1]
+            m_LocalScale: [1, 1, 1]
+        - ImageComponent:
+            m_SourceRect: [0, 0, 128, 128]
+            m_Color: [0, 0, 255, 200]
+    - ID: 11332681849914253727
+      Name: Text
+      Components:
+        - TransformComponent:
+            m_LocalPosition: [5, 5, 0]
+            m_LocalRotation: [0, 0, 0, 1]
+            m_LocalScale: [1, 1, 1]
+        - TextComponent:
+            m_Text: Hello Micro!
+            m_FontSize: 20
+            m_Color: [255, 255, 255, 255]

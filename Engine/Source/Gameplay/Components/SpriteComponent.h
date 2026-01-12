@@ -10,7 +10,7 @@ namespace Micro
     {
         MICRO_COMPONENT(SpriteComponent)
 
-        SpriteComponent() = default;
+        SpriteComponent();
 
         MTexture2D& GetSpriteTexture() { return m_SpriteTexture; }
         void SetSpriteTexture(const Texture2D& texture) { m_SpriteTexture = texture; }

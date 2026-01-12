@@ -8,10 +8,7 @@ namespace Micro
     {
         MICRO_COMPONENT(MeshComponent)
 
-        MeshComponent()
-        {
-            m_Material = LoadMaterialDefault();
-        }
+        MeshComponent();
 
         MMesh* GetMesh() { return &m_Mesh; }
         void SetMesh(const Mesh& mesh) { m_Mesh = mesh; }

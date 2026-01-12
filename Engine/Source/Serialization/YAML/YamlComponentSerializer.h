@@ -36,6 +36,7 @@ namespace YAML
         static Node encode(const Micro::MVector2& v)
         {
             Node node(NodeType::Sequence);
+            node.SetStyle(EmitterStyle::Flow);
             node.push_back(v.x);
             node.push_back(v.y);
             return node;
@@ -56,6 +57,7 @@ namespace YAML
         static Node encode(const Micro::MVector3& v)
         {
             Node node(NodeType::Sequence);
+            node.SetStyle(EmitterStyle::Flow);
             node.push_back(v.x);
             node.push_back(v.y);
             node.push_back(v.z);
@@ -78,6 +80,7 @@ namespace YAML
         static Node encode(const Micro::MQuaternion& q)
         {
             Node node(NodeType::Sequence);
+            node.SetStyle(EmitterStyle::Flow);
             node.push_back(q.x);
             node.push_back(q.y);
             node.push_back(q.z);
@@ -102,6 +105,7 @@ namespace YAML
         static Node encode(const Micro::MColor& c)
         {
             Node node(NodeType::Sequence);
+            node.SetStyle(EmitterStyle::Flow);
             node.push_back(static_cast<int>(c.r));
             node.push_back(static_cast<int>(c.g));
             node.push_back(static_cast<int>(c.b));
@@ -126,6 +130,7 @@ namespace YAML
         static Node encode(const Micro::MRectangle& r)
         {
             Node node(NodeType::Sequence);
+            node.SetStyle(EmitterStyle::Flow);
             node.push_back(r.x);
             node.push_back(r.y);
             node.push_back(r.width);

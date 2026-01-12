@@ -6,6 +6,7 @@
 #include "Gameplay/Components/MeshComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Managers/SceneManager.h"
+#include "Serialization/Scene/SceneSaver.h"
 
 namespace Micro
 {
@@ -16,36 +17,55 @@ namespace Micro
 
     void DefaultGame::OnInit()
     {
-        GameObject* cameraObject = GetScene()->CreateGameObject("Camera");
-        auto camera = cameraObject->AddComponent<CameraComponent>();
+        // Load scene path
+        GameObject* cameraObject = GetScene()->FindGameObjectByName("Camera");
+        auto camera = cameraObject->GetComponent<CameraComponent>();
         camera->SetPosition(MVector3{5.0f, 5.0f, 5.0f});
         camera->SetTarget(MVector3{0.0f, 1.0f, 0.0f});
 
         SetMainCamera(camera->GetCamera());
 
-        m_CubeObject = GetScene()->CreateGameObject("Cube");
-        auto transformMesh = m_CubeObject->AddComponent<TransformComponent>();
-        transformMesh->SetLocalPosition(MVector3{0.0f, 0.5f, 0.0f});
-        transformMesh->SetLocalScale(MVector3{3.0f, 3.0f, 3.0f});
-        auto mesh = m_CubeObject->AddComponent<MeshComponent>();
-        mesh->SetMesh(GenMeshCube(1.0f, 1.0f, 1.0f));
+        m_CubeObject = GetScene()->FindGameObjectByName("Cube");
+        auto mesh = m_CubeObject->GetComponent<MeshComponent>();
         mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;
 
-        m_ImageObject = GetScene()->CreateGameObject("Image");
-        auto transformImage = m_ImageObject->AddComponent<TransformComponent>();
-        transformImage->SetLocalPosition(MVector3{50.0f, 50.0f, 0.0f});
-        auto image = m_ImageObject->AddComponent<ImageComponent>();
-        Image uiImg = GenImageColor(128, 128, MColor(0, 0, 255, 200));
-        image->SetTexture(LoadTextureFromImage(uiImg));
-        image->SetSourceRect(MRectangle{0, 0, 128, 128});
-        UnloadImage(uiImg);
+        m_ImageObject = GetScene()->FindGameObjectByName("Image");
+        auto transformImage = m_ImageObject->GetComponent<TransformComponent>();
 
-        m_TextObject = GetScene()->CreateGameObject("Text");
-        auto transformText = m_TextObject->AddComponent<TransformComponent>();
+        m_TextObject = GetScene()->FindGameObjectByName("Text");
+        auto transformText = m_TextObject->GetComponent<TransformComponent>();
         transformText->SetParent(transformImage);
-        transformText->SetLocalPosition(MVector3{5.0f, 5.0f, 0.0f});
-        auto text = m_TextObject->AddComponent<TextComponent>();
-        text->SetText("Hello World");
+
+        // Save scene path
+        // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");
+        // auto camera = cameraObject->AddComponent<CameraComponent>();
+        // camera->SetPosition(MVector3{5.0f, 5.0f, 5.0f});
+        // camera->SetTarget(MVector3{0.0f, 1.0f, 0.0f});
+        //
+        // SetMainCamera(camera->GetCamera());
+        //
+        // m_CubeObject = GetScene()->CreateGameObject("Cube");
+        // auto transformMesh = m_CubeObject->AddComponent<TransformComponent>();
+        // transformMesh->SetLocalPosition(MVector3{0.0f, 0.5f, 0.0f});
+        // transformMesh->SetLocalScale(MVector3{3.0f, 3.0f, 3.0f});
+        // auto mesh = m_CubeObject->AddComponent<MeshComponent>();
+        // mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;
+        //
+        // m_ImageObject = GetScene()->CreateGameObject("Image");
+        // auto transformImage = m_ImageObject->AddComponent<TransformComponent>();
+        // transformImage->SetLocalPosition(MVector3{50.0f, 50.0f, 0.0f});
+        // auto image = m_ImageObject->AddComponent<ImageComponent>();
+        // image->SetSourceRect(MRectangle{0, 0, 128, 128});
+        // image->SetColor(MColor(0, 0, 255, 200));
+        //
+        // m_TextObject = GetScene()->CreateGameObject("Text");
+        // auto transformText = m_TextObject->AddComponent<TransformComponent>();
+        // transformText->SetParent(transformImage);
+        // transformText->SetLocalPosition(MVector3{5.0f, 5.0f, 0.0f});
+        // auto text = m_TextObject->AddComponent<TextComponent>();
+        // text->SetText("Hello Micro!");
+        //
+        // SceneManager::GetInstance().SaveScene();
     }
 
     void DefaultGame::OnUpdate(float deltaTime)

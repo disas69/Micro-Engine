@@ -6,4 +6,8 @@ namespace Micro
         // MICRO_FIELD(SpriteComponent, m_SpriteTexture, FieldType::Int),
         MICRO_FIELD(SpriteComponent, m_SourceRect, FieldType::Rect),
         MICRO_FIELD(SpriteComponent, m_Color, FieldType::Color))
-}
+    SpriteComponent::SpriteComponent()
+    {
+
+    }
+}  // namespace Micro

@@ -18,6 +18,23 @@ namespace Micro
         GameObject* CreateGameObject(const std::string& name);
         GameObject* CreateGameObject(const std::string& name, GUID guid);
 
+        GameObject* FindGameObjectByName(const std::string& name) const;
+
+        template<typename Component>
+        GameObject* FindGameObjectByType() const
+        {
+            static_assert(std::is_base_of_v<Micro::Component, Component>, "Component must derive from Micro::Component");
+
+            for (const auto& gameObject : m_GameObjects)
+            {
+                if (gameObject->GetComponent<Component>() != nullptr)
+                {
+                    return gameObject.get();
+                }
+            }
+            return nullptr;
+        }
+
         void Update(float deltaTime);
         void Clear();
 

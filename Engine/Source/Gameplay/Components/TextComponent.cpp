@@ -6,4 +6,7 @@ namespace Micro
         MICRO_FIELD(TextComponent, m_Text, FieldType::String),
         MICRO_FIELD(TextComponent, m_FontSize, FieldType::Float),
         MICRO_FIELD(TextComponent, m_Color, FieldType::Color))
-}
+    TextComponent::TextComponent()
+    {
+    }
+}  // namespace Micro
