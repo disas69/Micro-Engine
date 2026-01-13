@@ -31,13 +31,18 @@ namespace Micro
         return components;
     }
 
-    void GameObject::Destroy(bool notify)
+    void GameObject::Destroy()
     {
-        if (notify && OnDestroy != nullptr)
+        if (OnDestroy != nullptr)
         {
             OnDestroy();
         }
 
+        DestroyInternal();
+    }
+
+    void GameObject::DestroyInternal()
+    {
         for (const auto& component : m_Components)
         {
             component->OnDestroy();

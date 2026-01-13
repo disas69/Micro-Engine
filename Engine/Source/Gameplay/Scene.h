@@ -37,13 +37,14 @@ namespace Micro
         }
 
         void Update(float deltaTime);
-        void Clear();
+
+        void DestroyAll();
 
         const std::vector<std::unique_ptr<GameObject>>& GetGameObjects() const { return m_GameObjects; }
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_GameObjects;
 
-        void DestroyGameObject(GUID guid);
+        void OnGameObjectDestroyed(GUID guid);
     };
 }  // namespace Micro

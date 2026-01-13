@@ -14,9 +14,9 @@ namespace Micro
         auto newGameObject = std::make_unique<GameObject>(name, guid);
 
         GameObject* rawPtr = newGameObject.get();
-        rawPtr->OnDestroy = [this, guid]() { DestroyGameObject(guid); };
-
+        rawPtr->OnDestroy = [this, guid]() { OnGameObjectDestroyed(guid); };
         m_GameObjects.push_back(std::move(newGameObject));
+
         // ReSharper disable once CppDFALocalValueEscapesFunction
         return rawPtr;
     }
@@ -34,7 +34,7 @@ namespace Micro
         return nullptr;
     }
 
-    void Scene::DestroyGameObject(GUID guid)
+    void Scene::OnGameObjectDestroyed(GUID guid)
     {
         m_GameObjects.erase(
             std::remove_if(m_GameObjects.begin(), m_GameObjects.end(), [guid](const std::unique_ptr<GameObject>& obj) { return obj->GetGUID() == guid; }),
@@ -54,15 +54,16 @@ namespace Micro
         }
     }
 
-    void Scene::Clear()
+    void Scene::DestroyAll()
     {
         for (auto& gameObject : m_GameObjects)
         {
-            gameObject->Destroy(false);
+            gameObject->DestroyInternal();
         }
 
         m_GameObjects.clear();
     }
+
     GameObject* Scene::FindGameObjectByGUID(GUID guid) const
     {
         for (auto& gameObject : m_GameObjects)

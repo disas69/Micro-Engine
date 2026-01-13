@@ -12,10 +12,13 @@ namespace Micro
 
     class GameObject
     {
+        friend class Scene;
+
     public:
         GameObject(std::string name, GUID guid);
         ~GameObject() = default;
 
+        // Events
         OnDestroyDelegate OnDestroy;
 
         template <typename T, typename... Args>
@@ -69,7 +72,7 @@ namespace Micro
         bool IsActive() const { return m_IsActive; }
         void SetActive(bool isActive) { m_IsActive = isActive; }
 
-        void Destroy(bool notify = true);
+        void Destroy();
 
     private:
         std::vector<std::unique_ptr<Component>> m_Components;
@@ -77,5 +80,7 @@ namespace Micro
         GUID m_Guid;
         TransformComponent* m_Transform = nullptr;
         bool m_IsActive = true;
+
+        void DestroyInternal();
     };
 }  // namespace Micro
