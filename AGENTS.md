@@ -23,7 +23,7 @@ This document provides instructions and guidelines for AI agents working on the 
 - **Naming Conventions**:
     - **Classes/Structs**: `PascalCase` (e.g., `ArenaAllocator`).
     - **Methods/Functions**: `PascalCase` (e.g., `OnInit`, `OnUpdate`).
-    - **Member Variables**: `m_` prefix followed by `camelCase` (e.g., `m_windowTitle`, `m_persistentArena`).
+    - **Member Variables**: `m_` prefix followed by `PascalCase` (e.g., `m_WindowTitle`, `m_PersistentArena`).
     - **Local Variables**: `camelCase` (e.g., `screenWidth`).
     - **Constants/Macros**: `UPPER_SNAKE_CASE` (e.g., `DEFAULT_EDITOR_SCREEN_WIDTH`).
 - **Files**: Use `.h` for headers and `.cpp` for implementations. Use `#pragma once` in headers.
