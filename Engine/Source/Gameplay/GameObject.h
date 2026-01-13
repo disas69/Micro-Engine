@@ -5,6 +5,8 @@
 
 namespace Micro
 {
+    class TransformComponent;
+
     // TODO: Replace with Events System
     using OnDestroyDelegate = std::function<void()>;
 
@@ -46,6 +48,12 @@ namespace Micro
         }
 
         template <typename T>
+        T* GetComponentInChildren() const;
+
+        template <typename T>
+        T* GetComponentInParent() const;
+
+        template <typename T>
         bool HasComponent() const
         {
             return GetComponent<T>() != nullptr;
@@ -54,8 +62,13 @@ namespace Micro
         Component* GetComponent(const std::string& name) const;
         std::vector<Component*> GetAllComponents() const;
 
+        TransformComponent* GetTransform() const { return m_Transform; }
+
         const std::string& GetName() const { return m_Name; }
         GUID GetGUID() const { return m_Guid; }
+
+        bool IsActive() const { return m_IsActive; }
+        void SetActive(bool isActive) { m_IsActive = isActive; }
 
         void Destroy(bool notify = true);
 
@@ -63,5 +76,7 @@ namespace Micro
         std::vector<std::unique_ptr<Component>> m_Components;
         std::string m_Name;
         GUID m_Guid;
+        TransformComponent* m_Transform = nullptr;
+        bool m_IsActive = true;
     };
 }  // namespace Micro

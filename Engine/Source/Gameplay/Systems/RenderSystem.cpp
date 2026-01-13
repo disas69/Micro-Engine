@@ -21,6 +21,11 @@ namespace Micro
 
         for (const auto& go : scene->GetGameObjects())
         {
+            if (!go->IsActive())
+            {
+                continue;
+            }
+
             const auto* transform = go->GetComponent<TransformComponent>();
             if (transform == nullptr)
             {
@@ -51,6 +56,11 @@ namespace Micro
 
         for (const auto& go : scene->GetGameObjects())
         {
+            if (!go->IsActive())
+            {
+                continue;
+            }
+            
             const auto* transform = go->GetComponent<TransformComponent>();
             if (transform == nullptr)
             {

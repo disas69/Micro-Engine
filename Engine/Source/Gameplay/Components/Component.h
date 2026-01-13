@@ -4,6 +4,8 @@
 
 namespace Micro
 {
+    class TransformComponent;
+
     class Component
     {
     public:
@@ -16,10 +18,21 @@ namespace Micro
 
         virtual TypeDescriptor& GetTypeDescriptor() const = 0;
 
-        GameObject* GetOwner() const { return m_owner; }
-        void SetOwner(GameObject* owner) { m_owner = owner; }
+        GameObject* GetGameObject() const { return m_Owner; }
+        void SetOwner(GameObject* owner);
+
+        TransformComponent* GetTransform() const;
+
+        template <typename T>
+        T* GetComponent() const;
+
+        template <typename T>
+        T* GetComponentInChildren() const;
+
+        template <typename T>
+        T* GetComponentInParent() const;
 
     protected:
-        GameObject* m_owner = nullptr;
+        GameObject* m_Owner = nullptr;
     };
 }  // namespace Micro

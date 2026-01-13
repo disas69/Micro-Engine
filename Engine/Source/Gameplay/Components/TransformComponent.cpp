@@ -2,10 +2,8 @@
 
 namespace Micro
 {
-    MICRO_COMPONENT_IMPL(TransformComponent,
-        MICRO_FIELD(TransformComponent, m_LocalPosition, FieldType::Vector3),
-        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4),
-        MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
+    MICRO_COMPONENT_IMPL(TransformComponent, MICRO_FIELD(TransformComponent, m_LocalPosition, FieldType::Vector3),
+        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4), MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
     TransformComponent::TransformComponent()
     {
         m_LocalPosition = MVector3(0.0f, 0.0f, 0.0f);
@@ -17,14 +15,14 @@ namespace Micro
 
     void TransformComponent::SetParent(TransformComponent* parent)
     {
-        if (m_Parent)
+        if (m_Parent != nullptr)
         {
             m_Parent->RemoveChild(this);
         }
 
         m_Parent = parent;
 
-        if (m_Parent)
+        if (m_Parent != nullptr)
         {
             m_Parent->AddChild(this);
         }
@@ -108,5 +106,50 @@ namespace Micro
     void TransformComponent::RemoveChild(TransformComponent* child)
     {
         m_Children.erase(std::remove(m_Children.begin(), m_Children.end(), child), m_Children.end());
+    }
+
+    MVector3 TransformComponent::GetRight() const
+    {
+        return Vector3Normalize({m_WorldMatrix.m0, m_WorldMatrix.m1, m_WorldMatrix.m2});
+    }
+
+    MVector3 TransformComponent::GetUp() const
+    {
+        return Vector3Normalize({m_WorldMatrix.m4, m_WorldMatrix.m5, m_WorldMatrix.m6});
+    }
+
+    MVector3 TransformComponent::GetForward() const
+    {
+        return Vector3Normalize({m_WorldMatrix.m8, m_WorldMatrix.m9, m_WorldMatrix.m10});
+    }
+
+    void TransformComponent::Translate(const MVector3& delta)
+    {
+        m_LocalPosition += delta;
+        MarkDirty();
+    }
+
+    void TransformComponent::Rotate(const MVector3& eulerAngles)
+    {
+        MQuaternion additionalRotation = QuaternionFromEuler(eulerAngles.x, eulerAngles.y, eulerAngles.z);
+        m_LocalRotation = m_LocalRotation * additionalRotation;
+        MarkDirty();
+    }
+
+    void TransformComponent::LookAt(const MVector3& target)
+    {
+        MMatrix lookAtMatrix = MatrixLookAt(GetWorldPosition(), target, GetUp());
+        MVector3 position, scale;
+        MQuaternion rotation;
+        MatrixDecompose(lookAtMatrix, &position, &rotation, &scale);
+        SetLocalRotation(rotation);
+    }
+
+    void TransformComponent::ForEachChild(const std::function<void(TransformComponent*)>& func) const
+    {
+        for (const auto child : m_Children)
+        {
+            func(child);
+        }
     }
 }  // namespace Micro

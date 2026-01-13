@@ -15,6 +15,7 @@ set(ENGINE_SOURCES
         Source/Game/GameBase.cpp
         Source/Game/GameBase.h
         Source/Gameplay/Components/Component.h
+        Source/Gameplay/Components/Component.cpp
         Source/Gameplay/GameObject.h
         Source/Gameplay/GameObject.cpp
         Source/Gameplay/Components/CameraComponent.cpp

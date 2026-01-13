@@ -16,7 +16,7 @@ namespace Micro
         {
             if (const auto* parentTransform = transform->GetParent())
             {
-                out["Parent"] = parentTransform->GetOwner()->GetGUID();
+                out["Parent"] = parentTransform->GetGameObject()->GetGUID();
             }
             else
             {

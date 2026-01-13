@@ -26,9 +26,20 @@ namespace Micro
         MQuaternion GetWorldRotation() const;
         MVector3 GetWorldScale() const;
 
+        MVector3 GetRight() const;
+        MVector3 GetUp() const;
+        MVector3 GetForward() const;
+
+        void Translate(const MVector3& delta);
+        void Rotate(const MVector3& eulerAngles);
+        void LookAt(const MVector3& target);
+
         void SetParent(TransformComponent* parent);
         TransformComponent* GetParent() const { return m_Parent; }
+
         const std::vector<TransformComponent*>& GetChildren() const { return m_Children; }
+        size_t GetChildrenCount() const { return m_Children.size(); }
+        void ForEachChild(const std::function<void(TransformComponent*)>& func) const;
 
         void MarkDirty();
         bool IsDirty() const { return m_IsDirty; }
