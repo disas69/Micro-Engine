@@ -19,6 +19,7 @@ namespace Micro
         GameObject* CreateGameObject(const std::string& name, GUID guid);
 
         GameObject* FindGameObjectByName(const std::string& name) const;
+        GameObject* FindGameObjectByGUID(GUID guid) const;
 
         template<typename Component>
         GameObject* FindGameObjectByType() const

@@ -63,4 +63,16 @@ namespace Micro
 
         m_GameObjects.clear();
     }
+    GameObject* Scene::FindGameObjectByGUID(GUID guid) const
+    {
+        for (auto& gameObject : m_GameObjects)
+        {
+            if (gameObject->GetGUID() == guid)
+            {
+                return gameObject.get();
+            }
+        }
+
+        return nullptr;
+    }
 }  // namespace Micro

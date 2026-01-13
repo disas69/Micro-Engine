@@ -13,8 +13,10 @@ namespace Micro
 
         operator uint64_t() const { return m_Guid; }
 
+        bool IsValid() const { return m_Guid != 0; }
+
     private:
-        uint64_t m_Guid;
+        uint64_t m_Guid = 0;
     };
 }  // namespace Micro
 

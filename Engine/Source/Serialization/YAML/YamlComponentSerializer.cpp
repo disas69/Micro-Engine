@@ -1,6 +1,8 @@
 #include "YamlComponentSerializer.h"
 #include "Serialization/Reflection/TypeRegistry.h"
 #include "Core/GUID.h"
+#include "Gameplay/Components/TransformComponent.h"
+#include "Gameplay/GameObject.h"
 
 namespace Micro
 {
@@ -9,6 +11,18 @@ namespace Micro
     void YamlComponentSerializer::Serialize(const Component& component, YAML::Node& out)
     {
         const auto& typeDesc = component.GetTypeDescriptor();
+
+        if (const auto* transform = dynamic_cast<const TransformComponent*>(&component))
+        {
+            if (const auto* parentTransform = transform->GetParent())
+            {
+                out["Parent"] = parentTransform->GetOwner()->GetGUID();
+            }
+            else
+            {
+                out["Parent"] = 0;
+            }
+        }
 
         for (const auto& field : typeDesc.Fields)
         {

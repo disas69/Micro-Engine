@@ -30,11 +30,8 @@ namespace Micro
         mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;
 
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
-        auto transformImage = m_ImageObject->GetComponent<TransformComponent>();
-
         m_TextObject = GetScene()->FindGameObjectByName("Text");
-        auto transformText = m_TextObject->GetComponent<TransformComponent>();
-        transformText->SetParent(transformImage);
+
 
         // Save scene path
         // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");
