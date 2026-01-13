@@ -8,7 +8,7 @@ namespace Micro
     {
         MICRO_COMPONENT(TransformComponent)
 
-        TransformComponent();
+        explicit TransformComponent(GameObject* owner);
 
         void SetLocalPosition(const MVector3& position);
         void SetLocalRotation(const MQuaternion& rotation);

@@ -3,8 +3,9 @@
 namespace Micro
 {
     MICRO_COMPONENT_IMPL(TransformComponent, MICRO_FIELD(TransformComponent, m_LocalPosition, FieldType::Vector3),
-        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4), MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
-    TransformComponent::TransformComponent()
+        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4),
+        MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
+    TransformComponent::TransformComponent(GameObject* owner) : Component(owner)
     {
         m_LocalPosition = MVector3(0.0f, 0.0f, 0.0f);
         m_LocalRotation = QuaternionIdentity();

@@ -3,9 +3,9 @@
 
 namespace Micro
 {
-    void Component::SetOwner(GameObject* owner)
+    Component::Component(GameObject* owner)
     {
-        m_Owner = owner;
+        m_GameObject = owner;
     }
 
     TransformComponent* Component::GetTransform() const

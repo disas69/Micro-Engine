@@ -9,7 +9,7 @@ namespace Micro
     class Component
     {
     public:
-        Component() = default;
+        explicit Component(GameObject* owner);
         virtual ~Component() = default;
 
         virtual void OnCreate() {}
@@ -18,8 +18,7 @@ namespace Micro
 
         virtual TypeDescriptor& GetTypeDescriptor() const = 0;
 
-        GameObject* GetGameObject() const { return m_Owner; }
-        void SetOwner(GameObject* owner);
+        GameObject* GetGameObject() const { return m_GameObject; }
 
         TransformComponent* GetTransform() const;
 
@@ -33,6 +32,6 @@ namespace Micro
         T* GetComponentInParent() const;
 
     protected:
-        GameObject* m_Owner = nullptr;
+        GameObject* m_GameObject = nullptr;
     };
 }  // namespace Micro

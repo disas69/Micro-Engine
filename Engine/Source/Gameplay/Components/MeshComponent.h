@@ -8,7 +8,7 @@ namespace Micro
     {
         MICRO_COMPONENT(MeshComponent)
 
-        MeshComponent();
+        explicit MeshComponent(GameObject* owner);
 
         MMesh* GetMesh() { return &m_Mesh; }
         void SetMesh(const Mesh& mesh) { m_Mesh = mesh; }

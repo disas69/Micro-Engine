@@ -2,7 +2,8 @@
 
 namespace Micro
 {
-    MICRO_COMPONENT_IMPL(CameraComponent) CameraComponent::CameraComponent()
+    MICRO_COMPONENT_IMPL(CameraComponent)
+    CameraComponent::CameraComponent(GameObject* owner) : Component(owner)
     {
         m_Camera.position = MVector3{0.0f, 0.0f, 0.0f};
         m_Camera.target = MVector3{0.0f, 0.0f, 0.0f};

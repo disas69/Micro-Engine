@@ -8,7 +8,7 @@ namespace Micro
     {
         MICRO_COMPONENT(CameraComponent)
 
-        CameraComponent();
+        explicit CameraComponent(GameObject* owner);
 
         MCamera3D* GetCamera() { return &m_Camera; }
 

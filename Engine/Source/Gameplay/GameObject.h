@@ -23,12 +23,11 @@ namespace Micro
         {
             static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
 
-            auto newComponent = std::make_unique<T>(std::forward<Args>(args)...);
+            auto newComponent = std::make_unique<T>(this, std::forward<Args>(args)...);
             T* rawPtr = newComponent.get();
             m_Components.push_back(std::move(newComponent));
 
             auto component = static_cast<Component*>(rawPtr);
-            component->SetOwner(this);
             component->OnCreate();
 
             return rawPtr;
