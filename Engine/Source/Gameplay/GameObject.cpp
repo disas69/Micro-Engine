@@ -51,6 +51,13 @@ namespace Micro
         m_Components.clear();
     }
 
+    void GameObject::RemoveDestroyedComponents()
+    {
+        m_Components.erase(
+            std::remove_if(m_Components.begin(), m_Components.end(), [](const std::unique_ptr<Component>& component) { return component->IsDestroyed(); }),
+            m_Components.end());
+    }
+
     template <typename T>
     T* GameObject::GetComponentInChildren() const
     {

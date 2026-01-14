@@ -73,6 +73,7 @@ namespace Micro
         void SetActive(bool isActive) { m_IsActive = isActive; }
 
         void Destroy();
+        void RemoveDestroyedComponents();
 
     private:
         std::vector<std::unique_ptr<Component>> m_Components;

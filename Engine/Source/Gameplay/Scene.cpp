@@ -49,8 +49,16 @@ namespace Micro
         {
             for (const auto component : gameObject->GetAllComponents())
             {
-                component->OnUpdate(deltaTime);
+                if (component->IsEnabled())
+                {
+                    component->OnUpdate(deltaTime);
+                }
             }
+        }
+
+        for (auto& gameObject : m_GameObjects)
+        {
+            gameObject->RemoveDestroyedComponents();
         }
     }
 

@@ -30,4 +30,26 @@ namespace Micro
     {
         return GetGameObject()->GetComponentInParent<T>();
     }
+
+    void Component::SetEnabled(bool isEnabled)
+    {
+        if (m_IsEnabled != isEnabled)
+        {
+            m_IsEnabled = isEnabled;
+
+            if (m_IsEnabled)
+            {
+                OnEnable();
+            }
+            else
+            {
+                OnDisable();
+            }
+        }
+    }
+
+    void Component::Destroy()
+    {
+        m_IsDestroyed = true;
+    }
 }  // namespace Micro

@@ -15,11 +15,11 @@ namespace Micro
         virtual void OnCreate() {}
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnDestroy() {}
+        virtual void OnEnable() {}
+        virtual void OnDisable() {}
 
         virtual TypeDescriptor& GetTypeDescriptor() const = 0;
-
         GameObject* GetGameObject() const { return m_GameObject; }
-
         TransformComponent* GetTransform() const;
 
         template <typename T>
@@ -31,7 +31,15 @@ namespace Micro
         template <typename T>
         T* GetComponentInParent() const;
 
+        void SetEnabled(bool isEnabled);
+        bool IsEnabled() const { return m_IsEnabled; }
+
+        void Destroy();
+        bool IsDestroyed() const { return m_IsDestroyed; }
+
     protected:
         GameObject* m_GameObject = nullptr;
+        bool m_IsEnabled = true;
+        bool m_IsDestroyed = false;
     };
 }  // namespace Micro
