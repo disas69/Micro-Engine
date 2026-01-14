@@ -87,11 +87,11 @@ namespace Micro
         }
 
         void Update(float deltaTime);
-        void DestroyAll();
+        void Destroy() const;
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_GameObjects;
 
-        void OnGameObjectDestroyed(GUID guid);
+        void RemoveDestroyedGameObjects();
     };
 }  // namespace Micro

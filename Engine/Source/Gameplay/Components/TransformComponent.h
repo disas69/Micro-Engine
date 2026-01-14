@@ -10,6 +10,8 @@ namespace Micro
 
         explicit TransformComponent(GameObject* owner);
 
+        void OnDestroy() override;
+
         void SetLocalPosition(const MVector3& position);
         void SetLocalRotation(const MQuaternion& rotation);
         void SetLocalScale(const MVector3& scale);

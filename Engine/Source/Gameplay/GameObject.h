@@ -7,9 +7,6 @@ namespace Micro
 {
     class TransformComponent;
 
-    // TODO: Replace with Events System
-    using OnDestroyDelegate = std::function<void()>;
-
     class GameObject
     {
         friend class Scene;
@@ -17,9 +14,6 @@ namespace Micro
     public:
         GameObject(std::string name, GUID guid);
         ~GameObject() = default;
-
-        // Events
-        OnDestroyDelegate OnDestroy;
 
         template <typename T, typename... Args>
         T* AddComponent(Args&&... args)
@@ -69,11 +63,11 @@ namespace Micro
         const std::string& GetName() const { return m_Name; }
         GUID GetGUID() const { return m_Guid; }
 
-        bool IsActive() const { return m_IsActive; }
+        bool IsActive() const { return m_IsActive && !m_IsDestroyed; }
         void SetActive(bool isActive) { m_IsActive = isActive; }
 
         void Destroy();
-        void RemoveDestroyedComponents();
+        bool IsDestroyed() const { return m_IsDestroyed; }
 
     private:
         std::vector<std::unique_ptr<Component>> m_Components;
@@ -81,7 +75,8 @@ namespace Micro
         GUID m_Guid;
         TransformComponent* m_Transform = nullptr;
         bool m_IsActive = true;
+        bool m_IsDestroyed = false;
 
-        void DestroyInternal();
+        void RemoveDestroyedComponents();
     };
 }  // namespace Micro

@@ -9,26 +9,29 @@ namespace Micro
     {
         for (const auto& go : scene->GetGameObjects())
         {
-            auto* transform = go->GetComponent<TransformComponent>();
-            if (transform && transform->GetParent() == nullptr)
+            if (go->IsActive())
             {
-                UpdateRecursive(transform, MatrixIdentity());
+                auto* transform = go->GetComponent<TransformComponent>();
+                if (transform && transform->GetParent() == nullptr)
+                {
+                    UpdateRecursive(transform, MatrixIdentity());
+                }
             }
         }
     }
 
     void TransformSystem::UpdateRecursive(TransformComponent* transform, const MMatrix& parentWorldMatrix)
     {
-        if (transform->IsDirty())
+        if (transform->GetGameObject()->IsActive() && transform->IsDirty())
         {
             MMatrix localMatrix = transform->GetLocalMatrix();
             MMatrix worldMatrix = MatrixMultiply(localMatrix, parentWorldMatrix);
             transform->SetWorldMatrix(worldMatrix);
-        }
 
-        for (auto* child : transform->GetChildren())
-        {
-            UpdateRecursive(child, transform->GetWorldMatrix());
+            for (auto* child : transform->GetChildren())
+            {
+                UpdateRecursive(child, transform->GetWorldMatrix());
+            }
         }
     }
 }  // namespace Micro

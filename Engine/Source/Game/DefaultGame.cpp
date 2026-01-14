@@ -18,14 +18,13 @@ namespace Micro
     void DefaultGame::OnInit()
     {
         // Load scene path
-        GameObject* cameraObject = GetScene()->FindGameObjectByName("Camera");
-        auto camera = cameraObject->GetComponent<CameraComponent>();
+        auto camera = GetScene()->FindComponentByType<CameraComponent>();
         camera->SetPosition(MVector3{5.0f, 5.0f, 5.0f});
         camera->SetTarget(MVector3{0.0f, 1.0f, 0.0f});
 
         SetMainCamera(camera->GetCamera());
 
-        m_CubeObject = GetScene()->FindGameObjectByName("Cube");
+        m_CubeObject = GetScene()->FindGameObjectByComponent<MeshComponent>();
         auto mesh = m_CubeObject->GetComponent<MeshComponent>();
         mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;
 

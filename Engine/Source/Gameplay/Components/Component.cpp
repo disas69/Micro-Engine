@@ -51,5 +51,6 @@ namespace Micro
     void Component::Destroy()
     {
         m_IsDestroyed = true;
+        OnDestroy();
     }
 }  // namespace Micro

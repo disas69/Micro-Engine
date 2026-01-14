@@ -14,7 +14,6 @@ namespace Micro
         auto newGameObject = std::make_unique<GameObject>(name, guid);
 
         GameObject* rawPtr = newGameObject.get();
-        rawPtr->OnDestroy = [this, guid]() { OnGameObjectDestroyed(guid); };
         m_GameObjects.push_back(std::move(newGameObject));
 
         // ReSharper disable once CppDFALocalValueEscapesFunction
@@ -34,11 +33,17 @@ namespace Micro
         return nullptr;
     }
 
-    void Scene::OnGameObjectDestroyed(GUID guid)
+    GameObject* Scene::FindGameObjectByGUID(GUID guid) const
     {
-        m_GameObjects.erase(
-            std::remove_if(m_GameObjects.begin(), m_GameObjects.end(), [guid](const std::unique_ptr<GameObject>& obj) { return obj->GetGUID() == guid; }),
-            m_GameObjects.end());
+        for (auto& gameObject : m_GameObjects)
+        {
+            if (gameObject->GetGUID() == guid)
+            {
+                return gameObject.get();
+            }
+        }
+
+        return nullptr;
     }
 
     void Scene::Update(float deltaTime)
@@ -47,6 +52,11 @@ namespace Micro
 
         for (auto& gameObject : m_GameObjects)
         {
+            if (!gameObject->IsActive())
+            {
+                continue;
+            }
+
             for (const auto component : gameObject->GetAllComponents())
             {
                 if (component->IsEnabled())
@@ -60,28 +70,24 @@ namespace Micro
         {
             gameObject->RemoveDestroyedComponents();
         }
+
+        RemoveDestroyedGameObjects();
     }
 
-    void Scene::DestroyAll()
+    void Scene::Destroy() const
     {
         for (auto& gameObject : m_GameObjects)
         {
-            gameObject->DestroyInternal();
+            gameObject->Destroy();
         }
-
-        m_GameObjects.clear();
     }
 
-    GameObject* Scene::FindGameObjectByGUID(GUID guid) const
+    void Scene::RemoveDestroyedGameObjects()
     {
-        for (auto& gameObject : m_GameObjects)
+        m_GameObjects.erase(std::remove_if(m_GameObjects.begin(), m_GameObjects.end(), [](const std::unique_ptr<GameObject>& obj)
         {
-            if (gameObject->GetGUID() == guid)
-            {
-                return gameObject.get();
-            }
-        }
-
-        return nullptr;
+            return obj->IsDestroyed();
+        }),
+        m_GameObjects.end());
     }
 }  // namespace Micro

@@ -27,7 +27,7 @@ namespace Micro
         }
         else
         {
-            m_ActiveScene->DestroyAll();
+            m_ActiveScene->Destroy();
         }
 
         try
@@ -44,7 +44,7 @@ namespace Micro
     {
         if (m_ActiveScene != nullptr)
         {
-            m_ActiveScene->DestroyAll();
+            m_ActiveScene->Destroy();
             m_ActiveScene.reset();
         }
     }

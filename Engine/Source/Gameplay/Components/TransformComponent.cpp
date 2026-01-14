@@ -14,6 +14,18 @@ namespace Micro
         m_IsDirty = true;
     }
 
+    void TransformComponent::OnDestroy()
+    {
+        SetParent(nullptr);
+
+        for (auto& child : m_Children)
+        {
+            child->SetParent(nullptr);
+        }
+
+        m_Children.clear();
+    }
+
     void TransformComponent::SetParent(TransformComponent* parent)
     {
         if (m_Parent != nullptr)

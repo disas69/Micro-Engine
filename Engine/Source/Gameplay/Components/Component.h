@@ -32,7 +32,7 @@ namespace Micro
         T* GetComponentInParent() const;
 
         void SetEnabled(bool isEnabled);
-        bool IsEnabled() const { return m_IsEnabled; }
+        bool IsEnabled() const { return m_IsEnabled && !m_IsDestroyed; }
 
         void Destroy();
         bool IsDestroyed() const { return m_IsDestroyed; }

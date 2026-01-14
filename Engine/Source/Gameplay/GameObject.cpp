@@ -24,6 +24,7 @@ namespace Micro
     {
         std::vector<Component*> components;
         components.reserve(m_Components.size());
+
         for (const auto& component : m_Components)
         {
             components.push_back(component.get());
@@ -33,19 +34,11 @@ namespace Micro
 
     void GameObject::Destroy()
     {
-        if (OnDestroy != nullptr)
-        {
-            OnDestroy();
-        }
+        m_IsDestroyed = true;
 
-        DestroyInternal();
-    }
-
-    void GameObject::DestroyInternal()
-    {
         for (const auto& component : m_Components)
         {
-            component->OnDestroy();
+            component->Destroy();
         }
 
         m_Components.clear();
@@ -53,8 +46,10 @@ namespace Micro
 
     void GameObject::RemoveDestroyedComponents()
     {
-        m_Components.erase(
-            std::remove_if(m_Components.begin(), m_Components.end(), [](const std::unique_ptr<Component>& component) { return component->IsDestroyed(); }),
+        m_Components.erase(std::remove_if(m_Components.begin(), m_Components.end(), [](const std::unique_ptr<Component>& component)
+            {
+                return component->IsDestroyed();
+            }),
             m_Components.end());
     }
 
