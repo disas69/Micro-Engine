@@ -19,8 +19,8 @@ namespace Micro
     {
         // Load scene path
         auto camera = GetScene()->FindComponentByType<CameraComponent>();
-        camera->SetPosition(MVector3{5.0f, 5.0f, 5.0f});
-        camera->SetTarget(MVector3{0.0f, 1.0f, 0.0f});
+        camera->GetTransform()->SetLocalPosition(MVector3{0.0f, 5.0f, 10.0f});
+        camera->GetTransform()->LookAt(MVector3{0.0f, -10.0f, 0.0f});
 
         SetMainCamera(camera->GetCamera());
 
@@ -30,7 +30,6 @@ namespace Micro
 
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
-
 
         // Save scene path
         // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");

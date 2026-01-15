@@ -48,6 +48,22 @@ namespace Micro
 
     void Scene::Update(float deltaTime)
     {
+        for (auto& gameObject : m_GameObjects)
+        {
+            if (!gameObject->IsActive())
+            {
+                continue;
+            }
+
+            for (const auto component : gameObject->GetAllComponents())
+            {
+                if (component->IsEnabled())
+                {
+                    component->OnUpdate(deltaTime);
+                }
+            }
+        }
+
         TransformSystem::Update(this);
 
         for (auto& gameObject : m_GameObjects)
@@ -61,7 +77,7 @@ namespace Micro
             {
                 if (component->IsEnabled())
                 {
-                    component->OnUpdate(deltaTime);
+                    component->OnLateUpdate(deltaTime);
                 }
             }
         }

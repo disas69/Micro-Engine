@@ -13,10 +13,11 @@ namespace Micro
         virtual ~Component() = default;
 
         virtual void OnCreate() {}
-        virtual void OnUpdate(float deltaTime) {}
-        virtual void OnDestroy() {}
         virtual void OnEnable() {}
+        virtual void OnUpdate(float deltaTime) {}
+        virtual void OnLateUpdate(float deltaTime) {}
         virtual void OnDisable() {}
+        virtual void OnDestroy() {}
 
         virtual TypeDescriptor& GetTypeDescriptor() const = 0;
         GameObject* GetGameObject() const { return m_GameObject; }

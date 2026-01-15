@@ -3,8 +3,7 @@
 namespace Micro
 {
     MICRO_COMPONENT_IMPL(TransformComponent, MICRO_FIELD(TransformComponent, m_LocalPosition, FieldType::Vector3),
-        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4),
-        MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
+        MICRO_FIELD(TransformComponent, m_LocalRotation, FieldType::Vector4), MICRO_FIELD(TransformComponent, m_LocalScale, FieldType::Vector3))
     TransformComponent::TransformComponent(GameObject* owner) : Component(owner)
     {
         m_LocalPosition = MVector3(0.0f, 0.0f, 0.0f);
@@ -48,7 +47,7 @@ namespace Micro
         MMatrix matScale = MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
         MMatrix matRotation = QuaternionToMatrix(m_LocalRotation);
         MMatrix matTranslation = MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
-        return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+        return MatrixMultiply(MatrixMultiply(matTranslation, matRotation), matScale);
     }
 
     MVector3 TransformComponent::GetWorldPosition() const
@@ -123,17 +122,17 @@ namespace Micro
 
     MVector3 TransformComponent::GetRight() const
     {
-        return Vector3Normalize({m_WorldMatrix.m0, m_WorldMatrix.m1, m_WorldMatrix.m2});
+        return Vector3RotateByQuaternion({1, 0, 0}, GetWorldRotation());
     }
 
     MVector3 TransformComponent::GetUp() const
     {
-        return Vector3Normalize({m_WorldMatrix.m4, m_WorldMatrix.m5, m_WorldMatrix.m6});
+        return Vector3RotateByQuaternion({0, 1, 0}, GetWorldRotation());
     }
 
     MVector3 TransformComponent::GetForward() const
     {
-        return Vector3Normalize({m_WorldMatrix.m8, m_WorldMatrix.m9, m_WorldMatrix.m10});
+        return Vector3RotateByQuaternion({0, 0, -1}, GetWorldRotation());
     }
 
     void TransformComponent::Translate(const MVector3& delta)
@@ -151,10 +150,41 @@ namespace Micro
 
     void TransformComponent::LookAt(const MVector3& target)
     {
-        MMatrix lookAtMatrix = MatrixLookAt(GetWorldPosition(), target, GetUp());
-        MVector3 position, scale;
-        MQuaternion rotation;
-        MatrixDecompose(lookAtMatrix, &position, &rotation, &scale);
+        const MVector3 position = GetWorldPosition();
+
+        // Direction TO target
+        const MVector3 dir = Vector3Normalize(target - position);
+
+        // Since forward is -Z, we store -dir in the forward column
+        const MVector3 forward = Vector3Negate(dir);
+        const MVector3 right = Vector3Normalize(Vector3CrossProduct({0, 1, 0}, forward));
+        const MVector3 up = Vector3CrossProduct(forward, right);
+
+        MMatrix rotMatrix = MatrixIdentity();
+
+        // Column-major (raylib)
+        rotMatrix.m0  = right.x;
+        rotMatrix.m1  = right.y;
+        rotMatrix.m2  = right.z;
+
+        rotMatrix.m4  = up.x;
+        rotMatrix.m5  = up.y;
+        rotMatrix.m6  = up.z;
+
+        rotMatrix.m8  = forward.x;
+        rotMatrix.m9  = forward.y;
+        rotMatrix.m10 = forward.z;
+
+        MQuaternion rotation = QuaternionFromMatrix(rotMatrix);
+
+        if (m_Parent != nullptr)
+        {
+            rotation = QuaternionMultiply(
+                QuaternionInvert(m_Parent->GetWorldRotation()),
+                rotation
+            );
+        }
+
         SetLocalRotation(rotation);
     }
 

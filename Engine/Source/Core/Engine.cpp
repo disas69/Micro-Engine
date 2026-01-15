@@ -73,12 +73,6 @@ namespace Micro
 
     void Engine::Render()
     {
-        if (m_Game == nullptr)
-        {
-            MICRO_LOG_ERROR("Game is not loaded");
-            return;
-        }
-
         m_Window.BeginDrawing();
         m_Window.ClearBackground(RAYWHITE);
 

@@ -24,6 +24,7 @@ namespace Micro
         MMatrix GetWorldMatrix() const { return m_WorldMatrix; }
         MMatrix GetLocalMatrix() const;
 
+        // TODO: Cache these values and update only when dirty
         MVector3 GetWorldPosition() const;
         MQuaternion GetWorldRotation() const;
         MVector3 GetWorldScale() const;

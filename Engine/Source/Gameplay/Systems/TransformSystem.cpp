@@ -22,16 +22,28 @@ namespace Micro
 
     void TransformSystem::UpdateRecursive(TransformComponent* transform, const MMatrix& parentWorldMatrix)
     {
-        if (transform->GetGameObject()->IsActive() && transform->IsDirty())
+        if (!transform->GetGameObject()->IsActive())
+        {
+            return;
+        }
+
+        MMatrix worldMatrix;
+
+        if (transform->IsDirty())
         {
             MMatrix localMatrix = transform->GetLocalMatrix();
-            MMatrix worldMatrix = MatrixMultiply(localMatrix, parentWorldMatrix);
+            worldMatrix = MatrixMultiply(parentWorldMatrix, localMatrix);
             transform->SetWorldMatrix(worldMatrix);
+        }
+        else
+        {
+            worldMatrix = transform->GetWorldMatrix();
+        }
 
-            for (auto* child : transform->GetChildren())
-            {
-                UpdateRecursive(child, transform->GetWorldMatrix());
-            }
+        for (auto* child : transform->GetChildren())
+        {
+            UpdateRecursive(child, worldMatrix);
         }
     }
+
 }  // namespace Micro
