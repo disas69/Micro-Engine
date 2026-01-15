@@ -20,7 +20,7 @@ namespace Micro
         // Load scene path
         auto camera = GetScene()->FindComponentByType<CameraComponent>();
         camera->GetTransform()->SetLocalPosition(MVector3{0.0f, 5.0f, 10.0f});
-        camera->GetTransform()->LookAt(MVector3{0.0f, -10.0f, 0.0f});
+        camera->GetTransform()->LookAt(MVector3{0.0f, 10.0f, 0.0f});
 
         SetMainCamera(camera->GetCamera());
 

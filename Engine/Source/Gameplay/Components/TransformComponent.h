@@ -47,6 +47,8 @@ namespace Micro
         void MarkDirty();
         bool IsDirty() const { return m_IsDirty; }
 
+        void ForceUpdate();
+
     private:
         MMatrix m_WorldMatrix;
         std::vector<TransformComponent*> m_Children;

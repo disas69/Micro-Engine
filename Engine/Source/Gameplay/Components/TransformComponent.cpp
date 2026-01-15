@@ -44,10 +44,11 @@ namespace Micro
 
     MMatrix TransformComponent::GetLocalMatrix() const
     {
-        MMatrix matScale = MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
-        MMatrix matRotation = QuaternionToMatrix(m_LocalRotation);
-        MMatrix matTranslation = MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
-        return MatrixMultiply(MatrixMultiply(matTranslation, matRotation), matScale);
+        MMatrix mat = MatrixIdentity();
+        mat = MatrixMultiply(mat, MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z));
+        mat = MatrixMultiply(mat, QuaternionToMatrix(m_LocalRotation));
+        mat = MatrixMultiply(mat, MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z));
+        return mat;
     }
 
     MVector3 TransformComponent::GetWorldPosition() const
@@ -148,44 +149,44 @@ namespace Micro
         MarkDirty();
     }
 
+    void TransformComponent::ForceUpdate()
+    {
+        if (m_IsDirty)
+        {
+            if (m_Parent != nullptr)
+            {
+                m_Parent->ForceUpdate();
+                m_WorldMatrix = MatrixMultiply(m_Parent->m_WorldMatrix, GetLocalMatrix());
+            }
+            else
+            {
+                m_WorldMatrix = GetLocalMatrix();
+            }
+
+            m_IsDirty = false;
+        }
+    }
+
     void TransformComponent::LookAt(const MVector3& target)
     {
+        ForceUpdate();
+
         const MVector3 position = GetWorldPosition();
 
-        // Direction TO target
-        const MVector3 dir = Vector3Normalize(target - position);
+        MMatrix view = MatrixLookAt(position, target, { 0.0f, 1.0f, 0.0f });
+        MMatrix worldRot = MatrixInvert(view);
 
-        // Since forward is -Z, we store -dir in the forward column
-        const MVector3 forward = Vector3Negate(dir);
-        const MVector3 right = Vector3Normalize(Vector3CrossProduct({0, 1, 0}, forward));
-        const MVector3 up = Vector3CrossProduct(forward, right);
-
-        MMatrix rotMatrix = MatrixIdentity();
-
-        // Column-major (raylib)
-        rotMatrix.m0  = right.x;
-        rotMatrix.m1  = right.y;
-        rotMatrix.m2  = right.z;
-
-        rotMatrix.m4  = up.x;
-        rotMatrix.m5  = up.y;
-        rotMatrix.m6  = up.z;
-
-        rotMatrix.m8  = forward.x;
-        rotMatrix.m9  = forward.y;
-        rotMatrix.m10 = forward.z;
-
-        MQuaternion rotation = QuaternionFromMatrix(rotMatrix);
+        MQuaternion worldRotation = QuaternionFromMatrix(worldRot);
 
         if (m_Parent != nullptr)
         {
-            rotation = QuaternionMultiply(
+            worldRotation = QuaternionMultiply(
                 QuaternionInvert(m_Parent->GetWorldRotation()),
-                rotation
+                worldRotation
             );
         }
 
-        SetLocalRotation(rotation);
+        SetLocalRotation(worldRotation);
     }
 
     void TransformComponent::ForEachChild(const std::function<void(TransformComponent*)>& func) const
