@@ -46,5 +46,6 @@ namespace Micro
         MCamera3D* m_MainCamera = nullptr;
 
         void LoadStartupScene();
+        void FindMainCamera();
     };
 }  // namespace Micro

@@ -8,7 +8,6 @@ namespace Micro
     CameraComponent::CameraComponent(GameObject* owner) : Component(owner)
     {
         m_Transform = owner->GetComponent<TransformComponent>();
-
         m_Camera.projection = CAMERA_PERSPECTIVE;
         m_Camera.fovy = 60.0f;
     }

@@ -22,8 +22,6 @@ namespace Micro
         camera->GetTransform()->SetLocalPosition(MVector3{0.0f, 5.0f, 10.0f});
         camera->GetTransform()->LookAt(MVector3{0.0f, 2.0f, 0.0f});
 
-        SetMainCamera(camera->GetCamera());
-
         m_CubeObject = GetScene()->FindGameObjectByComponent<MeshComponent>();
         auto mesh = m_CubeObject->GetComponent<MeshComponent>();
         mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;

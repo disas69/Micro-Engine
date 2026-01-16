@@ -1,5 +1,6 @@
 #include "GameBase.h"
 
+#include "Gameplay/Components/CameraComponent.h"
 #include "Gameplay/Managers/SceneManager.h"
 
 namespace Micro
@@ -15,6 +16,20 @@ namespace Micro
         SceneManager::GetInstance().LoadStartupScene();
     }
 
+    void GameBase::FindMainCamera()
+    {
+        auto camera = GetScene()->FindComponentByType<CameraComponent>();
+        if (camera != nullptr)
+        {
+            SetMainCamera(camera->GetCamera());
+        }
+        else
+        {
+            GameObject* cameraObject = GetScene()->CreateGameObject("DefaultCamera");
+            SetMainCamera(cameraObject->AddComponent<CameraComponent>()->GetCamera());
+        }
+    }
+
     Scene* GameBase::GetScene()
     {
         return SceneManager::GetInstance().GetActiveScene();
@@ -24,6 +39,7 @@ namespace Micro
     {
         SetScreenSize(screenSize);
         LoadStartupScene();
+        FindMainCamera();
         OnInit();
     }
 
