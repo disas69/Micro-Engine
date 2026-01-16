@@ -18,4 +18,10 @@ add_subdirectory(Engine)
 add_subdirectory(Editor)
 add_subdirectory(Games)
 
+option(MICROENGINE_BUILD_TESTS "Build MicroEngine tests" ON)
+if (MICROENGINE_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(Tests)
+endif()
+
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MicroEditor)
