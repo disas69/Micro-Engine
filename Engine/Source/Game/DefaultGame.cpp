@@ -20,7 +20,7 @@ namespace Micro
         // Load scene path
         auto camera = GetScene()->FindComponentByType<CameraComponent>();
         camera->GetTransform()->SetLocalPosition(MVector3{0.0f, 5.0f, 10.0f});
-        camera->GetTransform()->LookAt(MVector3{0.0f, 10.0f, 0.0f});
+        camera->GetTransform()->LookAt(MVector3{0.0f, 2.0f, 0.0f});
 
         SetMainCamera(camera->GetCamera());
 
@@ -30,6 +30,13 @@ namespace Micro
 
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
+
+        auto smallCube = GetScene()->CreateGameObject("SmallCube");
+        smallCube->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, 0.0f});
+        smallCube->GetTransform()->SetLocalScale(MVector3{0.5f, 0.5f, 0.5f});
+        smallCube->GetTransform()->SetParent(m_CubeObject->GetTransform());
+        auto smallMesh = smallCube->AddComponent<MeshComponent>();
+        smallMesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = GREEN;
 
         // Save scene path
         // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");

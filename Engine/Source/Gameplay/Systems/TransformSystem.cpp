@@ -27,22 +27,16 @@ namespace Micro
             return;
         }
 
-        MMatrix worldMatrix;
-
         if (transform->IsDirty())
         {
             MMatrix localMatrix = transform->GetLocalMatrix();
-            worldMatrix = MatrixMultiply(parentWorldMatrix, localMatrix);
+            MMatrix worldMatrix = MatrixMultiply(localMatrix, parentWorldMatrix);
             transform->SetWorldMatrix(worldMatrix);
-        }
-        else
-        {
-            worldMatrix = transform->GetWorldMatrix();
         }
 
         for (auto* child : transform->GetChildren())
         {
-            UpdateRecursive(child, worldMatrix);
+            UpdateRecursive(child, transform->GetWorldMatrix());
         }
     }
 

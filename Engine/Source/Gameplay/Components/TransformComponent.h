@@ -20,18 +20,17 @@ namespace Micro
         MQuaternion GetLocalRotation() const { return m_LocalRotation; }
         MVector3 GetLocalScale() const { return m_LocalScale; }
 
-        void SetWorldMatrix(const MMatrix& matrix);
         MMatrix GetWorldMatrix() const { return m_WorldMatrix; }
+        void SetWorldMatrix(const MMatrix& matrix);
         MMatrix GetLocalMatrix() const;
 
-        // TODO: Cache these values and update only when dirty
-        MVector3 GetWorldPosition() const;
-        MQuaternion GetWorldRotation() const;
-        MVector3 GetWorldScale() const;
+        MVector3 GetWorldPosition();
+        MQuaternion GetWorldRotation();
+        MVector3 GetWorldScale();
 
-        MVector3 GetRight() const;
-        MVector3 GetUp() const;
-        MVector3 GetForward() const;
+        MVector3 GetRight();
+        MVector3 GetUp();
+        MVector3 GetForward();
 
         void Translate(const MVector3& delta);
         void Rotate(const MVector3& eulerAngles);
@@ -47,8 +46,6 @@ namespace Micro
         void MarkDirty();
         bool IsDirty() const { return m_IsDirty; }
 
-        void ForceUpdate();
-
     private:
         MMatrix m_WorldMatrix;
         std::vector<TransformComponent*> m_Children;
@@ -63,5 +60,6 @@ namespace Micro
 
         void AddChild(TransformComponent* child);
         void RemoveChild(TransformComponent* child);
+        void ForceUpdateWorldMatrix();
     };
 }  // namespace Micro

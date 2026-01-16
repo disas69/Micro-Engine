@@ -44,31 +44,33 @@ namespace Micro
 
     MMatrix TransformComponent::GetLocalMatrix() const
     {
-        MMatrix mat = MatrixIdentity();
-        mat = MatrixMultiply(mat, MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z));
-        mat = MatrixMultiply(mat, QuaternionToMatrix(m_LocalRotation));
-        mat = MatrixMultiply(mat, MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z));
-        return mat;
+        MMatrix matScale = MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
+        MMatrix matRotation = QuaternionToMatrix(m_LocalRotation);
+        MMatrix matTranslation = MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
+        return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
     }
 
-    MVector3 TransformComponent::GetWorldPosition() const
+    MVector3 TransformComponent::GetWorldPosition()
     {
+        ForceUpdateWorldMatrix();
         MVector3 position, scale;
         MQuaternion rotation;
         MatrixDecompose(m_WorldMatrix, &position, &rotation, &scale);
         return position;
     }
 
-    MQuaternion TransformComponent::GetWorldRotation() const
+    MQuaternion TransformComponent::GetWorldRotation()
     {
+        ForceUpdateWorldMatrix();
         MVector3 position, scale;
         MQuaternion rotation;
         MatrixDecompose(m_WorldMatrix, &position, &rotation, &scale);
         return rotation;
     }
 
-    MVector3 TransformComponent::GetWorldScale() const
+    MVector3 TransformComponent::GetWorldScale()
     {
+        ForceUpdateWorldMatrix();
         MVector3 position, scale;
         MQuaternion rotation;
         MatrixDecompose(m_WorldMatrix, &position, &rotation, &scale);
@@ -111,27 +113,17 @@ namespace Micro
         m_IsDirty = false;
     }
 
-    void TransformComponent::AddChild(TransformComponent* child)
-    {
-        m_Children.push_back(child);
-    }
-
-    void TransformComponent::RemoveChild(TransformComponent* child)
-    {
-        m_Children.erase(std::remove(m_Children.begin(), m_Children.end(), child), m_Children.end());
-    }
-
-    MVector3 TransformComponent::GetRight() const
+    MVector3 TransformComponent::GetRight()
     {
         return Vector3RotateByQuaternion({1, 0, 0}, GetWorldRotation());
     }
 
-    MVector3 TransformComponent::GetUp() const
+    MVector3 TransformComponent::GetUp()
     {
         return Vector3RotateByQuaternion({0, 1, 0}, GetWorldRotation());
     }
 
-    MVector3 TransformComponent::GetForward() const
+    MVector3 TransformComponent::GetForward()
     {
         return Vector3RotateByQuaternion({0, 0, -1}, GetWorldRotation());
     }
@@ -149,31 +141,11 @@ namespace Micro
         MarkDirty();
     }
 
-    void TransformComponent::ForceUpdate()
-    {
-        if (m_IsDirty)
-        {
-            if (m_Parent != nullptr)
-            {
-                m_Parent->ForceUpdate();
-                m_WorldMatrix = MatrixMultiply(m_Parent->m_WorldMatrix, GetLocalMatrix());
-            }
-            else
-            {
-                m_WorldMatrix = GetLocalMatrix();
-            }
-
-            m_IsDirty = false;
-        }
-    }
-
     void TransformComponent::LookAt(const MVector3& target)
     {
-        ForceUpdate();
-
         const MVector3 position = GetWorldPosition();
 
-        MMatrix view = MatrixLookAt(position, target, { 0.0f, 1.0f, 0.0f });
+        MMatrix view = MatrixLookAt(position, target, GetUp());
         MMatrix worldRot = MatrixInvert(view);
 
         MQuaternion worldRotation = QuaternionFromMatrix(worldRot);
@@ -194,6 +166,34 @@ namespace Micro
         for (const auto child : m_Children)
         {
             func(child);
+        }
+    }
+
+    void TransformComponent::AddChild(TransformComponent* child)
+    {
+        m_Children.push_back(child);
+    }
+
+    void TransformComponent::RemoveChild(TransformComponent* child)
+    {
+        m_Children.erase(std::remove(m_Children.begin(), m_Children.end(), child), m_Children.end());
+    }
+
+    void TransformComponent::ForceUpdateWorldMatrix()
+    {
+        if (m_IsDirty)
+        {
+            if (m_Parent != nullptr)
+            {
+                m_Parent->ForceUpdateWorldMatrix();
+                m_WorldMatrix = MatrixMultiply(m_Parent->m_WorldMatrix, GetLocalMatrix());
+            }
+            else
+            {
+                m_WorldMatrix = GetLocalMatrix();
+            }
+
+            m_IsDirty = false;
         }
     }
 }  // namespace Micro

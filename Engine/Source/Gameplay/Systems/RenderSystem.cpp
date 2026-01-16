@@ -67,7 +67,7 @@ namespace Micro
                 continue;
             }
             
-            const auto* transform = go->GetComponent<TransformComponent>();
+            auto* transform = go->GetComponent<TransformComponent>();
             if (transform == nullptr)
             {
                 continue;
