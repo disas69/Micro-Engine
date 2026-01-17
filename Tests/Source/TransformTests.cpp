@@ -95,7 +95,7 @@ TEST_CASE("LookAt works correctly with parent transform", "[Transform][LookAt][H
 
     auto* childGo = scene.CreateGameObject("Child");
     auto* child = childGo->GetTransform();
-    child->SetParent(parent);
+    child->SetParent(parent, false);
     child->SetLocalPosition({0, 0, 5});
 
     child->LookAt({0, 0, 0});
@@ -115,7 +115,7 @@ TEST_CASE("Parent dirty propagates to children", "[Transform][Dirty]")
 
     auto* childGo = scene.CreateGameObject("Child");
     auto* child = childGo->GetTransform();
-    child->SetParent(parent);
+    child->SetParent(parent, false);
 
     TransformSystem::Update(&scene);
 
@@ -135,7 +135,7 @@ TEST_CASE("Parent-Child full transformation composition", "[Transform]")
 
     auto* childGo = scene.CreateGameObject("Child");
     auto* child = childGo->GetTransform();
-    child->SetParent(parent);
+    child->SetParent(parent, false);
 
     // Parent transform
     parent->SetLocalPosition({10, 0, 0});
@@ -188,11 +188,11 @@ TEST_CASE("Grandchild transform composition (position, rotation, scale)", "[Tran
 
     auto* childGo = scene.CreateGameObject("Child");
     auto* child = childGo->GetTransform();
-    child->SetParent(parent);
+    child->SetParent(parent, false);
 
     auto* grandChildGo = scene.CreateGameObject("GrandChild");
     auto* grandChild = grandChildGo->GetTransform();
-    grandChild->SetParent(child);
+    grandChild->SetParent(child, false);
 
     // Parent: translate + rotate + scale
     parent->SetLocalPosition({10, 0, 0});
@@ -258,7 +258,7 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
     child->SetLocalPosition({5, 0, 0});
     child->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
     child->SetLocalScale({1, 1, 1});
-    child->SetParent(parent);
+    child->SetParent(parent, false);
 
     TransformSystem::Update(&scene);
 
@@ -267,7 +267,7 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
     const Vector3 scaleBefore = child->GetWorldScale();
 
     // Detach
-    child->SetParent(nullptr);
+    child->SetParent(nullptr, true);
     TransformSystem::Update(&scene);
 
     SECTION("Parent is cleared")

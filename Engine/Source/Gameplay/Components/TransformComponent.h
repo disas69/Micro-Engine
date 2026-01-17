@@ -36,7 +36,7 @@ namespace Micro
         void Rotate(const MVector3& eulerAngles);
         void LookAt(const MVector3& target);
 
-        void SetParent(TransformComponent* parent);
+        void SetParent(TransformComponent* parent, bool worldPositionStays = false);
         TransformComponent* GetParent() const { return m_Parent; }
 
         const std::vector<TransformComponent*>& GetChildren() const { return m_Children; }

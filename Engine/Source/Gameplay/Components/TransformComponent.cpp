@@ -27,8 +27,18 @@ namespace Micro
         m_Children.clear();
     }
 
-    void TransformComponent::SetParent(TransformComponent* parent)
+    void TransformComponent::SetParent(TransformComponent* parent, bool worldPositionStays)
     {
+        if (m_Parent == parent)
+        {
+            return;
+        }
+
+        if (worldPositionStays)
+        {
+            ForceUpdateWorldMatrix();
+        }
+
         if (m_Parent != nullptr)
         {
             m_Parent->RemoveChild(this);
@@ -39,6 +49,21 @@ namespace Micro
         if (m_Parent != nullptr)
         {
             m_Parent->AddChild(this);
+        }
+
+        if (worldPositionStays)
+        {
+            if (m_Parent != nullptr)
+            {
+                m_Parent->ForceUpdateWorldMatrix();
+                MMatrix parentInverse = MatrixInvert(m_Parent->GetWorldMatrix());
+                MMatrix newLocalMatrix = MatrixMultiply(m_WorldMatrix, parentInverse);
+                MatrixDecompose(newLocalMatrix, &m_LocalPosition, &m_LocalRotation, &m_LocalScale);
+            }
+            else
+            {
+                MatrixDecompose(m_WorldMatrix, &m_LocalPosition, &m_LocalRotation, &m_LocalScale);
+            }
         }
 
         MarkDirty();
