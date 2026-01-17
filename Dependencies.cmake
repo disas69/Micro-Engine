@@ -105,11 +105,3 @@ FetchContent_Declare(
     GIT_TAG        0.8.0
 )
 FetchContent_MakeAvailable(yaml-cpp)
-
-# Test framework
-FetchContent_Declare(
-        Catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v3.12.0
-)
-FetchContent_MakeAvailable(Catch2)
