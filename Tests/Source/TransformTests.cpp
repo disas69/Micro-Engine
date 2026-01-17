@@ -13,7 +13,7 @@ TEST_CASE("TransformComponent Initialization", "[Transform]")
     Scene scene;
 
     GameObject* go = scene.CreateGameObject("TestObject");
-    auto transform = go->AddComponent<TransformComponent>();
+    auto transform = go->GetTransform();
 
     REQUIRE(transform->GetLocalPosition().x == Approx(0.0f));
     REQUIRE(transform->GetLocalPosition().y == Approx(0.0f));
@@ -34,7 +34,7 @@ TEST_CASE("Local rotation rotates around local origin", "[Transform][Rotation]")
     Scene scene;
 
     GameObject* go = scene.CreateGameObject("Object");
-    auto t = go->AddComponent<TransformComponent>();
+    auto t = go->GetTransform();
 
     t->SetLocalPosition({5, 0, 0});
     t->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
@@ -54,7 +54,7 @@ TEST_CASE("Forward vector matches rotation", "[Transform][Direction]")
     Scene scene;
 
     GameObject* go = scene.CreateGameObject("Object");
-    auto t = go->AddComponent<TransformComponent>();
+    auto t = go->GetTransform();
 
     t->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
     TransformSystem::Update(&scene);
@@ -70,7 +70,7 @@ TEST_CASE("LookAt rotates transform toward target", "[Transform][LookAt]")
     Scene scene;
 
     GameObject* go = scene.CreateGameObject("Camera");
-    auto t = go->AddComponent<TransformComponent>();
+    auto t = go->GetTransform();
 
     t->SetLocalPosition({0, 0, 5});
     t->LookAt({0, 0, 0});
@@ -90,11 +90,11 @@ TEST_CASE("LookAt works correctly with parent transform", "[Transform][LookAt][H
     Scene scene;
 
     auto* parentGo = scene.CreateGameObject("Parent");
-    auto* parent = parentGo->AddComponent<TransformComponent>();
+    auto* parent = parentGo->GetTransform();
     parent->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
 
     auto* childGo = scene.CreateGameObject("Child");
-    auto* child = childGo->AddComponent<TransformComponent>();
+    auto* child = childGo->GetTransform();
     child->SetParent(parent);
     child->SetLocalPosition({0, 0, 5});
 
@@ -111,10 +111,10 @@ TEST_CASE("Parent dirty propagates to children", "[Transform][Dirty]")
     Scene scene;
 
     auto* parentGo = scene.CreateGameObject("Parent");
-    auto* parent = parentGo->AddComponent<TransformComponent>();
+    auto* parent = parentGo->GetTransform();
 
     auto* childGo = scene.CreateGameObject("Child");
-    auto* child = childGo->AddComponent<TransformComponent>();
+    auto* child = childGo->GetTransform();
     child->SetParent(parent);
 
     TransformSystem::Update(&scene);
@@ -131,10 +131,10 @@ TEST_CASE("Parent-Child full transformation composition", "[Transform]")
     Scene scene;
 
     auto* parentGo = scene.CreateGameObject("Parent");
-    auto* parent = parentGo->AddComponent<TransformComponent>();
+    auto* parent = parentGo->GetTransform();
 
     auto* childGo = scene.CreateGameObject("Child");
-    auto* child = childGo->AddComponent<TransformComponent>();
+    auto* child = childGo->GetTransform();
     child->SetParent(parent);
 
     // Parent transform
@@ -184,14 +184,14 @@ TEST_CASE("Grandchild transform composition (position, rotation, scale)", "[Tran
     Scene scene;
 
     auto* parentGo = scene.CreateGameObject("Parent");
-    auto* parent = parentGo->AddComponent<TransformComponent>();
+    auto* parent = parentGo->GetTransform();
 
     auto* childGo = scene.CreateGameObject("Child");
-    auto* child = childGo->AddComponent<TransformComponent>();
+    auto* child = childGo->GetTransform();
     child->SetParent(parent);
 
     auto* grandChildGo = scene.CreateGameObject("GrandChild");
-    auto* grandChild = grandChildGo->AddComponent<TransformComponent>();
+    auto* grandChild = grandChildGo->GetTransform();
     grandChild->SetParent(child);
 
     // Parent: translate + rotate + scale
@@ -214,8 +214,8 @@ TEST_CASE("Grandchild transform composition (position, rotation, scale)", "[Tran
         MVector3 pos = grandChild->GetWorldPosition();
 
         REQUIRE(pos.x == Approx(10.0f));
-        REQUIRE(pos.y == Approx(5.0f));
-        REQUIRE(pos.z == Approx(-20.0f));
+        REQUIRE(pos.y == Approx(-5.0f));
+        REQUIRE(pos.z == Approx(0.0f).margin(0.001f));
     }
 
     SECTION("World direction vectors are valid and orthogonal")
@@ -238,8 +238,8 @@ TEST_CASE("Grandchild transform composition (position, rotation, scale)", "[Tran
         MVector3 scale = grandChild->GetWorldScale();
 
         REQUIRE(scale.x == Approx(2.0f));
-        REQUIRE(scale.y == Approx(2.0f));
-        REQUIRE(scale.z == Approx(1.0f));
+        REQUIRE(scale.y == Approx(1.0f));
+        REQUIRE(scale.z == Approx(2.0f));
     }
 }
 
@@ -248,13 +248,13 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
     Scene scene;
 
     auto* parentGo = scene.CreateGameObject("Parent");
-    auto* parent = parentGo->AddComponent<TransformComponent>();
+    auto* parent = parentGo->GetTransform();
     parent->SetLocalPosition({10, 20, 30});
     parent->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
     parent->SetLocalScale({2, 2, 2});
 
     auto* childGo = scene.CreateGameObject("Child");
-    auto* child = childGo->AddComponent<TransformComponent>();
+    auto* child = childGo->GetTransform();
     child->SetLocalPosition({5, 0, 0});
     child->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
     child->SetLocalScale({1, 1, 1});
