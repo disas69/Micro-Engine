@@ -1,7 +1,5 @@
 project(MicroEngineTests LANGUAGES CXX)
 
-enable_testing()
-
 # Test framework
 include(FetchContent)
 FetchContent_Declare(
