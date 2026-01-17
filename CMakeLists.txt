@@ -18,7 +18,7 @@ add_subdirectory(Engine)
 add_subdirectory(Editor)
 add_subdirectory(Games)
 
-option(MICROENGINE_BUILD_TESTS "Build MicroEngine tests" ON)
+option(MICROENGINE_BUILD_TESTS "Build MicroEngine tests" OFF)
 if (MICROENGINE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(Tests)
