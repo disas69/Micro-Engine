@@ -1,7 +1,6 @@
 #include "TransformSystem.h"
 #include "Gameplay/Scene.h"
 #include "Gameplay/Components/TransformComponent.h"
-#include "TransformUtils.h"
 
 namespace Micro
 {

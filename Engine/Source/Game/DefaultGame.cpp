@@ -5,7 +5,7 @@
 #include "Gameplay/Components/TransformComponent.h"
 #include "Gameplay/Components/MeshComponent.h"
 #include "Gameplay/Components/TextComponent.h"
-#include "Gameplay/Managers/SceneManager.h"
+#include "Managers/SceneManager.h"
 #include "Serialization/Scene/SceneSaver.h"
 
 namespace Micro

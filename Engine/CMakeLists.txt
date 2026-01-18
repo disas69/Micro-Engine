@@ -32,13 +32,12 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/TextComponent.h
         Source/Gameplay/Scene.cpp
         Source/Gameplay/Scene.h
-        Source/Gameplay/Managers/SceneManager.cpp
-        Source/Gameplay/Managers/SceneManager.h
-        Source/Gameplay/Systems/RenderSystem.cpp
-        Source/Gameplay/Systems/RenderSystem.h
-        Source/Gameplay/Systems/TransformSystem.cpp
-        Source/Gameplay/Systems/TransformSystem.h
-        Source/Gameplay/Systems/TransformUtils.h
+        Source/Managers/SceneManager.cpp
+        Source/Managers/SceneManager.h
+        Source/Systems/RenderSystem.cpp
+        Source/Systems/RenderSystem.h
+        Source/Systems/TransformSystem.cpp
+        Source/Systems/TransformSystem.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
         Source/External/raygui_impl.cpp

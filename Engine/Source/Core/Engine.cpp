@@ -7,7 +7,7 @@
 #include "Gameplay/Components/SpriteComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
-#include "Gameplay/Systems/RenderSystem.h"
+#include "Systems/RenderSystem.h"
 
 namespace Micro
 {

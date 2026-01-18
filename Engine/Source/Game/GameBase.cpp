@@ -1,7 +1,7 @@
 #include "GameBase.h"
 
 #include "Gameplay/Components/CameraComponent.h"
-#include "Gameplay/Managers/SceneManager.h"
+#include "Managers/SceneManager.h"
 
 namespace Micro
 {

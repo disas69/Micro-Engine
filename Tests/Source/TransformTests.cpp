@@ -3,7 +3,7 @@
 
 #include "Gameplay/Scene.h"
 #include "Gameplay/Components/TransformComponent.h"
-#include "Gameplay/Systems/TransformSystem.h"
+#include "Systems/TransformSystem.h"
 
 using namespace Micro;
 using namespace Catch;
