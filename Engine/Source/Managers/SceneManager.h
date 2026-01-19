@@ -13,8 +13,6 @@ namespace Micro
             return instance;
         }
 
-        SceneManager() = default;
-
         SceneManager(const SceneManager&) = delete;
         SceneManager& operator=(const SceneManager&) = delete;
         SceneManager(SceneManager&&) = delete;
@@ -29,6 +27,8 @@ namespace Micro
         Scene* GetActiveScene() const;
 
     private:
+        SceneManager() = default;
+
         std::unique_ptr<Scene> m_ActiveScene = nullptr;
     };
 }  // namespace Micro

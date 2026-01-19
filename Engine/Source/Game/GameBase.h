@@ -20,6 +20,7 @@ namespace Micro
 
         void Init(MVector2 screenSize);
         void Update(float deltaTime);
+        void LateUpdate(float deltaTime);
         void Shutdown();
 
         Scene* GetScene();
@@ -38,9 +39,10 @@ namespace Micro
         MVector2 m_ScreenSize;
         bool m_ShouldClose = false;
 
-        virtual void OnInit() = 0;
-        virtual void OnUpdate(float deltaTime) = 0;
-        virtual void OnShutdown() = 0;
+        virtual void OnInit() {}
+        virtual void OnUpdate(float deltaTime) {}
+        virtual void OnLateUpdate(float deltaTime) {}
+        virtual void OnShutdown() {}
 
     private:
         MCamera3D* m_MainCamera = nullptr;

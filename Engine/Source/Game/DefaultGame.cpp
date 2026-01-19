@@ -85,6 +85,4 @@ namespace Micro
             m_ImageObject->GetTransform()->SetLocalPosition(position);
         }
     }
-
-    void DefaultGame::OnShutdown() {}
 }  // namespace Micro

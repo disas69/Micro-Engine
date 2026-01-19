@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Systems/System.h"
+#include "System.h"
 
 namespace Micro
 {
-    class RenderSystem : public System
+    class ShutdownSystem : public System
     {
     public:
         void Process(GameBase* game) override;

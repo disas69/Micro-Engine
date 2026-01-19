@@ -1,16 +1,18 @@
 #include "RenderSystem.h"
 #include "Gameplay/Scene.h"
+#include "Gameplay/Components/CameraComponent.h"
+#include "Gameplay/Components/ImageComponent.h"
 #include "Gameplay/Components/MeshComponent.h"
 #include "Gameplay/Components/SpriteComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
-#include "Gameplay/Components/ImageComponent.h"
-#include "raymath.h"
 
 namespace Micro
 {
-    void RenderSystem::Render(MCamera3D* camera, Scene* scene)
+    void RenderSystem::Process(GameBase* game)
     {
+        auto camera = game->GetMainCamera();
+        auto scene = game->GetScene();
         if (camera == nullptr || scene == nullptr)
         {
             MICRO_LOG_ERROR("RenderSystem::Render - Invalid camera or scene");
@@ -50,7 +52,7 @@ namespace Micro
 
                     const MVector3 up = {0.0f, 1.0f, 0.0f};
                     const MVector2 size = {sprite->GetSourceRect().width * scale.x, sprite->GetSourceRect().height * scale.y};
-                    const MVector2 origin = size.Scale(0.5f);
+                    const MVector2 origin = Vector2Scale(size, 0.5f);
 
                     MVector3 euler_angles = QuaternionToEuler(rotation);
                     DrawBillboardPro(*camera, sprite->GetSpriteTexture(), sprite->GetSourceRect(), position, up, size, origin, euler_angles.z, sprite->GetColor());
@@ -66,7 +68,7 @@ namespace Micro
             {
                 continue;
             }
-            
+
             auto* transform = go->GetComponent<TransformComponent>();
             if (transform == nullptr)
             {
@@ -83,7 +85,7 @@ namespace Micro
 
                     MVector2 origin = {0, 0};
                     MVector3 euler_angles = QuaternionToEuler(rotation);
-                    MRectangle destRect = {position.x, position.y, image->GetSourceRect().width * scale.x,image->GetSourceRect().height * scale.y};
+                    MRectangle destRect = {position.x, position.y, image->GetSourceRect().width * scale.x, image->GetSourceRect().height * scale.y};
 
                     DrawTexturePro(image->GetTexture(), image->GetSourceRect(), destRect, origin, euler_angles.z * RAD2DEG, image->GetColor());
                 }

@@ -63,9 +63,10 @@ namespace Micro
                 }
             }
         }
+    }
 
-        TransformSystem::Update(this);
-
+    void Scene::LateUpdate(float deltaTime)
+    {
         for (auto& gameObject : m_GameObjects)
         {
             if (!gameObject->IsActive())

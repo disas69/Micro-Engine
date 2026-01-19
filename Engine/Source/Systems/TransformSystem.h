@@ -1,14 +1,15 @@
 #pragma once
 
+#include "Systems/System.h"
+
 namespace Micro
 {
-    class Scene;
-    class TransformComponent;
-
-    class TransformSystem
+    class TransformSystem : public System
     {
     public:
-        static void Update(Scene* scene);
+        void Process(GameBase* game) override;
+
+        static void Process(const Scene* scene);
 
     private:
         static void UpdateRecursive(TransformComponent* transform, const MMatrix& parentWorldMatrix);

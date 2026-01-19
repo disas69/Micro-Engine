@@ -39,7 +39,7 @@ TEST_CASE("Local rotation rotates around local origin", "[Transform][Rotation]")
     t->SetLocalPosition({5, 0, 0});
     t->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     MVector3 pos = t->GetWorldPosition();
 
@@ -57,7 +57,7 @@ TEST_CASE("Forward vector matches rotation", "[Transform][Direction]")
     auto t = go->GetTransform();
 
     t->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     MVector3 forward = t->GetForward();
 
@@ -75,7 +75,7 @@ TEST_CASE("LookAt rotates transform toward target", "[Transform][LookAt]")
     t->SetLocalPosition({0, 0, 5});
     t->LookAt({0, 0, 0});
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     MVector3 forward = t->GetForward();
 
@@ -99,7 +99,7 @@ TEST_CASE("LookAt works correctly with parent transform", "[Transform][LookAt][H
     child->SetLocalPosition({0, 0, 5});
 
     child->LookAt({0, 0, 0});
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     MVector3 forward = child->GetForward();
 
@@ -117,10 +117,10 @@ TEST_CASE("Parent dirty propagates to children", "[Transform][Dirty]")
     auto* child = childGo->GetTransform();
     child->SetParent(parent, false);
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     parent->SetLocalPosition({10, 0, 0});
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     MVector3 childPos = child->GetWorldPosition();
     REQUIRE(childPos.x == Approx(10.0f));
@@ -147,7 +147,7 @@ TEST_CASE("Parent-Child full transformation composition", "[Transform]")
     child->SetLocalRotation(QuaternionFromEuler(0, PI / 2, 0));  // 90° Y
     child->SetLocalScale({1, 1, 1});
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     SECTION("World position is correctly transformed")
     {
@@ -207,7 +207,7 @@ TEST_CASE("Grandchild transform composition (position, rotation, scale)", "[Tran
     // Grandchild: translate only
     grandChild->SetLocalPosition({0, 0, 10});
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     SECTION("World position is correctly composed")
     {
@@ -260,7 +260,7 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
     child->SetLocalScale({1, 1, 1});
     child->SetParent(parent, false);
 
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     const Vector3 worldPosBefore = child->GetWorldPosition();
     const Vector3 forwardBefore = child->GetForward();
@@ -268,7 +268,7 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
 
     // Detach
     child->SetParent(nullptr, true);
-    TransformSystem::Update(&scene);
+    TransformSystem::Process(&scene);
 
     SECTION("Parent is cleared")
     {
@@ -305,7 +305,7 @@ TEST_CASE("Detaching child preserves world transform", "[Transform][Detach]")
     SECTION("Child no longer follows parent")
     {
         parent->SetLocalPosition({100, 0, 0});
-        TransformSystem::Update(&scene);
+        TransformSystem::Process(&scene);
 
         MVector3 pos = child->GetWorldPosition();
         REQUIRE(pos.x == Approx(worldPosBefore.x));

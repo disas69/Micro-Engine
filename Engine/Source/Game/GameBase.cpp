@@ -53,6 +53,16 @@ namespace Micro
         OnUpdate(deltaTime);
     }
 
+    void GameBase::LateUpdate(float deltaTime)
+    {
+        if (Scene* scene = GetScene())
+        {
+            scene->LateUpdate(deltaTime);
+        }
+
+        OnLateUpdate(deltaTime);
+    }
+
     void GameBase::Shutdown()
     {
         SceneManager::GetInstance().UnloadScene();

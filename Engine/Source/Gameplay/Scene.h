@@ -87,6 +87,7 @@ namespace Micro
         }
 
         void Update(float deltaTime);
+        void LateUpdate(float deltaTime);
         void Destroy() const;
 
     private:

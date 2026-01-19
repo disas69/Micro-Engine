@@ -34,8 +34,21 @@ set(ENGINE_SOURCES
         Source/Gameplay/Scene.h
         Source/Managers/SceneManager.cpp
         Source/Managers/SceneManager.h
+        Source/Systems/SystemRegistry.cpp
+        Source/Systems/SystemRegistry.h
+        Source/Systems/System.h
+        Source/Systems/InitSystem.cpp
+        Source/Systems/InitSystem.h
+        Source/Systems/UpdateSystem.cpp
+        Source/Systems/UpdateSystem.h
+        Source/Systems/LateUpdateSystem.cpp
+        Source/Systems/LateUpdateSystem.h
+        Source/Systems/ShutdownSystem.cpp
+        Source/Systems/ShutdownSystem.h
         Source/Systems/RenderSystem.cpp
         Source/Systems/RenderSystem.h
+        Source/Systems/ResizeWindowSystem.cpp
+        Source/Systems/ResizeWindowSystem.h
         Source/Systems/TransformSystem.cpp
         Source/Systems/TransformSystem.h
         Source/Game/DefaultGame.cpp

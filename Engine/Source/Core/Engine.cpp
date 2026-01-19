@@ -7,7 +7,14 @@
 #include "Gameplay/Components/SpriteComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
+#include "Systems/SystemRegistry.h"
+#include "Systems/InitSystem.h"
+#include "Systems/LateUpdateSystem.h"
+#include "Systems/UpdateSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/ResizeWindowSystem.h"
+#include "Systems/ShutdownSystem.h"
+#include "Systems/TransformSystem.h"
 
 namespace Micro
 {
@@ -17,7 +24,39 @@ namespace Micro
 
         MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
 
-        RegisterStandardComponents();
+        // Register components
+        TypeRegistry::Register(&TransformComponent::GetType());
+        TypeRegistry::Register(&CameraComponent::GetType());
+        TypeRegistry::Register(&MeshComponent::GetType());
+        TypeRegistry::Register(&SpriteComponent::GetType());
+        TypeRegistry::Register(&ImageComponent::GetType());
+        TypeRegistry::Register(&TextComponent::GetType());
+
+        // Register systems
+        // OnInit
+        SystemRegistry::Register<InitSystem>(SystemPhase::OnInit);
+
+        // OnPreUpdate
+        // ...
+
+        // OnUpdate
+        SystemRegistry::Register<UpdateSystem>(SystemPhase::OnUpdate);
+
+        // OnPostUpdate
+        SystemRegistry::Register<TransformSystem>(SystemPhase::OnPostUpdate);
+        SystemRegistry::Register<LateUpdateSystem>(SystemPhase::OnPostUpdate);
+
+        // OnPreRender
+        // ...
+
+        // OnRender
+        SystemRegistry::Register<RenderSystem>(SystemPhase::OnRender);
+
+        // OnPostRender
+        SystemRegistry::Register<ResizeWindowSystem>(SystemPhase::OnPostRender);
+
+        // OnShutdown
+        SystemRegistry::Register<ShutdownSystem>(SystemPhase::OnShutdown);
     }
 
     Engine::~Engine()
@@ -25,59 +64,47 @@ namespace Micro
         MICRO_LOG_INFO("Shutting down Micro Engine.");
     }
 
-    void Engine::RegisterStandardComponents()
-    {
-        TypeRegistry::Register(&TransformComponent::GetType());
-        TypeRegistry::Register(&CameraComponent::GetType());
-        TypeRegistry::Register(&MeshComponent::GetType());
-        TypeRegistry::Register(&SpriteComponent::GetType());
-        TypeRegistry::Register(&ImageComponent::GetType());
-        TypeRegistry::Register(&TextComponent::GetType());
-    }
-
     int Engine::Run()
     {
-        if (m_Game == nullptr)
+        GameBase* game = m_Game.get();
+
+        if (game == nullptr)
         {
             MICRO_LOG_ERROR("Game is not loaded");
             return 1;
         }
 
+        // Init phase
         int screenWidth = 800;
         int screenHeight = 450;
 
         MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-        MWindow::Init(screenWidth, screenHeight, m_Game->GetWindowTitle());
+        MWindow::Init(screenWidth, screenHeight, game->GetWindowTitle());
         m_Window.SetTargetFPS(60);
 
-        m_Game->Init(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
+        SystemRegistry::Process(SystemPhase::OnInit, game);
 
-        while (!MWindow::ShouldClose() && !m_Game->ShouldClose())
+        while (!MWindow::ShouldClose() && !game->ShouldClose())
         {
-            float deltaTime = GetFrameTime();
+            // Update phase
+            SystemRegistry::Process(SystemPhase::OnPreUpdate, game);
+            SystemRegistry::Process(SystemPhase::OnUpdate, game);
+            SystemRegistry::Process(SystemPhase::OnPostUpdate, game);
 
-            m_Game->Update(deltaTime);
+            // Render phase
+            m_Window.BeginDrawing();
+            m_Window.ClearBackground(RAYWHITE);
 
-            Render();
+            SystemRegistry::Process(SystemPhase::OnPreRender, game);
+            SystemRegistry::Process(SystemPhase::OnRender, game);
+            SystemRegistry::Process(SystemPhase::OnPostRender, game);
 
-            if (MWindow::IsResized())
-            {
-                m_Game->SetScreenSize(MVector2{(float)GetScreenWidth(), (float)GetScreenHeight()});
-            }
+            m_Window.EndDrawing();
         }
 
-        m_Game->Shutdown();
+        // Shutdown phase
+        SystemRegistry::Process(SystemPhase::OnShutdown, game);
 
         return 0;
-    }
-
-    void Engine::Render()
-    {
-        m_Window.BeginDrawing();
-        m_Window.ClearBackground(RAYWHITE);
-
-        RenderSystem::Render(m_Game->GetMainCamera(), m_Game->GetScene());
-
-        m_Window.EndDrawing();
     }
 }  // namespace Micro

@@ -4,14 +4,19 @@
 
 namespace Micro
 {
-    void TransformSystem::Update(Scene* scene)
+    void TransformSystem::Process(GameBase* game)
+    {
+        Process(game->GetScene());
+    }
+
+    void TransformSystem::Process(const Scene* scene)
     {
         for (const auto& go : scene->GetGameObjects())
         {
             if (go->IsActive())
             {
                 auto* transform = go->GetComponent<TransformComponent>();
-                if (transform && transform->GetParent() == nullptr)
+                if (transform != nullptr && transform->GetParent() == nullptr)
                 {
                     UpdateRecursive(transform, MatrixIdentity());
                 }
@@ -38,5 +43,4 @@ namespace Micro
             UpdateRecursive(child, transform->GetWorldMatrix());
         }
     }
-
 }  // namespace Micro

@@ -2,7 +2,6 @@
 
 #include "EngineConfig.h"
 #include "Game/GameBase.h"
-#include "Gameplay/Scene.h"
 
 namespace Micro
 {
@@ -35,8 +34,5 @@ namespace Micro
     private:
         MWindow m_Window;
         std::unique_ptr<GameBase> m_Game = nullptr;
-
-        void RegisterStandardComponents();
-        void Render();
     };
 }  // namespace Micro
