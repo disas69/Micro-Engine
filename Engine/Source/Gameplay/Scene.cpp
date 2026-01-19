@@ -11,7 +11,7 @@ namespace Micro
 
     GameObject* Scene::CreateGameObject(const std::string& name, GUID guid)
     {
-        auto newGameObject = std::make_unique<GameObject>(name, guid);
+        auto newGameObject = std::make_unique<GameObject>(this, name, guid);
 
         GameObject* rawPtr = newGameObject.get();
         m_GameObjects.push_back(std::move(newGameObject));

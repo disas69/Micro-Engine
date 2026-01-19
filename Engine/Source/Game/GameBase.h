@@ -16,7 +16,9 @@ namespace Micro
         GameBase(GameBase&&) = delete;
         GameBase& operator=(GameBase&&) = delete;
 
+        virtual void RegisterCustomServices();
         virtual void RegisterCustomComponents();
+        virtual void RegisterCustomSystems();
 
         void Init(MVector2 screenSize);
         void Update(float deltaTime);

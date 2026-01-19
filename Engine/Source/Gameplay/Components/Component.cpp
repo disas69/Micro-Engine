@@ -13,6 +13,11 @@ namespace Micro
         return GetGameObject()->GetTransform();
     }
 
+    Scene* Component::GetScene() const
+    {
+        return GetGameObject()->GetScene();
+    }
+
     template <typename T>
     T* Component::GetComponent() const
     {

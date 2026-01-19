@@ -1,9 +1,17 @@
 #include "GameObject.h"
 #include "Gameplay/Components/TransformComponent.h"
+#include "Services/SceneService.h"
+#include "Services/ServiceLocator.h"
+#include "Gameplay/Scene.h"
 
 namespace Micro
 {
-    GameObject::GameObject(std::string name, GUID guid) : m_Name(std::move(name)), m_Guid(guid)
+    GameObject* GameObject::Create(const std::string& name)
+    {
+        return ServiceLocator::Get<SceneService>()->GetActiveScene()->CreateGameObject(name);
+    }
+
+    GameObject::GameObject(Scene* scene, std::string name, GUID guid) : m_Name(std::move(name)), m_Guid(guid), m_Scene(scene)
     {
         m_Transform = AddComponent<TransformComponent>();
     }
@@ -46,10 +54,8 @@ namespace Micro
 
     void GameObject::RemoveDestroyedComponents()
     {
-        m_Components.erase(std::remove_if(m_Components.begin(), m_Components.end(), [](const std::unique_ptr<Component>& component)
-            {
-                return component->IsDestroyed();
-            }),
+        m_Components.erase(
+            std::remove_if(m_Components.begin(), m_Components.end(), [](const std::unique_ptr<Component>& component) { return component->IsDestroyed(); }),
             m_Components.end());
     }
 

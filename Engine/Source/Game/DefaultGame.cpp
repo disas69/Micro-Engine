@@ -5,8 +5,9 @@
 #include "Gameplay/Components/TransformComponent.h"
 #include "Gameplay/Components/MeshComponent.h"
 #include "Gameplay/Components/TextComponent.h"
-#include "Managers/SceneManager.h"
 #include "Serialization/Scene/SceneSaver.h"
+#include "Services/SceneService.h"
+#include "Services/ServiceLocator.h"
 
 namespace Micro
 {
@@ -29,7 +30,7 @@ namespace Micro
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
 
-        auto smallCube = GetScene()->CreateGameObject("SmallCube");
+        auto smallCube = GameObject::Create("SmallCube");
         smallCube->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, 0.0f});
         smallCube->GetTransform()->SetLocalScale(MVector3{0.5f, 0.5f, 0.5f});
         smallCube->GetTransform()->SetParent(m_CubeObject->GetTransform());
@@ -62,7 +63,8 @@ namespace Micro
         // auto text = m_TextObject->AddComponent<TextComponent>();
         // text->SetText("Hello Micro!");
         //
-        // SceneManager::GetInstance().SaveScene();
+        // auto sceneService = ServiceLocator::Get<SceneService>();
+        // sceneService->SaveScene();
     }
 
     void DefaultGame::OnUpdate(float deltaTime)

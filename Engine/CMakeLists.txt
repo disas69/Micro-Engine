@@ -32,8 +32,11 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/TextComponent.h
         Source/Gameplay/Scene.cpp
         Source/Gameplay/Scene.h
-        Source/Managers/SceneManager.cpp
-        Source/Managers/SceneManager.h
+        Source/Services/Service.h
+        Source/Services/ServiceLocator.h
+        Source/Services/ServiceLocator.cpp
+        Source/Services/SceneService.cpp
+        Source/Services/SceneService.h
         Source/Systems/SystemRegistry.cpp
         Source/Systems/SystemRegistry.h
         Source/Systems/System.h

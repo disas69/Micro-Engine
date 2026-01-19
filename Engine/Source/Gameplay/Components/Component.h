@@ -5,6 +5,7 @@
 namespace Micro
 {
     class TransformComponent;
+    class Scene;
 
     class Component
     {
@@ -22,6 +23,7 @@ namespace Micro
         virtual TypeDescriptor& GetTypeDescriptor() const = 0;
         GameObject* GetGameObject() const { return m_GameObject; }
         TransformComponent* GetTransform() const;
+        Scene* GetScene() const;
 
         template <typename T>
         T* GetComponent() const;

@@ -7,6 +7,8 @@
 #include "Gameplay/Components/SpriteComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
+#include "Services/ServiceLocator.h"
+#include "Services/SceneService.h"
 #include "Systems/SystemRegistry.h"
 #include "Systems/InitSystem.h"
 #include "Systems/LateUpdateSystem.h"
@@ -23,6 +25,9 @@ namespace Micro
         Log::Initialize();
 
         MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
+
+        // Register services
+        ServiceLocator::Register(std::make_unique<SceneService>());
 
         // Register components
         TypeRegistry::Register(&TransformComponent::GetType());
@@ -62,6 +67,7 @@ namespace Micro
     Engine::~Engine()
     {
         MICRO_LOG_INFO("Shutting down Micro Engine.");
+        Shutdown();
     }
 
     int Engine::Run()
@@ -106,5 +112,10 @@ namespace Micro
         SystemRegistry::Process(SystemPhase::OnShutdown, game);
 
         return 0;
+    }
+
+    void Engine::Shutdown()
+    {
+        ServiceLocator::Shutdown();
     }
 }  // namespace Micro

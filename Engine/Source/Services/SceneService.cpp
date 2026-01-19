@@ -1,11 +1,11 @@
-#include "SceneManager.h"
+#include "SceneService.h"
 
 #include "Serialization/Scene/SceneLoader.h"
 #include "Serialization/Scene/SceneSaver.h"
 
 namespace Micro
 {
-    void SceneManager::LoadStartupScene()
+    void SceneService::LoadStartupScene()
     {
         m_ActiveScene = std::make_unique<Scene>();
 
@@ -19,7 +19,7 @@ namespace Micro
         }
     }
 
-    void SceneManager::LoadScene(const std::string& path)
+    void SceneService::LoadScene(const std::string& path)
     {
         if (m_ActiveScene == nullptr)
         {
@@ -40,7 +40,7 @@ namespace Micro
         }
     }
 
-    void SceneManager::UnloadScene()
+    void SceneService::UnloadScene()
     {
         if (m_ActiveScene != nullptr)
         {
@@ -49,12 +49,12 @@ namespace Micro
         }
     }
 
-    void SceneManager::SaveScene()
+    void SceneService::SaveScene()
     {
         SceneSaver::Save(m_ActiveScene.get(), "Startup.scene");
     }
 
-    Scene* SceneManager::GetActiveScene() const
+    Scene* SceneService::GetActiveScene() const
     {
         if (m_ActiveScene != nullptr)
         {

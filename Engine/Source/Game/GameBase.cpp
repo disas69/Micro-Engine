@@ -1,19 +1,29 @@
 #include "GameBase.h"
 
 #include "Gameplay/Components/CameraComponent.h"
-#include "Managers/SceneManager.h"
+#include "Services/SceneService.h"
+#include "Services/ServiceLocator.h"
 
 namespace Micro
 {
+    void GameBase::RegisterCustomServices()
+    {
+        // Override to register custom services
+    }
+
     void GameBase::RegisterCustomComponents()
     {
         // Override to register custom components
-        // TypeRegistry::Register(&CustomComponent::GetType());
+    }
+
+    void GameBase::RegisterCustomSystems()
+    {
+        // Override to register custom systems
     }
 
     void GameBase::LoadStartupScene()
     {
-        SceneManager::GetInstance().LoadStartupScene();
+        ServiceLocator::Get<SceneService>()->LoadStartupScene();
     }
 
     void GameBase::FindMainCamera()
@@ -32,7 +42,7 @@ namespace Micro
 
     Scene* GameBase::GetScene()
     {
-        return SceneManager::GetInstance().GetActiveScene();
+        return ServiceLocator::Get<SceneService>()->GetActiveScene();
     }
 
     void GameBase::Init(MVector2 screenSize)
@@ -65,7 +75,7 @@ namespace Micro
 
     void GameBase::Shutdown()
     {
-        SceneManager::GetInstance().UnloadScene();
+        ServiceLocator::Get<SceneService>()->UnloadScene();
         OnShutdown();
     }
 }  // namespace Micro

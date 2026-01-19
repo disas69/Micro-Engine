@@ -6,13 +6,16 @@
 namespace Micro
 {
     class TransformComponent;
+    class Scene;
 
     class GameObject
     {
         friend class Scene;
 
     public:
-        GameObject(std::string name, GUID guid);
+        static GameObject* Create(const std::string& name);
+
+        GameObject(Scene* scene, std::string name, GUID guid);
         ~GameObject() = default;
 
         template <typename T, typename... Args>
@@ -60,6 +63,7 @@ namespace Micro
 
         TransformComponent* GetTransform() const { return m_Transform; }
 
+        Scene* GetScene() const { return m_Scene; }
         const std::string& GetName() const { return m_Name; }
         GUID GetGUID() const { return m_Guid; }
 
@@ -74,6 +78,7 @@ namespace Micro
         std::string m_Name;
         GUID m_Guid;
         TransformComponent* m_Transform = nullptr;
+        Scene* m_Scene = nullptr;
         bool m_IsActive = true;
         bool m_IsDestroyed = false;
 
