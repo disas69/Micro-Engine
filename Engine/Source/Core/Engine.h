@@ -2,6 +2,7 @@
 
 #include "EngineConfig.h"
 #include "Game/GameBase.h"
+#include "Settings/ProjectSettings.h"
 
 namespace Micro
 {
@@ -37,5 +38,6 @@ namespace Micro
     private:
         MWindow m_Window;
         std::unique_ptr<GameBase> m_Game = nullptr;
+        ProjectSettings m_ProjectSettings;
     };
 }  // namespace Micro

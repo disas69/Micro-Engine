@@ -1,0 +1,45 @@
+#pragma once
+
+#include "Settings.h"
+
+namespace Micro
+{
+    struct ProjectSettings : Settings<ProjectSettings>
+    {
+        uint32_t WindowWidth = 1280;
+        uint32_t WindowHeight = 720;
+        uint32_t TargetFPS = 60;
+
+        std::vector<std::string> Scenes;
+        std::string StartupScene;
+    };
+}  // namespace Micro
+
+namespace YAML
+{
+    template <>
+    struct convert<Micro::ProjectSettings>
+    {
+        static Node encode(const Micro::ProjectSettings& rhs)
+        {
+            Node node;
+            node["WindowWidth"] = rhs.WindowWidth;
+            node["WindowHeight"] = rhs.WindowHeight;
+            node["TargetFPS"] = rhs.TargetFPS;
+            node["Scenes"] = rhs.Scenes;
+            node["StartupScene"] = rhs.StartupScene;
+            return node;
+        }
+
+        static bool decode(const Node& node, Micro::ProjectSettings& rhs)
+        {
+            if (!node.IsMap()) return false;
+            if (node["WindowWidth"]) rhs.WindowWidth = node["WindowWidth"].as<uint32_t>();
+            if (node["WindowHeight"]) rhs.WindowHeight = node["WindowHeight"].as<uint32_t>();
+            if (node["TargetFPS"]) rhs.TargetFPS = node["TargetFPS"].as<uint32_t>();
+            if (node["Scenes"]) rhs.Scenes = node["Scenes"].as<std::vector<std::string>>();
+            if (node["StartupScene"]) rhs.StartupScene = node["StartupScene"].as<std::string>();
+            return true;
+        }
+    };
+}  // namespace YAML

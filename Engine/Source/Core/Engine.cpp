@@ -17,9 +17,16 @@
 #include "Systems/ResizeWindowSystem.h"
 #include "Systems/ShutdownSystem.h"
 #include "Systems/TransformSystem.h"
+#include "Settings/ProjectSettings.h"
 
 namespace Micro
 {
+    namespace
+    {
+        const std::string SETTINGS_DIR = "Settings";
+        const std::string PROJECT_SETTINGS_FILE = "ProjectSettings.asset";
+    }  // namespace
+
     Engine::Engine()
     {
         Log::Initialize();
@@ -80,13 +87,26 @@ namespace Micro
             return 1;
         }
 
-        // Init phase
-        int screenWidth = 800;
-        int screenHeight = 450;
+        // Load project settings
+        if (!std::filesystem::exists(SETTINGS_DIR))
+        {
+            std::filesystem::create_directory(SETTINGS_DIR);
+        }
 
+        std::string projectSettingsPath = SETTINGS_DIR + "/" + PROJECT_SETTINGS_FILE;
+
+        if (!m_ProjectSettings.Load(projectSettingsPath))
+        {
+            MICRO_LOG_INFO("ProjectSettings.asset not found, creating a default one.");
+            m_ProjectSettings.Scenes.push_back("Resources/Startup.scene");
+            m_ProjectSettings.StartupScene = "Resources/Startup.scene";
+            m_ProjectSettings.Save(projectSettingsPath);
+        }
+
+        // Init phase
         MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-        MWindow::Init(screenWidth, screenHeight, game->GetWindowTitle());
-        m_Window.SetTargetFPS(60);
+        MWindow::Init(m_ProjectSettings.WindowWidth, m_ProjectSettings.WindowHeight, game->GetWindowTitle());
+        m_Window.SetTargetFPS(m_ProjectSettings.TargetFPS);
 
         SystemRegistry::Process(SystemPhase::OnInit, game);
 

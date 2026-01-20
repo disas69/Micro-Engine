@@ -15,6 +15,7 @@
 #include <functional>
 #include <cmath>
 #include <utility>
+#include <filesystem>
 
 // raylib
 #include <raylib.h>

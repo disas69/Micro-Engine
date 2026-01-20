@@ -56,6 +56,8 @@ set(ENGINE_SOURCES
         Source/Systems/TransformSystem.h
         Source/Game/DefaultGame.cpp
         Source/Game/DefaultGame.h
+        Source/Settings/Settings.h
+        Source/Settings/ProjectSettings.h
         Source/External/raygui_impl.cpp
         Source/Serialization/Reflection/TypeDescriptor.h
         Source/Serialization/Reflection/Macros.h
