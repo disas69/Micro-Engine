@@ -8,18 +8,9 @@ namespace Micro
     class SceneService : public Service
     {
     public:
-        SceneService() = default;
-        ~SceneService() override = default;
-
-        SceneService(const SceneService&) = delete;
-        SceneService& operator=(const SceneService&) = delete;
-        SceneService(SceneService&&) = delete;
-        SceneService& operator=(SceneService&&) = delete;
-
         void LoadStartupScene();
         void LoadScene(const std::string& path);
         void UnloadScene();
-
         void SaveScene();
 
         Scene* GetActiveScene() const;
