@@ -9,6 +9,7 @@
 #include "Gameplay/Components/TransformComponent.h"
 #include "Services/ServiceLocator.h"
 #include "Services/SceneService.h"
+#include "Services/SettingsService.h"
 #include "Systems/SystemRegistry.h"
 #include "Systems/InitSystem.h"
 #include "Systems/LateUpdateSystem.h"
@@ -21,12 +22,6 @@
 
 namespace Micro
 {
-    namespace
-    {
-        const std::string SETTINGS_DIR = "Settings";
-        const std::string PROJECT_SETTINGS_FILE = "ProjectSettings.asset";
-    }  // namespace
-
     Engine::Engine()
     {
         Log::Initialize();
@@ -34,6 +29,7 @@ namespace Micro
         MICRO_LOG_INFO("Initializing Micro Engine. Version: " + std::string(version()));
 
         // Register services
+        ServiceLocator::Register(std::make_unique<SettingsService>());
         ServiceLocator::Register(std::make_unique<SceneService>());
 
         // Register components
@@ -87,26 +83,12 @@ namespace Micro
             return 1;
         }
 
-        // Load project settings
-        if (!std::filesystem::exists(SETTINGS_DIR))
-        {
-            std::filesystem::create_directory(SETTINGS_DIR);
-        }
-
-        std::string projectSettingsPath = SETTINGS_DIR + "/" + PROJECT_SETTINGS_FILE;
-
-        if (!m_ProjectSettings.Load(projectSettingsPath))
-        {
-            MICRO_LOG_INFO("ProjectSettings.asset not found, creating a default one.");
-            m_ProjectSettings.Scenes.push_back("Resources/Startup.scene");
-            m_ProjectSettings.StartupScene = "Resources/Startup.scene";
-            m_ProjectSettings.Save(projectSettingsPath);
-        }
-
         // Init phase
+        auto projectSettings = ServiceLocator::Get<SettingsService>()->LoadOrDefault<ProjectSettings>();
+
         MWindow::SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-        MWindow::Init(m_ProjectSettings.WindowWidth, m_ProjectSettings.WindowHeight, game->GetWindowTitle());
-        m_Window.SetTargetFPS(m_ProjectSettings.TargetFPS);
+        MWindow::Init(projectSettings.WindowWidth, projectSettings.WindowHeight, game->GetWindowTitle());
+        m_Window.SetTargetFPS(projectSettings.TargetFPS);
 
         SystemRegistry::Process(SystemPhase::OnInit, game);
 

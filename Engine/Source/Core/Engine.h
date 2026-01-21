@@ -38,6 +38,5 @@ namespace Micro
     private:
         MWindow m_Window;
         std::unique_ptr<GameBase> m_Game = nullptr;
-        ProjectSettings m_ProjectSettings;
     };
 }  // namespace Micro

@@ -1,17 +1,26 @@
 #pragma once
 
 #include "Settings.h"
+#include "yaml-cpp/node/node.h"
 
 namespace Micro
 {
-    struct ProjectSettings : Settings<ProjectSettings>
+    struct ProjectSettings : Settings
     {
+        ProjectSettings()
+        {
+            Scenes.emplace_back("Resources/Startup.scene");
+            StartupScene = "Resources/Startup.scene";
+        }
+
         uint32_t WindowWidth = 1280;
         uint32_t WindowHeight = 720;
         uint32_t TargetFPS = 60;
 
         std::vector<std::string> Scenes;
         std::string StartupScene;
+
+        std::string GetFileName() override { return "ProjectSettings.asset"; }
     };
 }  // namespace Micro
 
