@@ -7,18 +7,12 @@ namespace Micro
 {
     struct ProjectSettings : Settings
     {
-        ProjectSettings()
-        {
-            Scenes.emplace_back("Resources/Startup.scene");
-            StartupScene = "Resources/Startup.scene";
-        }
-
         uint32_t WindowWidth = 1280;
         uint32_t WindowHeight = 720;
         uint32_t TargetFPS = 60;
 
         std::vector<std::string> Scenes;
-        std::string StartupScene;
+        uint32_t StartupSceneIndex = 0;
 
         std::string GetFileName() override { return "ProjectSettings.asset"; }
     };
@@ -36,7 +30,7 @@ namespace YAML
             node["WindowHeight"] = rhs.WindowHeight;
             node["TargetFPS"] = rhs.TargetFPS;
             node["Scenes"] = rhs.Scenes;
-            node["StartupScene"] = rhs.StartupScene;
+            node["StartupSceneIndex"] = rhs.StartupSceneIndex;
             return node;
         }
 
@@ -47,7 +41,7 @@ namespace YAML
             if (node["WindowHeight"]) rhs.WindowHeight = node["WindowHeight"].as<uint32_t>();
             if (node["TargetFPS"]) rhs.TargetFPS = node["TargetFPS"].as<uint32_t>();
             if (node["Scenes"]) rhs.Scenes = node["Scenes"].as<std::vector<std::string>>();
-            if (node["StartupScene"]) rhs.StartupScene = node["StartupScene"].as<std::string>();
+            if (node["StartupSceneIndex"]) rhs.StartupSceneIndex = node["StartupSceneIndex"].as<uint32_t>();
             return true;
         }
     };

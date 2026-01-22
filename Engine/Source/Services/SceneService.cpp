@@ -2,6 +2,9 @@
 
 #include "Serialization/Scene/SceneLoader.h"
 #include "Serialization/Scene/SceneSaver.h"
+#include "Services/SettingsService.h"
+#include "Settings/ProjectSettings.h"
+#include "Services/ServiceLocator.h"
 
 namespace Micro
 {
@@ -11,7 +14,17 @@ namespace Micro
 
         try
         {
-            SceneLoader::Load("Startup.scene", m_ActiveScene.get());
+            auto projectSettings = ServiceLocator::Get<SettingsService>()->LoadOrDefault<ProjectSettings>();
+            if (!projectSettings.Scenes.empty())
+            {
+                if (projectSettings.StartupSceneIndex >= projectSettings.Scenes.size())
+                {
+                    MICRO_LOG_WARNING("Startup scene index is out of bounds. Loading the first scene instead.");
+                    projectSettings.StartupSceneIndex = 0;
+                }
+
+                SceneLoader::Load(projectSettings.Scenes[projectSettings.StartupSceneIndex], m_ActiveScene.get());
+            }
         }
         catch (const std::exception& e)
         {
