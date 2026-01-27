@@ -9,6 +9,7 @@ namespace Micro
     {
     public:
         void LoadStartupScene();
+        void LoadScene(int index);
         void LoadScene(const std::string& path);
         void UnloadScene();
         void SaveScene();

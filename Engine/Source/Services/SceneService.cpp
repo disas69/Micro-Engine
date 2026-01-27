@@ -32,6 +32,26 @@ namespace Micro
         }
     }
 
+    void SceneService::LoadScene(int index)
+    {
+        auto projectSettings = ServiceLocator::Get<SettingsService>()->LoadOrDefault<ProjectSettings>();
+
+        if (!projectSettings.Scenes.empty())
+        {
+            if (index >= projectSettings.Scenes.size())
+            {
+                MICRO_LOG_ERROR("Scene index is out of bounds: " + std::to_string(index));
+                return;
+            }
+
+            LoadScene(projectSettings.Scenes[index]);
+        }
+        else
+        {
+            MICRO_LOG_ERROR("No scenes available in project settings.");
+        }
+    }
+
     void SceneService::LoadScene(const std::string& path)
     {
         if (m_ActiveScene == nullptr)
