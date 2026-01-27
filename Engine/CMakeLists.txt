@@ -24,6 +24,9 @@ set(ENGINE_SOURCES
         Source/Gameplay/Components/TransformComponent.h
         Source/Gameplay/Components/MeshComponent.cpp
         Source/Gameplay/Components/MeshComponent.h
+        Source/Gameplay/Components/PrimitiveMeshComponent.cpp
+        Source/Gameplay/Components/PrimitiveMeshComponent.h
+        Source/Gameplay/Components/PrimitiveShape.h
         Source/Gameplay/Components/SpriteComponent.cpp
         Source/Gameplay/Components/SpriteComponent.h
         Source/Gameplay/Components/ImageComponent.cpp

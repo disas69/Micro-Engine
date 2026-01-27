@@ -1,32 +1,42 @@
 Scene:
   Version: 1
   GameObjects:
-    - ID: 13447851946891262109
+    - ID: 10320628818609656252
       Name: Camera
       Components:
+        - TransformComponent:
+            Parent: 0
+            m_LocalPosition: [0, 0, 0]
+            m_LocalRotation: [0, 0, 0, 1]
+            m_LocalScale: [1, 1, 1]
         - CameraComponent: ~
-    - ID: 2804414595141122574
+    - ID: 18062713426588665613
       Name: Cube
       Components:
         - TransformComponent:
-            m_LocalPosition: [0, 0.5, 0]
+            Parent: 0
+            m_LocalPosition: [2, 0, 0]
             m_LocalRotation: [0, 0, 0, 1]
             m_LocalScale: [3, 3, 3]
-        - MeshComponent: ~
-    - ID: 7280427647445530937
+        - PrimitiveMeshComponent:
+            m_Shape: 1
+            m_Color: [255, 0, 0, 255]
+    - ID: 15494615553405628003
       Name: Image
       Components:
         - TransformComponent:
+            Parent: 0
             m_LocalPosition: [50, 50, 0]
             m_LocalRotation: [0, 0, 0, 1]
             m_LocalScale: [1, 1, 1]
         - ImageComponent:
             m_SourceRect: [0, 0, 128, 128]
             m_Color: [0, 0, 255, 200]
-    - ID: 11332681849914253727
+    - ID: 9793412935638624353
       Name: Text
       Components:
         - TransformComponent:
+            Parent: 15494615553405628003
             m_LocalPosition: [5, 5, 0]
             m_LocalRotation: [0, 0, 0, 1]
             m_LocalScale: [1, 1, 1]

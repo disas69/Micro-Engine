@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Gameplay/Components/TransformComponent.h"
+#include "Gameplay/Components/PrimitiveMeshComponent.h"
 #include "Services/SceneService.h"
 #include "Services/ServiceLocator.h"
 #include "Gameplay/Scene.h"
@@ -9,6 +10,13 @@ namespace Micro
     GameObject* GameObject::Create(const std::string& name)
     {
         return ServiceLocator::Get<SceneService>()->GetActiveScene()->CreateGameObject(name);
+    }
+
+    GameObject* GameObject::CreatePrimitive(PrimitiveShape shape, MColor color)
+    {
+        auto* gameObject = ServiceLocator::Get<SceneService>()->GetActiveScene()->CreateGameObject("Primitive");
+        gameObject->AddComponent<PrimitiveMeshComponent>(shape, color);
+        return gameObject;
     }
 
     GameObject::GameObject(Scene* scene, std::string name, GUID guid) : m_Name(std::move(name)), m_Guid(guid), m_Scene(scene)

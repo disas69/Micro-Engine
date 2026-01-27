@@ -16,7 +16,7 @@ namespace Micro
         MMaterial* GetMaterial() { return &m_Material; }
         void SetMaterial(const Material& material) { m_Material = material; }
 
-    private:
+    protected:
         MMesh m_Mesh;
         MMaterial m_Material;
     };

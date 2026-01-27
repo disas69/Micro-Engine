@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/Component.h"
+#include "Components/PrimitiveShape.h"
 #include "Core/GUID.h"
 
 namespace Micro
@@ -14,6 +15,7 @@ namespace Micro
 
     public:
         static GameObject* Create(const std::string& name);
+        static GameObject* CreatePrimitive(PrimitiveShape shape, MColor color);
 
         GameObject(Scene* scene, std::string name, GUID guid);
         ~GameObject() = default;

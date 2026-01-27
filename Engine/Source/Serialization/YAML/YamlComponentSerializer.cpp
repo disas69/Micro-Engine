@@ -40,6 +40,7 @@ namespace Micro
                 case FieldType::Vector4: out[field.Name] = *static_cast<const MQuaternion*>(fieldPtr); break;
                 case FieldType::Color: out[field.Name] = *static_cast<const MColor*>(fieldPtr); break;
                 case FieldType::Rect: out[field.Name] = *static_cast<const MRectangle*>(fieldPtr); break;
+                case FieldType::Enum: out[field.Name] = *static_cast<const int*>(fieldPtr); break;
             }
         }
     }
@@ -79,6 +80,7 @@ namespace Micro
                 case FieldType::Vector4: *static_cast<MQuaternion*>(fieldPtr) = fieldNode.as<MQuaternion>(); break;
                 case FieldType::Color: *static_cast<MColor*>(fieldPtr) = fieldNode.as<MColor>(); break;
                 case FieldType::Rect: *static_cast<MRectangle*>(fieldPtr) = fieldNode.as<MRectangle>(); break;
+                case FieldType::Enum: *static_cast<int*>(fieldPtr) = fieldNode.as<int>(); break;
             }
         }
     }

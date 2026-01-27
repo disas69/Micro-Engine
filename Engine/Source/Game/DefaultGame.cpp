@@ -4,6 +4,7 @@
 #include "Gameplay/Components/ImageComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
 #include "Gameplay/Components/MeshComponent.h"
+#include "Gameplay/Components/PrimitiveMeshComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Serialization/Scene/SceneSaver.h"
 #include "Services/SceneService.h"
@@ -23,20 +24,27 @@ namespace Micro
         camera->GetTransform()->SetLocalPosition(MVector3{0.0f, 5.0f, 10.0f});
         camera->GetTransform()->LookAt(MVector3{0.0f, 2.0f, 0.0f});
 
-        m_CubeObject = GetScene()->FindGameObjectByComponent<MeshComponent>();
+        m_CubeObject = GetScene()->FindGameObjectByComponent<PrimitiveMeshComponent>();
         if (m_CubeObject != nullptr)
         {
-            auto mesh = m_CubeObject->GetComponent<MeshComponent>();
-            mesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = RED;
-
-            auto smallCube = GameObject::Create("SmallCube");
+            auto smallCube = GameObject::CreatePrimitive(PrimitiveShape::Cube, GREEN);
             smallCube->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, 0.0f});
             smallCube->GetTransform()->SetLocalScale(MVector3{0.5f, 0.5f, 0.5f});
             smallCube->GetTransform()->SetParent(m_CubeObject->GetTransform());
-            auto smallMesh = smallCube->AddComponent<MeshComponent>();
-            smallMesh->GetMaterial()->maps[MATERIAL_MAP_DIFFUSE].color = GREEN;
         }
 
+        // auto* sphere = GameObject::CreatePrimitive(PrimitiveShape::Sphere, BLUE);
+        // sphere->GetTransform()->SetLocalPosition(MVector3{-2.0f, 0.5f, 0.0f});
+        //
+        // auto* cylinder = GameObject::CreatePrimitive(PrimitiveShape::Cylinder, GREEN);
+        // cylinder->GetTransform()->SetLocalPosition(MVector3{2.0f, 1.0f, 0.0f});
+        //
+        // auto* cone = GameObject::CreatePrimitive(PrimitiveShape::Cone, YELLOW);
+        // cone->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, -2.0f});
+        //
+        // auto* torus = GameObject::CreatePrimitive(PrimitiveShape::Torus, PURPLE);
+        // torus->GetTransform()->SetLocalPosition(MVector3{0.0f, 0.5, 2.0f});
+        
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
 

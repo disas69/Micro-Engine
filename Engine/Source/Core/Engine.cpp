@@ -4,6 +4,7 @@
 #include "Gameplay/Components/CameraComponent.h"
 #include "Gameplay/Components/ImageComponent.h"
 #include "Gameplay/Components/MeshComponent.h"
+#include "Gameplay/Components/PrimitiveMeshComponent.h"
 #include "Gameplay/Components/SpriteComponent.h"
 #include "Gameplay/Components/TextComponent.h"
 #include "Gameplay/Components/TransformComponent.h"
@@ -36,6 +37,7 @@ namespace Micro
         TypeRegistry::Register(&TransformComponent::GetType());
         TypeRegistry::Register(&CameraComponent::GetType());
         TypeRegistry::Register(&MeshComponent::GetType());
+        TypeRegistry::Register(&PrimitiveMeshComponent::GetType());
         TypeRegistry::Register(&SpriteComponent::GetType());
         TypeRegistry::Register(&ImageComponent::GetType());
         TypeRegistry::Register(&TextComponent::GetType());
