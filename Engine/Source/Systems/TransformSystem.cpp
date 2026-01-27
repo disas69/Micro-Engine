@@ -34,7 +34,7 @@ namespace Micro
         if (transform->IsDirty())
         {
             MMatrix localMatrix = transform->GetLocalMatrix();
-            MMatrix worldMatrix = MatrixMultiply(localMatrix, parentWorldMatrix);
+            MMatrix worldMatrix = localMatrix * parentWorldMatrix;
             transform->SetWorldMatrix(worldMatrix);
         }
 

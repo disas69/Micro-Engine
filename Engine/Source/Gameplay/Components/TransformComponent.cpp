@@ -56,8 +56,8 @@ namespace Micro
             if (m_Parent != nullptr)
             {
                 m_Parent->ForceUpdateWorldMatrix();
-                MMatrix parentInverse = MatrixInvert(m_Parent->GetWorldMatrix());
-                MMatrix newLocalMatrix = MatrixMultiply(m_WorldMatrix, parentInverse);
+                MMatrix parentInverse = m_Parent->GetWorldMatrix().Invert();
+                MMatrix newLocalMatrix = m_WorldMatrix * parentInverse;
                 MatrixDecompose(newLocalMatrix, &m_LocalPosition, &m_LocalRotation, &m_LocalScale);
             }
             else
@@ -74,7 +74,7 @@ namespace Micro
         MMatrix matScale = MatrixScale(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
         MMatrix matRotation = QuaternionToMatrix(m_LocalRotation);
         MMatrix matTranslation = MatrixTranslate(m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
-        return MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+        return matScale * matRotation * matTranslation;
     }
 
     MVector3 TransformComponent::GetWorldPosition()
@@ -213,7 +213,7 @@ namespace Micro
             if (m_Parent != nullptr)
             {
                 m_Parent->ForceUpdateWorldMatrix();
-                m_WorldMatrix = MatrixMultiply(m_Parent->m_WorldMatrix, GetLocalMatrix());
+                m_WorldMatrix = m_Parent->m_WorldMatrix * GetLocalMatrix();
             }
             else
             {
