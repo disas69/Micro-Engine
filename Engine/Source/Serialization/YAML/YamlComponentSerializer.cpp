@@ -83,5 +83,7 @@ namespace Micro
                 case FieldType::Enum: *static_cast<int*>(fieldPtr) = fieldNode.as<int>(); break;
             }
         }
+
+        component->OnDeserialize();
     }
 }  // namespace Micro

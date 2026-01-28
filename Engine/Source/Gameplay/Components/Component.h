@@ -14,6 +14,7 @@ namespace Micro
         virtual ~Component() = default;
 
         virtual void OnCreate() {}
+        virtual void OnDeserialize() {}
         virtual void OnEnable() {}
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnLateUpdate(float deltaTime) {}

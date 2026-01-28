@@ -2,7 +2,7 @@
 
 namespace Micro
 {
-    enum class PrimitiveShape
+    enum class PrimitiveShape : int
     {
         Plane = 0,
         Cube = 1,

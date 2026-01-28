@@ -17,7 +17,7 @@ namespace Micro
         void SetMaterial(const Material& material) { m_Material = material; }
 
     protected:
-        MMesh m_Mesh;
-        MMaterial m_Material;
+        MMesh m_Mesh = {};
+        MMaterial m_Material = {};
     };
 }  // namespace Micro

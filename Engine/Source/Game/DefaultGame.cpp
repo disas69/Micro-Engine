@@ -33,17 +33,17 @@ namespace Micro
             smallCube->GetTransform()->SetParent(m_CubeObject->GetTransform());
         }
 
-        // auto* sphere = GameObject::CreatePrimitive(PrimitiveShape::Sphere, BLUE);
-        // sphere->GetTransform()->SetLocalPosition(MVector3{-2.0f, 0.5f, 0.0f});
-        //
-        // auto* cylinder = GameObject::CreatePrimitive(PrimitiveShape::Cylinder, GREEN);
-        // cylinder->GetTransform()->SetLocalPosition(MVector3{2.0f, 1.0f, 0.0f});
-        //
-        // auto* cone = GameObject::CreatePrimitive(PrimitiveShape::Cone, YELLOW);
-        // cone->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, -2.0f});
-        //
-        // auto* torus = GameObject::CreatePrimitive(PrimitiveShape::Torus, PURPLE);
-        // torus->GetTransform()->SetLocalPosition(MVector3{0.0f, 0.5, 2.0f});
+        auto* sphere = GameObject::CreatePrimitive(PrimitiveShape::Sphere, BLUE);
+        sphere->GetTransform()->SetLocalPosition(MVector3{-2.0f, 0.5f, 0.0f});
+
+        auto* cylinder = GameObject::CreatePrimitive(PrimitiveShape::Cylinder, PURPLE);
+        cylinder->GetTransform()->SetLocalPosition(MVector3{-5.0f, 1.0f, 2.0f});
+
+        auto* cone = GameObject::CreatePrimitive(PrimitiveShape::Cone, YELLOW);
+        cone->GetTransform()->SetLocalPosition(MVector3{0.0f, 1.0f, -2.0f});
+
+        auto* torus = GameObject::CreatePrimitive(PrimitiveShape::Torus, PINK);
+        torus->GetTransform()->SetLocalPosition(MVector3{0.0f, 0.5, 2.0f});
         
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
