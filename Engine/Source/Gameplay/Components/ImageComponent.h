@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Gameplay/Components/Component.h"
-#include "Assets/AssetRef.h"
+#include "Assets/AssetReference.h"
 
 namespace Micro
 {
@@ -10,16 +10,16 @@ namespace Micro
         MICRO_COMPONENT(ImageComponent)
 
         explicit ImageComponent(GameObject* owner);
-        ImageComponent(GameObject* owner, const AssetRef& textureRef);
-        ImageComponent(GameObject* owner, const AssetRef& textureRef, MColor color);
+        ImageComponent(GameObject* owner, const AssetID& textureID);
+        ImageComponent(GameObject* owner, const AssetID& textureID, MColor color);
 
         void OnCreate() override;
         void OnDeserialize() override;
 
-        MTexture2D* GetTextureRaw() const { return m_Texture; }
+        MTexture2D* GetTexture() const;
 
-        const AssetRef& GetTexture() const { return m_TextureRef; }
-        void SetTexture(const AssetRef& textureRef);
+        const AssetID& GetTextureID() const { return m_TextureID; }
+        void SetTextureID(const AssetID& textureID);
 
         MRectangle& GetSourceRect() { return m_SourceRect; }
         void SetSourceRect(const MRectangle& sourceRect) { m_SourceRect = sourceRect; }
@@ -28,10 +28,10 @@ namespace Micro
         void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        AssetRef m_TextureRef = {0};
+        AssetID m_TextureID;
         MRectangle m_SourceRect = {0, 0, 100, 100};
         MColor m_Color = MColor::White();
 
-        MTexture2D* m_Texture = nullptr;
+        AssetReference<MTexture2D> m_Texture;
     };
 }  // namespace Micro

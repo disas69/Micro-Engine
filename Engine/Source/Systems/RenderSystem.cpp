@@ -77,7 +77,7 @@ namespace Micro
 
             if (auto* image = go->GetComponent<ImageComponent>())
             {
-                if (image->IsEnabled() && image->GetTextureRaw())
+                if (image->IsEnabled() && image->GetTexture())
                 {
                     MVector3 position, scale;
                     MQuaternion rotation;
@@ -87,7 +87,7 @@ namespace Micro
                     MVector3 euler_angles = QuaternionToEuler(rotation);
                     MRectangle destRect = {position.x, position.y, image->GetSourceRect().width * scale.x, image->GetSourceRect().height * scale.y};
 
-                    DrawTexturePro(*image->GetTextureRaw(), image->GetSourceRect(), destRect, origin, euler_angles.z * RAD2DEG, image->GetColor());
+                    DrawTexturePro(*image->GetTexture(), image->GetSourceRect(), destRect, origin, euler_angles.z * RAD2DEG, image->GetColor());
                 }
             }
 

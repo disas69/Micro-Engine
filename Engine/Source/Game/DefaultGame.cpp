@@ -9,7 +9,7 @@
 #include "Serialization/Scene/SceneSaver.h"
 #include "Services/SceneService.h"
 #include "Services/ServiceLocator.h"
-#include "Assets/AssetRef.h"
+#include "Assets/AssetReference.h"
 #include "Services/AssetsService.h"
 
 namespace Micro
@@ -51,7 +51,7 @@ namespace Micro
         m_TextObject = GetScene()->FindGameObjectByName("Text");
 
         auto circleImage = GetScene()->CreateGameObject("Circle")->AddComponent<ImageComponent>();
-        circleImage->SetTexture(ServiceLocator::Get<AssetsService>()->GetAssetRef("Assets/Texture/circle-128.png"));
+        circleImage->SetTextureID(ServiceLocator::Get<AssetsService>()->GetAssetID("Assets/Texture/circle-128.png"));
         circleImage->SetSourceRect(MRectangle{0, 0, 128, 128});
         circleImage->SetColor(MColor::Red());
         circleImage->GetTransform()->SetParent(m_ImageObject->GetTransform());

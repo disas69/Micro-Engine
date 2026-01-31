@@ -4,7 +4,10 @@ configure_file(EngineConfig.h.template ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine
 
 set(ENGINE_SOURCES
         Source/EngineConfig.h
-        Source/Assets/AssetRef.h
+        Source/Assets/AssetID.h
+        Source/Assets/AssetReference.h
+        Source/Assets/AssetResolver.cpp
+        Source/Assets/AssetResolver.h
         Source/Assets/AssetsDatabase.cpp
         Source/Assets/AssetsDatabase.h
         Source/Core/Types.h

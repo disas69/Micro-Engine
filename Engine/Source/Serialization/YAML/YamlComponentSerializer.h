@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Assets/AssetRef.h"
+#include "Assets/AssetID.h"
+#include "Assets/AssetReference.h"
 #include "yaml-cpp/yaml.h"
 #include "Gameplay/Components/Component.h"
 #include "Gameplay/GameObject.h"
@@ -154,20 +155,20 @@ namespace YAML
     };
 
     template <>
-    struct convert<Micro::AssetRef>
+    struct convert<Micro::AssetID>
     {
-        static Node encode(const Micro::AssetRef& assetRef)
+        static Node encode(const Micro::AssetID& assetID)
         {
             Node node;
-            node["ID"] = assetRef.GetID();
+            node["ID"] = assetID.ID;
             return node;
         }
 
-        static bool decode(const Node& node, Micro::AssetRef& assetRef)
+        static bool decode(const Node& node, Micro::AssetID& assetID)
         {
             if (node["ID"])
             {
-                assetRef = Micro::AssetRef(node["ID"].as<Micro::GUID>());
+                assetID = Micro::AssetID(node["ID"].as<Micro::GUID>());
                 return true;
             }
             return false;

@@ -2,7 +2,7 @@
 
 #include "Service.h"
 #include "Assets/AssetsDatabase.h"
-#include "Assets/AssetRef.h"
+#include "Assets/AssetReference.h"
 
 namespace Micro
 {
@@ -14,20 +14,22 @@ namespace Micro
 
         void ScanAssets();
 
-        AssetRef GetAssetRef(const std::string& path);
-        std::string GetAssetPath(const AssetRef& ref);
+        AssetID GetAssetID(const std::string& path);
+        std::string GetAssetPath(const AssetID& id);
 
-        MTexture2D* LoadTexture(const AssetRef& ref);
-        MTexture2D* LoadTexture(const std::string& path);
+        AssetReference<MTexture2D> LoadTexture(const AssetID& id);
+        AssetReference<MTexture2D> LoadTexture(const std::string& path);
+        MTexture2D* GetTexture(const GUID& id) const;
 
-        MModel* LoadModel(const AssetRef& ref);
-        MModel* LoadModel(const std::string& path);
+        AssetReference<MModel> LoadModel(const AssetID& id);
+        AssetReference<MModel> LoadModel(const std::string& path);
+        MModel* GetModel(const GUID& id) const;
 
-        void Unload(const AssetRef& ref);
+        void Unload(const AssetID& ref);
         void UnloadAll();
 
         bool HasAsset(const std::string& path);
-        bool IsLoaded(const AssetRef& ref) const;
+        bool IsLoaded(const AssetID& ref) const;
 
     private:
         AssetsDatabase m_AssetsDatabase;

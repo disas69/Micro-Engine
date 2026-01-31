@@ -5,18 +5,18 @@
 namespace Micro
 {
     MICRO_COMPONENT_IMPL(ImageComponent,
-        MICRO_FIELD(ImageComponent, m_TextureRef, FieldType::AssetRef),
+        MICRO_FIELD(ImageComponent, m_TextureID, FieldType::AssetID),
         MICRO_FIELD(ImageComponent, m_SourceRect, FieldType::Rect),
         MICRO_FIELD(ImageComponent, m_Color, FieldType::Color))
     ImageComponent::ImageComponent(GameObject* owner) : Component(owner)
     {
     }
 
-    ImageComponent::ImageComponent(GameObject* owner, const AssetRef& textureRef) : Component(owner), m_TextureRef(textureRef)
+    ImageComponent::ImageComponent(GameObject* owner, const AssetID& textureID) : Component(owner), m_TextureID(textureID)
     {
     }
 
-    ImageComponent::ImageComponent(GameObject* owner, const AssetRef& textureRef, MColor color) : Component(owner), m_TextureRef(textureRef), m_Color(color)
+    ImageComponent::ImageComponent(GameObject* owner, const AssetID& textureID, MColor color) : Component(owner), m_TextureID(textureID), m_Color(color)
     {
     }
 
@@ -24,9 +24,9 @@ namespace Micro
     {
         Component::OnCreate();
 
-        if (m_TextureRef.IsValid())
+        if (m_TextureID.IsValid())
         {
-            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureRef);
+            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureID);
         }
     }
 
@@ -34,20 +34,30 @@ namespace Micro
     {
         Component::OnDeserialize();
 
-        if (m_TextureRef.IsValid())
+        if (m_TextureID.IsValid())
         {
-            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureRef);
+            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureID);
         }
     }
 
-    void ImageComponent::SetTexture(const AssetRef& textureRef)
+    MTexture2D* ImageComponent::GetTexture() const
     {
-        if (m_Texture && m_TextureRef.GetID() != textureRef.GetID())
+        if (m_Texture.IsValid())
         {
-            ServiceLocator::Get<AssetsService>()->Unload(m_TextureRef);
+            return m_Texture.Get();
         }
 
-        m_TextureRef = textureRef;
-        m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureRef);
+        return nullptr;
+    }
+
+    void ImageComponent::SetTextureID(const AssetID& textureID)
+    {
+        if (textureID.IsValid() && m_Texture && m_TextureID.ID != textureID.ID)
+        {
+            ServiceLocator::Get<AssetsService>()->Unload(m_TextureID);
+        }
+
+        m_TextureID = textureID;
+        m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureID);
     }
 }  // namespace Micro

@@ -41,91 +41,101 @@ namespace Micro
         }
     }
 
-    AssetRef AssetsService::GetAssetRef(const std::string& path)
+    AssetID AssetsService::GetAssetID(const std::string& path)
     {
         if (!m_AssetsDatabase.HasAsset(path))
         {
-            return AssetRef {0};
+            return AssetID();
         }
 
-        return AssetRef(m_AssetsDatabase.GetAssetGuid(path));
+        return AssetID(m_AssetsDatabase.GetAssetGuid(path));
     }
 
-    std::string AssetsService::GetAssetPath(const AssetRef& ref)
+    std::string AssetsService::GetAssetPath(const AssetID& id)
     {
-        if (!m_AssetsDatabase.HasAsset(ref.GetID()))
+        if (!m_AssetsDatabase.HasAsset(id.ID))
         {
             return "";
         }
 
-        return m_AssetsDatabase.GetAssetPath(ref.GetID());
+        return m_AssetsDatabase.GetAssetPath(id.ID);
     }
 
-    MTexture2D* AssetsService::LoadTexture(const AssetRef& ref)
+    AssetReference<MTexture2D> AssetsService::LoadTexture(const AssetID& id)
     {
-        if (auto it = m_Textures.find(ref.GetID()); it != m_Textures.end())
+        auto assetReference = AssetReference<MTexture2D>(id.ID);
+
+        if (auto it = m_Textures.find(id.ID); it != m_Textures.end())
         {
-            return it->second.get();
+            return assetReference;
         }
 
-        const std::string& path = m_AssetsDatabase.GetAssetPath(ref.GetID());
-
+        const std::string& path = m_AssetsDatabase.GetAssetPath(id.ID);
         auto rlTexture = std::make_unique<MTexture2D>();
         rlTexture->Load(path);
+        m_Textures.emplace(id.ID, std::move(rlTexture));
 
-        MTexture2D* raw = rlTexture.get();
-        m_Textures.emplace(ref.GetID(), std::move(rlTexture));
-
-        return raw;
+        return assetReference;
     }
 
-    MTexture2D* AssetsService::LoadTexture(const std::string& path)
+    AssetReference<MTexture2D> AssetsService::LoadTexture(const std::string& path)
     {
         if (!m_AssetsDatabase.HasAsset(path))
         {
             GUID guid;
             m_AssetsDatabase.AddAsset(guid, path);
-            return LoadTexture(AssetRef(guid));
+            return LoadTexture(AssetID(guid));
         }
 
         GUID guid = m_AssetsDatabase.GetAssetGuid(path);
-        return LoadTexture(AssetRef(guid));
+        return LoadTexture(AssetID(guid));
     }
 
-    MModel* AssetsService::LoadModel(const AssetRef& ref)
+    MTexture2D* AssetsService::GetTexture(const GUID& id) const
     {
-        if (auto it = m_Models.find(ref.GetID()); it != m_Models.end())
+        if (auto it = m_Textures.find(id); it != m_Textures.end()) return it->second.get();
+        return nullptr;
+    }
+
+    AssetReference<MModel> AssetsService::LoadModel(const AssetID& id)
+    {
+        auto assetReference = AssetReference<MModel>(id.ID);
+
+        if (auto it = m_Models.find(id.ID); it != m_Models.end())
         {
-            return it->second.get();
+            return assetReference;
         }
 
-        const std::string& path = m_AssetsDatabase.GetAssetPath(ref.GetID());
-
+        const std::string& path = m_AssetsDatabase.GetAssetPath(id.ID);
         auto rlModel = std::make_unique<MModel>();
         rlModel->Load(path);
+        m_Models.emplace(id.ID, std::move(rlModel));
 
-        MModel* raw = rlModel.get();
-        m_Models.emplace(ref.GetID(), std::move(rlModel));
-
-        return raw;
+        return assetReference;
     }
 
-    MModel* AssetsService::LoadModel(const std::string& path)
+    AssetReference<MModel> AssetsService::LoadModel(const std::string& path)
     {
         if (!m_AssetsDatabase.HasAsset(path))
         {
             GUID guid;
             m_AssetsDatabase.AddAsset(guid, path);
-            return LoadModel(AssetRef(guid));
+            return LoadModel(AssetID(guid));
         }
 
         GUID guid = m_AssetsDatabase.GetAssetGuid(path);
-        return LoadModel(AssetRef(guid));
+        return LoadModel(AssetID(guid));
     }
 
-    void AssetsService::Unload(const AssetRef& ref)
+    MModel* AssetsService::GetModel(const GUID& id) const
     {
-        const GUID id = ref.GetID();
+        if (auto it = m_Models.find(id); it != m_Models.end()) return it->second.get();
+        return nullptr;
+    }
+
+    void AssetsService::Unload(const AssetID& ref)
+    {
+        const GUID id = ref.ID;
 
         if (auto it = m_Textures.find(id); it != m_Textures.end())
         {
@@ -159,9 +169,9 @@ namespace Micro
         return m_AssetsDatabase.HasAsset(path);
     }
 
-    bool AssetsService::IsLoaded(const AssetRef& ref) const
+    bool AssetsService::IsLoaded(const AssetID& ref) const
     {
-        const GUID id = ref.GetID();
+        const GUID id = ref.ID;
         return m_Textures.contains(id) || m_Models.contains(id);
     }
 

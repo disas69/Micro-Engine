@@ -17,7 +17,7 @@ namespace Micro
         Color = 7,
         Rect = 8,
         Enum = 9,
-        AssetRef = 10,
+        AssetID = 10,
     };
 
     struct FieldDescriptor
