@@ -12,6 +12,34 @@ namespace Micro
     {
     }
 
+    ImageComponent::ImageComponent(GameObject* owner, const AssetRef& textureRef) : Component(owner), m_TextureRef(textureRef)
+    {
+    }
+
+    ImageComponent::ImageComponent(GameObject* owner, const AssetRef& textureRef, MColor color) : Component(owner), m_TextureRef(textureRef), m_Color(color)
+    {
+    }
+
+    void ImageComponent::OnCreate()
+    {
+        Component::OnCreate();
+
+        if (m_TextureRef.IsValid())
+        {
+            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureRef);
+        }
+    }
+
+    void ImageComponent::OnDeserialize()
+    {
+        Component::OnDeserialize();
+
+        if (m_TextureRef.IsValid())
+        {
+            m_Texture = ServiceLocator::Get<AssetsService>()->LoadTexture(m_TextureRef);
+        }
+    }
+
     void ImageComponent::SetTexture(const AssetRef& textureRef)
     {
         if (m_Texture && m_TextureRef.GetID() != textureRef.GetID())

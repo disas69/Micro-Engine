@@ -10,6 +10,11 @@ namespace Micro
         MICRO_COMPONENT(ImageComponent)
 
         explicit ImageComponent(GameObject* owner);
+        ImageComponent(GameObject* owner, const AssetRef& textureRef);
+        ImageComponent(GameObject* owner, const AssetRef& textureRef, MColor color);
+
+        void OnCreate() override;
+        void OnDeserialize() override;
 
         MTexture2D* GetTextureRaw() const { return m_Texture; }
 
@@ -23,7 +28,7 @@ namespace Micro
         void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        AssetRef m_TextureRef;
+        AssetRef m_TextureRef = {0};
         MRectangle m_SourceRect = {0, 0, 100, 100};
         MColor m_Color = MColor::White();
 

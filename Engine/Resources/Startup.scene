@@ -30,6 +30,8 @@ Scene:
             m_LocalRotation: [0, 0, 0, 1]
             m_LocalScale: [1, 1, 1]
         - ImageComponent:
+            m_TextureRef:
+              ID: 13625390823602165707
             m_SourceRect: [0, 0, 128, 128]
             m_Color: [0, 0, 255, 200]
     - ID: 9793412935638624353

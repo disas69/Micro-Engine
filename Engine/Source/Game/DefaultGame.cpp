@@ -50,22 +50,13 @@ namespace Micro
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
 
-        if (m_ImageObject)
-        {
-            auto imageComponent = m_ImageObject->GetComponent<ImageComponent>();
-            if (imageComponent != nullptr)
-            {
-                AssetRef testTextureRef = ServiceLocator::Get<AssetsService>()->GetAssetRef("Assets/Texture/square-128.png");
-                if (testTextureRef.IsValid())
-                {
-                    imageComponent->SetTexture(testTextureRef);
-                }
-                else
-                {
-                    MICRO_LOG_WARNING("Test texture not found in AssetsDatabase");
-                }
-            }
-        }
+        auto circleImage = GetScene()->CreateGameObject("Circle")->AddComponent<ImageComponent>();
+        circleImage->SetTexture(ServiceLocator::Get<AssetsService>()->GetAssetRef("Assets/Texture/circle-128.png"));
+        circleImage->SetSourceRect(MRectangle{0, 0, 128, 128});
+        circleImage->SetColor(MColor::Red());
+        circleImage->GetTransform()->SetParent(m_ImageObject->GetTransform());
+        circleImage->GetTransform()->SetLocalPosition(MVector3{35.0f, 35.0f, 0.0f});
+        circleImage->GetTransform()->SetLocalScale(MVector3{0.5f, 0.5f, 0.5f});
 
         // Save scene path
         // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");
