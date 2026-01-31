@@ -4,6 +4,9 @@ configure_file(EngineConfig.h.template ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine
 
 set(ENGINE_SOURCES
         Source/EngineConfig.h
+        Source/Assets/AssetRef.h
+        Source/Assets/AssetsDatabase.cpp
+        Source/Assets/AssetsDatabase.h
         Source/Core/Types.h
         Source/Core/GUID.cpp
         Source/Core/GUID.h
@@ -40,6 +43,8 @@ set(ENGINE_SOURCES
         Source/Services/ServiceLocator.cpp
         Source/Services/SceneService.cpp
         Source/Services/SceneService.h
+        Source/Services/AssetsService.cpp
+        Source/Services/AssetsService.h
         Source/Systems/SystemRegistry.cpp
         Source/Systems/SystemRegistry.h
         Source/Systems/System.h
@@ -62,6 +67,7 @@ set(ENGINE_SOURCES
         Source/Services/SettingsService.h
         Source/Settings/Settings.h
         Source/Settings/ProjectSettings.h
+        Source/Settings/AssetsDatabaseSettings.h
         Source/External/raygui_impl.cpp
         Source/Serialization/Reflection/TypeDescriptor.h
         Source/Serialization/Reflection/Macros.h

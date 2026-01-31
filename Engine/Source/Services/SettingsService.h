@@ -14,7 +14,7 @@ namespace Micro
 
     public:
         template <typename T>
-        bool Save(const T& settings) const
+        bool Save(T& settings) const
         {
             static_assert(std::is_base_of<Settings, T>::value, "T must be derived from Settings");
 

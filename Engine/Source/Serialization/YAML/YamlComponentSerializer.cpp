@@ -3,6 +3,7 @@
 #include "Core/GUID.h"
 #include "Gameplay/Components/TransformComponent.h"
 #include "Gameplay/GameObject.h"
+#include "Assets/AssetRef.h"
 
 namespace Micro
 {
@@ -41,6 +42,7 @@ namespace Micro
                 case FieldType::Color: out[field.Name] = *static_cast<const MColor*>(fieldPtr); break;
                 case FieldType::Rect: out[field.Name] = *static_cast<const MRectangle*>(fieldPtr); break;
                 case FieldType::Enum: out[field.Name] = *static_cast<const int*>(fieldPtr); break;
+                case FieldType::AssetRef: out[field.Name] = *static_cast<const AssetRef*>(fieldPtr); break;
             }
         }
     }
@@ -81,6 +83,7 @@ namespace Micro
                 case FieldType::Color: *static_cast<MColor*>(fieldPtr) = fieldNode.as<MColor>(); break;
                 case FieldType::Rect: *static_cast<MRectangle*>(fieldPtr) = fieldNode.as<MRectangle>(); break;
                 case FieldType::Enum: *static_cast<int*>(fieldPtr) = fieldNode.as<int>(); break;
+                case FieldType::AssetRef: *static_cast<AssetRef*>(fieldPtr) = fieldNode.as<AssetRef>(); break;
             }
         }
 

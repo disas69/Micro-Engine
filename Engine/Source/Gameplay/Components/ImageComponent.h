@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Gameplay/Components/Component.h"
+#include "Assets/AssetRef.h"
 
 namespace Micro
 {
@@ -10,8 +11,10 @@ namespace Micro
 
         explicit ImageComponent(GameObject* owner);
 
-        MTexture2D& GetTexture() { return m_Texture; }
-        void SetTexture(const Texture2D& texture) { m_Texture = texture; }
+        MTexture2D* GetTextureRaw() const { return m_Texture; }
+
+        const AssetRef& GetTexture() const { return m_TextureRef; }
+        void SetTexture(const AssetRef& textureRef);
 
         MRectangle& GetSourceRect() { return m_SourceRect; }
         void SetSourceRect(const MRectangle& sourceRect) { m_SourceRect = sourceRect; }
@@ -20,8 +23,10 @@ namespace Micro
         void SetColor(const MColor& color) { m_Color = color; }
 
     private:
-        MTexture2D m_Texture;
+        AssetRef m_TextureRef;
         MRectangle m_SourceRect = {0, 0, 100, 100};
         MColor m_Color = MColor::White();
+
+        MTexture2D* m_Texture = nullptr;
     };
 }  // namespace Micro

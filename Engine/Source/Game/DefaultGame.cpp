@@ -9,6 +9,8 @@
 #include "Serialization/Scene/SceneSaver.h"
 #include "Services/SceneService.h"
 #include "Services/ServiceLocator.h"
+#include "Assets/AssetRef.h"
+#include "Services/AssetsService.h"
 
 namespace Micro
 {
@@ -47,6 +49,25 @@ namespace Micro
         
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
+
+        if (m_ImageObject)
+        {
+            auto imageComponent = m_ImageObject->GetComponent<ImageComponent>();
+            if (imageComponent != nullptr)
+            {
+                // Assuming there's a test texture in "Assets/Texture/Test.png"
+                auto assetsService = ServiceLocator::Get<AssetsService>();
+                if (assetsService->HasAsset("Assets/Texture/Test.png"))
+                {
+                    // AssetRef testTextureRef = assetsService->GetAssetsDatabase().GetAssetGuid("Assets/Texture/Test.png");
+                    // imageComponent->SetTextureRef(testTextureRef);
+                }
+                else
+                {
+                    MICRO_LOG_WARNING("Test texture not found in AssetsDatabase: Assets/Texture/Test.png");
+                }
+            }
+        }
 
         // Save scene path
         // GameObject* cameraObject = GetScene()->CreateGameObject("Camera");

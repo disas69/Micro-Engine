@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Assets/AssetRef.h"
 #include "yaml-cpp/yaml.h"
 #include "Gameplay/Components/Component.h"
 #include "Gameplay/GameObject.h"
@@ -20,7 +21,10 @@ namespace YAML
     template <>
     struct convert<Micro::GUID>
     {
-        static Node encode(const Micro::GUID& guid) { return Node(static_cast<uint64_t>(guid)); }
+        static Node encode(const Micro::GUID& guid)
+        {
+            return Node(static_cast<uint64_t>(guid));
+        }
 
         static bool decode(const Node& node, Micro::GUID& guid)
         {
@@ -146,6 +150,27 @@ namespace YAML
             r.width = node[2].as<float>();
             r.height = node[3].as<float>();
             return true;
+        }
+    };
+
+    template <>
+    struct convert<Micro::AssetRef>
+    {
+        static Node encode(const Micro::AssetRef& assetRef)
+        {
+            Node node;
+            node["ID"] = assetRef.GetID();
+            return node;
+        }
+
+        static bool decode(const Node& node, Micro::AssetRef& assetRef)
+        {
+            if (node["ID"])
+            {
+                assetRef = Micro::AssetRef(node["ID"].as<Micro::GUID>());
+                return true;
+            }
+            return false;
         }
     };
 }  // namespace YAML

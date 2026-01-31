@@ -11,6 +11,7 @@
 #include "Services/ServiceLocator.h"
 #include "Services/SceneService.h"
 #include "Services/SettingsService.h"
+#include "Services/AssetsService.h"
 #include "Systems/SystemRegistry.h"
 #include "Systems/InitSystem.h"
 #include "Systems/LateUpdateSystem.h"
@@ -31,6 +32,7 @@ namespace Micro
 
         // Register services
         ServiceLocator::Register(std::make_unique<SettingsService>());
+        ServiceLocator::Register(std::make_unique<AssetsService>());
         ServiceLocator::Register(std::make_unique<SceneService>());
 
         // Register components
@@ -84,6 +86,8 @@ namespace Micro
             MICRO_LOG_ERROR("Game is not loaded");
             return 1;
         }
+
+        ServiceLocator::Get<AssetsService>()->ScanAssets();
 
         // Init phase
         auto projectSettings = ServiceLocator::Get<SettingsService>()->LoadOrDefault<ProjectSettings>();
