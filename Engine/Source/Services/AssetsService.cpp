@@ -41,6 +41,26 @@ namespace Micro
         }
     }
 
+    AssetRef AssetsService::GetAssetRef(const std::string& path)
+    {
+        if (!m_AssetsDatabase.HasAsset(path))
+        {
+            return AssetRef {0};
+        }
+
+        return AssetRef(m_AssetsDatabase.GetAssetGuid(path));
+    }
+
+    std::string AssetsService::GetAssetPath(const AssetRef& ref)
+    {
+        if (!m_AssetsDatabase.HasAsset(ref.GetID()))
+        {
+            return "";
+        }
+
+        return m_AssetsDatabase.GetAssetPath(ref.GetID());
+    }
+
     MTexture2D* AssetsService::LoadTexture(const AssetRef& ref)
     {
         if (auto it = m_Textures.find(ref.GetID()); it != m_Textures.end())
@@ -50,11 +70,11 @@ namespace Micro
 
         const std::string& path = m_AssetsDatabase.GetAssetPath(ref.GetID());
 
-        MTexture2D* rlTexture = LoadTexture(path);
-        auto texture = std::unique_ptr<MTexture2D>(rlTexture);
+        auto rlTexture = std::make_unique<MTexture2D>();
+        rlTexture->Load(path);
 
-        MTexture2D* raw = texture.get();
-        m_Textures.emplace(ref.GetID(), std::move(texture));
+        MTexture2D* raw = rlTexture.get();
+        m_Textures.emplace(ref.GetID(), std::move(rlTexture));
 
         return raw;
     }
@@ -81,11 +101,11 @@ namespace Micro
 
         const std::string& path = m_AssetsDatabase.GetAssetPath(ref.GetID());
 
-        MModel* rlModel = LoadModel(path);
-        auto model = std::unique_ptr<MModel>(rlModel);
+        auto rlModel = std::make_unique<MModel>();
+        rlModel->Load(path);
 
-        MModel* raw = model.get();
-        m_Models.emplace(ref.GetID(), std::move(model));
+        MModel* raw = rlModel.get();
+        m_Models.emplace(ref.GetID(), std::move(rlModel));
 
         return raw;
     }

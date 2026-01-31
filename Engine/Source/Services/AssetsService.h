@@ -14,6 +14,9 @@ namespace Micro
 
         void ScanAssets();
 
+        AssetRef GetAssetRef(const std::string& path);
+        std::string GetAssetPath(const AssetRef& ref);
+
         MTexture2D* LoadTexture(const AssetRef& ref);
         MTexture2D* LoadTexture(const std::string& path);
 

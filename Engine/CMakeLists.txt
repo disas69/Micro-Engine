@@ -102,3 +102,15 @@ target_link_libraries(MicroEngine PRIVATE MicroLib)
 
 set_target_properties(MicroEngine PROPERTIES FOLDER "Engine")
 set_target_properties(MicroLib PROPERTIES FOLDER "Engine")
+
+add_custom_command(TARGET MicroEngine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Engine/Assets
+        $<TARGET_FILE_DIR:MicroEngine>/Assets
+)
+
+add_custom_command(TARGET MicroEngine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Engine/Resources
+        $<TARGET_FILE_DIR:MicroEngine>/Resources
+)

@@ -46,7 +46,7 @@ namespace Micro
 
         auto* torus = GameObject::CreatePrimitive(PrimitiveShape::Torus, PINK);
         torus->GetTransform()->SetLocalPosition(MVector3{0.0f, 0.5, 2.0f});
-        
+
         m_ImageObject = GetScene()->FindGameObjectByName("Image");
         m_TextObject = GetScene()->FindGameObjectByName("Text");
 
@@ -55,16 +55,14 @@ namespace Micro
             auto imageComponent = m_ImageObject->GetComponent<ImageComponent>();
             if (imageComponent != nullptr)
             {
-                // Assuming there's a test texture in "Assets/Texture/Test.png"
-                auto assetsService = ServiceLocator::Get<AssetsService>();
-                if (assetsService->HasAsset("Assets/Texture/Test.png"))
+                AssetRef testTextureRef = ServiceLocator::Get<AssetsService>()->GetAssetRef("Assets/Texture/square-128.png");
+                if (testTextureRef.IsValid())
                 {
-                    // AssetRef testTextureRef = assetsService->GetAssetsDatabase().GetAssetGuid("Assets/Texture/Test.png");
-                    // imageComponent->SetTextureRef(testTextureRef);
+                    imageComponent->SetTexture(testTextureRef);
                 }
                 else
                 {
-                    MICRO_LOG_WARNING("Test texture not found in AssetsDatabase: Assets/Texture/Test.png");
+                    MICRO_LOG_WARNING("Test texture not found in AssetsDatabase");
                 }
             }
         }
